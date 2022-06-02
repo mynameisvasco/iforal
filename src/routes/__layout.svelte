@@ -1,11 +1,31 @@
-<script>
-	import Navbar from '$lib/components/navbar/navbar.svelte';
-	import '../app.css';
+<script context="module" lang="ts">
+	export async function load(context: LoadInput) {
+		if (!context.url.pathname.includes('auth') && !context.session.isAuthenticated) {
+			return { status: 302, redirect: '/auth/login' };
+		}
+
+		return {};
+	}
 </script>
 
-<div class="min-h-screen bg-stone-100 dark:bg-stone-900">
-	<Navbar />
-	<div class="py-10 h-full">
+<script lang="ts">
+	import '../app.css';
+	import { browser } from '$app/env';
+	import { page } from '$app/stores';
+	import Navbar from '$lib/components/navbar/navbar.svelte';
+	import type { LoadInput } from '@sveltejs/kit';
+
+	if (browser && !$page?.url?.pathname?.includes('auth')) {
+	}
+</script>
+
+{#if $page.url.pathname.includes('auth')}
+	<div class="bg-stone-100 dark:bg-stone-900 min-h-screen">
 		<slot />
 	</div>
-</div>
+{:else}
+	<div class="bg-stone-100 dark:bg-stone-900 min-h-screen">
+		<Navbar />
+		<slot />
+	</div>
+{/if}

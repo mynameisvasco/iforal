@@ -2,6 +2,7 @@
 	import { Menu, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { createContextMenu, type ContextMenuStore } from '$lib/stores/context-menu';
 	import { ChevronRight, Icon } from 'svelte-hero-icons';
+	import { slide } from 'svelte/transition';
 
 	export let contextMenu: ContextMenuStore;
 	export let subContextMenus = new Map<string, ContextMenuStore>();
@@ -11,7 +12,7 @@
 	}
 
 	function handleMouseEnterSubMenu(subMenuName: string, index: number) {
-		subContextMenus.get(subMenuName)?.toggle([380, index != 0 ? index * 34 + 1 : -8]);
+		subContextMenus.get(subMenuName)?.toggle([375, index != 0 ? index * 34 + 1 : -8]);
 	}
 
 	function handleMouseLeaveSubMenu(subMenuName: string) {

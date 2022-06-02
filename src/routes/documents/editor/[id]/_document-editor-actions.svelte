@@ -11,7 +11,6 @@
 		</button>
 	</MenuButton>
 	<MenuItems class="dropdown-menu">
-		<MenuItem class="dropdown-menu-item">Alterar nome</MenuItem>
 		<MenuItem class="dropdown-menu-item">Editar Cabeçalho</MenuItem>
 		<MenuItem class="dropdown-menu-item !text-red-500 dark:!text-red-300">Apagar</MenuItem>
 	</MenuItems>

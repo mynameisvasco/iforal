@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(90)
+  email     String   @unique @db.VarChar(90)
+  password  String   @db.VarChar(90)
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id               Int            @id @default(autoincrement())
+  title            String         @db.VarChar(255)
+  coverUrl         String         @db.VarChar(255)
+  createdAt        DateTime       @default(now())
+  modifiedAt       DateTime       @updatedAt
+  header           DocumentHeader @relation(references: [id], fields: [documentHeaderId], onDelete: Cascade)
+  documentHeaderId Int
+}
+
+model DocumentHeader {
+  id           Int        @id @default(autoincrement())
+  title        String     @db.VarChar(255)
+  editors      String     @db.VarChar(255)
+  responsibles String     @db.VarChar(255)
+  funders      String     @db.VarChar(255)
+  country      String     @db.VarChar(4)
+  institution  String     @db.VarChar(255)
+  repository   String     @db.VarChar(255)
+  idno         String     @db.VarChar(255)
+  author       String     @db.VarChar(255)
+  originDate   DateTime
+  originPlace  String     @db.VarChar(255)
+  Document     Document[]
+}

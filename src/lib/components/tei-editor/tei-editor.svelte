@@ -24,6 +24,6 @@
 
 <ContextMenu {contextMenu} />
 
-<div on:contextmenu|preventDefault={handleContextMenu} on:drag|preventDefault>
+<div on:contextmenu|preventDefault={handleContextMenu} on:drag|preventDefault class="h-full">
 	<input type="textarea" id="editor" />
 </div>

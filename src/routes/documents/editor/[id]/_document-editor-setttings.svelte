@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SideCover from '$lib/components/side-cover/side-cover.svelte';
 	import { editorSettings } from '$lib/stores/editor-settings';
+	import { Cog, Icon } from 'svelte-hero-icons';
 
 	let sideCover: any;
 </script>
@@ -30,8 +31,7 @@
 						class="input"
 						bind:value={$editorSettings.editorColSize}
 					>
-						<option value="4">Pequeno</option>
-						<option value="6">Médio</option>
+						<option value="6">Pequeno</option>
 						<option value="8">Grande</option>
 						<option value="12">Ecrã Completo</option>
 					</select>
@@ -40,4 +40,7 @@
 		</div>
 	</form>
 </SideCover>
-<button on:click={sideCover.toggle} class="btn btn-primary">Definições</button>
+<button on:click={sideCover.toggle} class="btn btn-secondary">
+	<Icon src={Cog} class="w-5 mr-1" solid />
+	Definições
+</button>

@@ -5,7 +5,6 @@
 	import NavbarItemMobile from './navbar-item-mobile.svelte';
 	import NavbarUserMenuMobile from './navbar-user-menu-mobile.svelte';
 	import { slide } from 'svelte/transition';
-	import Toggle from '../toggle/toggle.svelte';
 
 	let isMobileMenuToggled = false;
 
@@ -20,8 +19,7 @@
 			<div class="flex">
 				<div class="flex-shrink-0 flex items-center dark:text-white">iForal</div>
 				<div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-					<NavbarItem path="/">Documentos</NavbarItem>
-					<NavbarItem path="/Test">Test</NavbarItem>
+					<NavbarItem path="/documents">Documentos</NavbarItem>
 				</div>
 			</div>
 			<div class="hidden sm:ml-6 sm:flex sm:items-center">
