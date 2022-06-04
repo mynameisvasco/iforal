@@ -25,6 +25,10 @@ export const api = {
 
 	delete: function <T>(fetch: any, url: string) {
 		return request<T>(fetch, url, 'delete');
+	},
+
+	put: function <T>(fetch: any, url: string, body: any = {}) {
+		return request<T>(fetch, url, 'put', body);
 	}
 };
 

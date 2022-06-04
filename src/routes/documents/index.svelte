@@ -25,7 +25,7 @@
 </script>
 
 <svelte:head>
-	<title>iForal - Documentos Recentes</title>
+	<title>iForal - Documentos recentes</title>
 </svelte:head>
 
 <header>

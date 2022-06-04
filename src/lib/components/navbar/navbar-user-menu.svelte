@@ -11,7 +11,7 @@
 		const { status } = await api.post(fetch, '/api/auth/logout');
 
 		if (status === 200) {
-			goto('/auth/login');
+			await goto('/auth/login');
 		}
 	}
 </script>

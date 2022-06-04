@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Icon, Plus, X } from 'svelte-hero-icons';
+	import { Icon, X } from 'svelte-hero-icons';
 
 	export let values: any[] = [];
 	export let addingValues: any = {};
@@ -21,14 +21,16 @@
 
 <div class="flex flex-col">
 	{#each values as value, i}
-		<div class="flex justify-between border-b border-stone-300 dark:border-stone-700 pb-3 pt-3">
+		<div
+			class="flex justify-between border-b border-stone-300 dark:border-stone-700 pb-3 mb-3 pt-3"
+		>
 			<slot name="list" {value} index={i} />
 			<div on:click={() => handleRemove(i)}>
 				<Icon src={X} class="w-4 text-stone-500" solid />
 			</div>
 		</div>
 	{/each}
-	<div class="flex justify-between items-center gap-3 mt-3">
+	<div class="flex justify-between items-center gap-3">
 		<slot name="inputs" {handleAdd} />
 	</div>
 </div>

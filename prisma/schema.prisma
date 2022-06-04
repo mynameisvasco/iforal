@@ -16,27 +16,41 @@ model User {
 }
 
 model Document {
-  id               Int            @id @default(autoincrement())
-  title            String         @db.VarChar(255)
-  coverUrl         String         @db.VarChar(255)
-  createdAt        DateTime       @default(now())
-  modifiedAt       DateTime       @updatedAt
-  header           DocumentHeader @relation(references: [id], fields: [documentHeaderId], onDelete: Cascade)
+  id               Int              @id @default(autoincrement())
+  title            String           @db.VarChar(255)
+  coverUrl         String           @db.VarChar(255)
+  createdAt        DateTime         @default(now())
+  modifiedAt       DateTime         @updatedAt
+  header           DocumentHeader   @relation(references: [id], fields: [documentHeaderId], onDelete: Cascade)
   documentHeaderId Int
+  images           DocumentImages[]
 }
 
 model DocumentHeader {
-  id           Int        @id @default(autoincrement())
-  title        String     @db.VarChar(255)
-  editors      String     @db.VarChar(255)
-  responsibles String     @db.VarChar(255)
-  funders      String     @db.VarChar(255)
-  country      String     @db.VarChar(4)
-  institution  String     @db.VarChar(255)
-  repository   String     @db.VarChar(255)
-  idno         String     @db.VarChar(255)
-  author       String     @db.VarChar(255)
-  originDate   DateTime
-  originPlace  String     @db.VarChar(255)
-  Document     Document[]
+  id          Int        @id @default(autoincrement())
+  title       String     @db.VarChar(255)
+  editors     Json
+  funders     String     @db.VarChar(255)
+  country     String     @db.VarChar(4)
+  institution String     @db.VarChar(255)
+  repository  String     @db.VarChar(255)
+  idno        String     @db.VarChar(255)
+  authors     Json
+  originDate  DateTime
+  originPlace String     @db.VarChar(255)
+  lang        String
+  filliation  String
+  summary     String
+  encoding    String
+  documents   Document[]
+}
+
+model DocumentImages {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  position   Int
+  createdAt  DateTime @default(now())
+  modifiedAt DateTime @updatedAt
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId Int
 }

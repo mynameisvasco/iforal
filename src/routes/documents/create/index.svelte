@@ -1,15 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
 	import { api } from '$lib/util/api';
-
 	import DocumentCreateForm from './_document-create-form.svelte';
 
 	async function handleDocumentCreate({ detail }: CustomEvent) {
 		const { status } = await api.post(fetch, '/api/documents', detail);
 
 		if (status === 200) {
-			goto('/documents');
+			await goto('/documents');
 		}
 	}
 </script>

@@ -1,11 +1,11 @@
 <script context="module" lang="ts">
 	export async function load(context: LoadInput) {
 		const id = parseInt(context.params.id);
+		const { data: document } = await api.get(context.fetch, `/api/documents/${id}`);
 
 		return {
 			props: {
-				document: [],
-				imagesUrls: []
+				document
 			}
 		};
 	}
@@ -13,19 +13,22 @@
 
 <script lang="ts">
 	import type { LoadInput } from '@sveltejs/kit';
-	import Gallery from '$lib/components/gallery/gallery.svelte';
 	import TeiEditor from '$lib/components/tei-editor/tei-editor.svelte';
 	import { editorSettings } from '$lib/stores/editor-settings';
 	import DocumentEditorActions from './_document-editor-actions.svelte';
 	import DocumentEditorImagesCount from './_document-editor-images-count.svelte';
 	import DocumentEditorSetttings from './_document-editor-setttings.svelte';
+	import { api } from '$lib/util/api';
+	import type { Document } from '@prisma/client';
+	import { setContext } from 'svelte';
+	import DocumentEditorImagesGallery from './_document-editor-images-gallery.svelte';
 
-	export let document: any;
-	export let imagesUrls: string[];
+	export let document: Document;
+	setContext('document', document);
 </script>
 
 <svelte:head>
-	<title>iForal - Editor</title>
+	<title>iForal - Editor"</title>
 </svelte:head>
 
 <header>
@@ -50,7 +53,7 @@
 			</div>
 			{#if 12 - $editorSettings.editorColSize != 0}
 				<div class="col-span-{12 - ($editorSettings.editorColSize % 12)} h-full">
-					<Gallery {imagesUrls} />
+					<DocumentEditorImagesGallery imagesUrls={document.images.map((i) => i.name)} />
 				</div>
 			{/if}
 		</div>

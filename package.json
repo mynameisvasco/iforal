@@ -20,6 +20,7 @@
     "@types/codemirror": "^5.60.5",
     "@types/cookie": "^0.5.1",
     "@types/jsonwebtoken": "^8.5.8",
+    "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
     "prettier": "^2.5.1",
@@ -47,6 +48,7 @@
     "svelte-file-dropzone": "^1.0.0-dev.1",
     "svelte-forms-lib": "^2.0.1",
     "svelte-local-storage-store": "^0.2.6",
+    "uuid": "^8.3.2",
     "vanilla-js-wheel-zoom": "^6.12.0",
     "yup": "^0.32.11"
   }

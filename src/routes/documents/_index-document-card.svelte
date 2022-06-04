@@ -5,8 +5,9 @@
 	import { pt } from 'date-fns/locale';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import type { Document } from '@prisma/client';
 
-	export let document: any;
+	export let document: Document;
 
 	const dispatcher = createEventDispatcher();
 	let coverUrl = '';
@@ -14,10 +15,10 @@
 
 <div class="flex flex-col card hover:border-stone-900 dark:hover:border-orange-300">
 	<img
-		src={coverUrl}
+		src="/api/storage/{document.images.at(0)?.name}"
 		alt="Imagem ilustrativa do foral"
 		class="h-72 object-cover rounded-t-lg"
-		on:click={() => goto(`/documents/editor/{document.id}`)}
+		on:click={async () => await goto(`/documents/${document.id}/editor`)}
 	/>
 	<div class="p-3 border-t border-stone-300 dark:border-stone-700 rounded-b-lg">
 		<div class="flex justify-between items-center">
@@ -37,7 +38,7 @@
 				</MenuButton>
 				<MenuItems class="dropdown-menu">
 					<MenuItem class="dropdown-menu-item">
-						<a href="/documents/editor/{document.id}" target="_blank">Abrir em novo separador</a>
+						<a href="/documents/{document.id}/editor" target="_blank">Abrir em novo separador</a>
 					</MenuItem>
 					<MenuItem class="dropdown-menu-item">Download</MenuItem>
 					<MenuItem

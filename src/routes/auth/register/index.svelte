@@ -10,7 +10,7 @@
 		const { status } = await api.post(fetch, '/api/auth/register', detail);
 
 		if (status === 200) {
-			goto('/documents');
+			await goto('/documents');
 		}
 	}
 </script>

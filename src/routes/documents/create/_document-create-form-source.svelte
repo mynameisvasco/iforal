@@ -1,9 +1,12 @@
 <script lang="ts">
+	import InputList from '$lib/components/input-list/input-list.svelte';
+
 	//@ts-ignore
 	import countries from '$lib/util/countries.json';
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 
+	let addingAuthor = { name: '', role: '' };
 	const form = getContext<Writable<any>>('form');
 	const errors = getContext<Writable<any>>('errors');
 	const handleChange = getContext<(e: any) => any>('handleChange');
@@ -20,7 +23,7 @@
 		<div class="mt-5 md:mt-0 md:col-span-2">
 			<div class="grid grid-cols-12 gap-6 card p-6">
 				<div class="col-span-12 lg:col-span-6">
-					<label for="title" class="label">País</label>
+					<label for="country" class="label">País</label>
 					<select
 						id="country"
 						name="country"
@@ -38,7 +41,7 @@
 					{/if}
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="title" class="label">Instituíção</label>
+					<label for="institution" class="label">Instituíção</label>
 					<input
 						id="institution"
 						name="institution"
@@ -54,7 +57,7 @@
 					{/if}
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="title" class="label">Repositório</label>
+					<label for="repository" class="label">Repositório</label>
 					<input
 						id="repository"
 						name="repository"
@@ -70,7 +73,7 @@
 					{/if}
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="title" class="label">IdNo</label>
+					<label for="idno" class="label">IdNo</label>
 					<input
 						id="idno"
 						name="idno"
@@ -85,24 +88,37 @@
 						<div class="error-label">{$errors.idno}</div>
 					{/if}
 				</div>
-				<div class="col-span-12 lg:col-span-6">
-					<label for="title" class="label">Autor</label>
-					<input
-						id="author"
-						name="author"
-						type="text"
-						class="input"
-						placeholder="Vasco Sousa"
-						class:input-error={$errors.author}
-						on:change={handleChange}
-						bind:value={$form.author}
-					/>
+				<div class="col-span-12">
+					<label for="authors" class="label">Autores</label>
+					<InputList bind:values={$form.authors} bind:addingValues={addingAuthor}>
+						<span slot="list" let:value>
+							<div class="flex flex-col">
+								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
+								<p class="text-sm text-stone-500 dark:text-stone-300">{value.role}</p>
+							</div>
+						</span>
+						<span slot="inputs" let:handleAdd class="flex gap-6 flex-1">
+							<select class="input" bind:value={addingAuthor.role} on:blur={handleAdd}>
+								<option value="" default disabled selected>Selecionar tipo</option>
+								<option value="jurídico">Jurídico</option>
+								<option value="material">Material</option>
+								<option value="diplomático">Diplomático</option>
+							</select>
+							<input
+								type="text"
+								class="input"
+								placeholder="D. XYZ"
+								bind:value={addingAuthor.name}
+								on:blur={handleAdd}
+							/>
+						</span>
+					</InputList>
 					{#if $errors.author}
 						<div class="error-label">{$errors.author}</div>
 					{/if}
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="title" class="label">Data de Origem</label>
+					<label for="origindate" class="label">Data de Origem</label>
 					<input
 						id="originDate"
 						name="originDate"
@@ -118,7 +134,7 @@
 					{/if}
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="title" class="label">Lugar de Origem</label>
+					<label for="originPlace" class="label">Lugar de Origem</label>
 					<input
 						id="originPlace"
 						name="originPlace"
@@ -131,6 +147,60 @@
 					/>
 					{#if $errors.originPlace}
 						<div class="error-label">{$errors.originPlace}</div>
+					{/if}
+				</div>
+				<div class="col-span-12 lg:col-span-6">
+					<label for="lang" class="label">Linguagem</label>
+					<select
+						id="lang"
+						name="lang"
+						type="text"
+						class="input"
+						placeholder="Este foral..."
+						class:input-error={$errors.lang}
+						on:change={handleChange}
+						bind:value={$form.lang}
+					>
+						<option value="pt">Português</option>
+						<option value="pt-lt">Português / Latin</option>
+						<option value="lt-pt">Latin / Português</option>
+					</select>
+					{#if $errors.filliation}
+						<div class="error-label">{$errors.filliation}</div>
+					{/if}
+				</div>
+				<div class="col-span-12">
+					<label for="title" class="label">Filiação</label>
+					<textarea
+						id="filliation"
+						name="filliation"
+						type="text"
+						class="input"
+						placeholder="Este foral..."
+						class:input-error={$errors.filliation}
+						rows="6"
+						on:change={handleChange}
+						bind:value={$form.filliation}
+					/>
+					{#if $errors.filliation}
+						<div class="error-label">{$errors.filliation}</div>
+					{/if}
+				</div>
+				<div class="col-span-12">
+					<label for="summary" class="label">Sumário</label>
+					<textarea
+						id="summary"
+						name="summary"
+						type="text"
+						class="input"
+						placeholder="Cópia de foral concedido por D. Afonso I à vila de ..."
+						class:input-error={$errors.summary}
+						rows="6"
+						on:change={handleChange}
+						bind:value={$form.summary}
+					/>
+					{#if $errors.summary}
+						<div class="error-label">{$errors.summary}</div>
 					{/if}
 				</div>
 			</div>

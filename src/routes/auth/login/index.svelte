@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
 	import { api } from '$lib/util/api';
 	import LoginForm from './_login-form.svelte';
 	import LoginHeader from './_login-header.svelte';
@@ -9,7 +8,7 @@
 		const { status } = await api.post(fetch, '/api/auth/login', detail);
 
 		if (status === 200) {
-			goto('/documents');
+			await goto('/documents');
 		}
 	}
 </script>

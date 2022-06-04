@@ -2,12 +2,14 @@
 	import { createEventDispatcher, onDestroy, setContext } from 'svelte';
 	import * as Yup from 'yup';
 	import { createForm } from 'svelte-forms-lib';
-	import { Check, Icon } from 'svelte-hero-icons';
+	import { Check, Icon, Save } from 'svelte-hero-icons';
 	import DocumentCreateFormImages from './_document-create-form-images.svelte';
 	import DocumentCreateFormSource from './_document-create-form-source.svelte';
 	import DocumentCreateFormTitle from './_document-create-form-title.svelte';
 	import { fileToBase64 } from '$lib/util/base64';
 	import { browser } from '$app/env';
+	import { modals } from '$lib/stores/modals';
+	import DocumentCreateFormEncoding from './_document-create-form-encoding.svelte';
 
 	const dispatcher = createEventDispatcher();
 	let cachedForm: any | null = null;
@@ -17,18 +19,21 @@
 	}
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
-		initialValues: { ...cachedForm, images: [] } ?? {
+		initialValues: {
 			title: '',
 			editors: [],
-			responsibles: [],
 			funders: [],
 			country: 'PT',
 			institution: '',
 			repository: '',
 			idno: '',
-			author: '',
+			authors: [],
 			originDate: '',
 			originPlace: '',
+			lang: 'pt',
+			filliation: '',
+			summary: '',
+			encoding: '',
 			images: []
 		},
 		validationSchema: Yup.object().shape({
@@ -48,9 +53,10 @@
 			...values,
 			images: imagesBase64,
 			editors: JSON.stringify(values.editors),
-			responsibles: values.responsibles.map((i: any) => i.text).join(','),
 			funders: values.funders.map((i: any) => i.name).join(',')
 		});
+
+		localStorage.removeItem('create-document-form');
 	}
 
 	const unsubscribeForm = form.subscribe(
@@ -60,6 +66,17 @@
 	setContext('handleChange', handleChange);
 	setContext('form', form);
 	setContext('errors', errors);
+
+	if (cachedForm && cachedForm.title !== '') {
+		modals.add({
+			title: 'Rascunho guardado',
+			description: `Existe um rascunho da última sessão com o título "${cachedForm.title}", deseja continuar o trabalho?`,
+			actionName: 'Continuar',
+			icon: Save,
+			isOpen: true,
+			action: () => form.set({ ...cachedForm, images: [] })
+		});
+	}
 
 	onDestroy(() => {
 		unsubscribeForm();
@@ -71,6 +88,10 @@
 	<div class="border-t border-stone-300 dark:border-stone-700" />
 </div>
 <DocumentCreateFormSource />
+<div class="py-8">
+	<div class="border-t border-stone-300 dark:border-stone-700" />
+</div>
+<DocumentCreateFormEncoding />
 <div class="py-8">
 	<div class="border-t border-stone-300 dark:border-stone-700" />
 </div>

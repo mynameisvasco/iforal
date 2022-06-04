@@ -22,7 +22,7 @@
 		</div>
 		<div class="mt-5 md:mt-0 md:col-span-2">
 			<div class="grid grid-cols-12 gap-6 card p-6">
-				<div class="col-span-12 lg:col-span-8">
+				<div class="col-span-12 ">
 					<label for="title" class="label">Título da Obra</label>
 					<input
 						id="title"
@@ -65,27 +65,8 @@
 						</span>
 					</InputList>
 				</div>
-				<div class="col-span-6">
-					<label for="responsibles" class="label">Responsáveis</label>
-					<InputList bind:values={$form.responsibles} bind:addingValues={addingResponsible}>
-						<span slot="list" let:value>
-							<div class="flex flex-col">
-								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.text}</p>
-							</div>
-						</span>
-						<span slot="inputs" let:handleAdd class="flex-1">
-							<input
-								type="text"
-								class="input"
-								placeholder="Transcrito por"
-								bind:value={addingResponsible.text}
-								on:blur={handleAdd}
-							/>
-						</span>
-					</InputList>
-				</div>
-				<div class="col-span-6">
-					<label for="responsibles" class="label">Financiadores</label>
+				<div class="col-span-12">
+					<label for="funders" class="label">Financiadores</label>
 					<InputList bind:values={$form.funders} bind:addingValues={addingFunder}>
 						<span slot="list" let:value>
 							<div class="flex flex-col">

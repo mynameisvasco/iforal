@@ -21,18 +21,18 @@
 			dragScrollableOptions: {
 				smoothExtinction: 0
 			},
-			disableWheelZoom: true,
+			disableWheelZoom: false,
 			speed: 20
 		});
 	});
 </script>
 
-<div class="card h-full rounded-md bg-cover relative overflow-hidden flex items-center">
+<div class="card !bg-black  h-full rounded-md bg-cover relative overflow-hidden flex items-center">
 	<img
 		id="foral"
 		alt="foral"
 		class="w-full cursor-zoom-in rounded-md"
-		src={imagesUrls[currentImageIndex]}
+		src="/api/storage/{imagesUrls[currentImageIndex]}"
 	/>
 	<div
 		class="absolute bottom-0 p-3 flex items-center justify-between bg-stone-100/80 
