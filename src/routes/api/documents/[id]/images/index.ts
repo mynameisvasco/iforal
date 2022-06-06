@@ -13,6 +13,7 @@ export async function get(event: RequestEvent) {
 		where: { documentId },
 		orderBy: { position: 'asc' }
 	});
+
 	return success(images);
 }
 

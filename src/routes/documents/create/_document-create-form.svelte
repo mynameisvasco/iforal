@@ -68,12 +68,12 @@
 	setContext('errors', errors);
 
 	if (cachedForm && cachedForm.title !== '') {
-		modals.add({
+		modals.open({
+			id: 'recover-document',
 			title: 'Rascunho guardado',
 			description: `Existe um rascunho da última sessão com o título "${cachedForm.title}", deseja continuar o trabalho?`,
 			actionName: 'Continuar',
 			icon: Save,
-			isOpen: true,
 			action: () => form.set({ ...cachedForm, images: [] })
 		});
 	}

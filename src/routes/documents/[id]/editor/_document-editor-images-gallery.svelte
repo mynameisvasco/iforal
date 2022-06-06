@@ -27,7 +27,7 @@
 	});
 </script>
 
-<div class="card !bg-black  h-full rounded-md bg-cover relative overflow-hidden flex items-center">
+<div class="card !bg-black h-full rounded-md bg-cover relative overflow-hidden flex items-center">
 	<img
 		id="foral"
 		alt="foral"

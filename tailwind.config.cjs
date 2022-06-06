@@ -10,6 +10,10 @@ module.exports = {
 			}
 		}
 	},
-	safelist: [{ pattern: /col-span-(.+)/ }],
+	safelist: [
+		{ pattern: /col-span-(.+)/ },
+		{ pattern: /bg-(.+)-(.+)/ },
+		{ pattern: /text-(.+)-(.+)/ }
+	],
 	plugins: [require('@tailwindcss/forms')]
 };

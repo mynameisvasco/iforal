@@ -23,7 +23,6 @@ export async function post(event: RequestEvent) {
 	const document = await prisma.document.create({
 		data: {
 			title: data.title,
-			coverUrl: '',
 			header: {
 				create: { ...data, originDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date()) }
 			}

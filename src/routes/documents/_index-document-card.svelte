@@ -4,28 +4,27 @@
 	import { DotsVertical, Icon } from 'svelte-hero-icons';
 	import { pt } from 'date-fns/locale';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import type { Document } from '@prisma/client';
+	import type { Document, DocumentImages } from '@prisma/client';
 
-	export let document: Document;
+	export let document: Document & { images: DocumentImages[] };
 
 	const dispatcher = createEventDispatcher();
-	let coverUrl = '';
 </script>
 
 <div class="flex flex-col card hover:border-stone-900 dark:hover:border-orange-300">
-	<img
-		src="/api/storage/{document.images.at(0)?.name}"
-		alt="Imagem ilustrativa do foral"
-		class="h-72 object-cover rounded-t-lg"
-		on:click={async () => await goto(`/documents/${document.id}/editor`)}
-	/>
+	<a href="/documents/{document.id}/editor" sveltekit:prefetch>
+		<img
+			src="/api/storage/{document.images.at(0)?.name}"
+			alt="Imagem ilustrativa do foral"
+			class="h-72 object-cover rounded-t-lg"
+		/>
+	</a>
 	<div class="p-3 border-t border-stone-300 dark:border-stone-700 rounded-b-lg">
 		<div class="flex justify-between items-center">
 			<div class="flex flex-col">
 				<h2 class="text-stone-900 dark:text-white font-medium text-md">{document.title}</h2>
 				<span class="text-stone-500 dark:text-stone-400 text-sm">
-					{formatDate(parseISO(document.createdAt), 'dd MMMM, HH:mm', { locale: pt })}
+					{formatDate(parseISO(document.createdAt.toString()), 'dd MMMM, HH:mm', { locale: pt })}
 				</span>
 			</div>
 			<Menu class="relative">
@@ -38,7 +37,9 @@
 				</MenuButton>
 				<MenuItems class="dropdown-menu">
 					<MenuItem class="dropdown-menu-item">
-						<a href="/documents/{document.id}/editor" target="_blank">Abrir em novo separador</a>
+						<a href="/documents/{document.id}/editor" target="_blank" sveltekit:prefetch>
+							Abrir em novo separador
+						</a>
 					</MenuItem>
 					<MenuItem class="dropdown-menu-item">Download</MenuItem>
 					<MenuItem

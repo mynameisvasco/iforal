@@ -32,7 +32,7 @@
 </script>
 
 <svelte:head>
-	<title>iForal - Imagens</title>
+	<title>iForal - Editar imagens</title>
 </svelte:head>
 
 <header>

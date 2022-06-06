@@ -9,18 +9,31 @@
 </script>
 
 <script lang="ts">
-	import { DocumentAdd, Icon, Plus } from 'svelte-hero-icons';
+	import { DocumentAdd, Exclamation, Icon, Plus } from 'svelte-hero-icons';
 	import EmptyState from '$lib/components/empty-state/empty-state.svelte';
 	import IndexDocumentCard from './_index-document-card.svelte';
 	import IndexDocumentNew from './_index-document-new.svelte';
 	import type { LoadInput } from '@sveltejs/kit';
 	import { api } from '$lib/util/api';
+	import { modals } from '$lib/stores/modals';
 
 	export let documents: any[] = [];
 
 	async function handleDelete({ detail }: CustomEvent) {
-		await api.delete(fetch, `/api/documents/${detail.id}`);
-		documents = documents.filter((d) => d.id !== detail.id);
+		modals.open({
+			id: 'delete-document',
+			title: 'Apagar Documento',
+			description:
+				'Esta ação é irreversível! Após decidir apagar este documento não existe forma de recuperar qualquer tipo de dados, sejam estes metadados, imagens ou o corpo do documento.',
+			actionName: 'Apagar',
+			icon: Exclamation,
+			actionColor: 'red',
+			color: 'red',
+			action: async () => {
+				await api.delete(fetch, `/api/documents/${detail.id}`);
+				documents = documents.filter((d) => d.id !== detail.id);
+			}
+		});
 	}
 </script>
 

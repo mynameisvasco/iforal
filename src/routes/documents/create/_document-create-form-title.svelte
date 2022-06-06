@@ -38,7 +38,7 @@
 						<div class="error-label">{$errors.title}</div>
 					{/if}
 				</div>
-				<div class="col-span-12">
+				<div class="col-span-12 lg:col-span-6">
 					<label for="editors" class="label">Editores</label>
 					<InputList bind:values={$form.editors} bind:addingValues={addingEditor}>
 						<span slot="list" let:value>
@@ -65,7 +65,7 @@
 						</span>
 					</InputList>
 				</div>
-				<div class="col-span-12">
+				<div class="col-span-12 lg:col-span-6">
 					<label for="funders" class="label">Financiadores</label>
 					<InputList bind:values={$form.funders} bind:addingValues={addingFunder}>
 						<span slot="list" let:value>

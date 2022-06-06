@@ -88,7 +88,7 @@
 						<div class="error-label">{$errors.idno}</div>
 					{/if}
 				</div>
-				<div class="col-span-12">
+				<div class="col-span-12 lg:col-span-6">
 					<label for="authors" class="label">Autores</label>
 					<InputList bind:values={$form.authors} bind:addingValues={addingAuthor}>
 						<span slot="list" let:value>

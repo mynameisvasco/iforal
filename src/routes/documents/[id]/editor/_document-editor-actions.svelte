@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import type { Document } from '@prisma/client';
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { getContext } from 'svelte';
@@ -16,17 +15,11 @@
 		</button>
 	</MenuButton>
 	<MenuItems class="dropdown-menu">
-		<MenuItem
-			class="dropdown-menu-item"
-			on:click={async () => goto(`/documents/${document.id}/header`)}
-		>
-			Editar Cabeçalho
+		<MenuItem class="dropdown-menu-item">
+			<a href="/documents/{document.id}/header>" sveltekit:prefetch>Editar Cabeçalho</a>
 		</MenuItem>
-		<MenuItem
-			class="dropdown-menu-item"
-			on:click={async () => goto(`/documents/${document.id}/images`)}
-		>
-			Editar Imagens
+		<MenuItem class="dropdown-menu-item">
+			<a href="/documents/{document.id}/images>" sveltekit:prefetch>Editar Imagens</a>
 		</MenuItem>
 		<MenuItem class="dropdown-menu-item !text-red-500 dark:!text-red-300">Apagar</MenuItem>
 	</MenuItems>

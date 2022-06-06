@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
 	import { api } from '$lib/util/api';
-
 	import RegisterForm from './_register-form.svelte';
 	import RegisterHeader from './_register-header.svelte';
 

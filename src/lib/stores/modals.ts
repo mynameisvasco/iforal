@@ -1,34 +1,28 @@
 import { writable } from 'svelte/store';
-import { v4 as uuidV4 } from 'uuid';
 
 export interface Modal {
-	id?: string;
+	id: string;
 	title: string;
 	description: string;
 	icon: any;
-	actionName: string;
 	action: () => void;
 	isOpen?: boolean;
+	actionName: string;
+	actionColor?: string;
 }
 
 function createModals() {
 	const store = writable([] as Modal[]);
 
-	function open(id: string) {
-		store.update((old) => old.map((m) => (m.id === id ? { ...m, isOpen: true } : m)));
+	function open(modal: Modal) {
+		store.update((old) => [...old, { ...modal, isOpen: true }]);
 	}
 
 	function close(id: string) {
-		store.update((old) => old.map((m) => (m.id === id ? { ...m, isOpen: false } : m)));
+		store.update((old) => old.filter((m) => m.id !== id));
 	}
 
-	function add(modal: Modal) {
-		const id = uuidV4();
-		store.update((old) => [...old, { ...modal, id }]);
-		return id;
-	}
-
-	return { ...store, open, close, add };
+	return { ...store, open, close };
 }
 
 export const modals = createModals();
