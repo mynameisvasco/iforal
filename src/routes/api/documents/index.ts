@@ -29,7 +29,7 @@ export async function post(event: RequestEvent) {
 		}
 	});
 
-	const position = 0;
+	let position = 0;
 
 	try {
 		for (const image of images) {
@@ -44,6 +44,7 @@ export async function post(event: RequestEvent) {
 					}
 				}
 			});
+			position++;
 		}
 	} catch (e) {
 		return error(400, 'Failed to store the images');

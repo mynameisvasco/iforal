@@ -16,10 +16,10 @@
 	</MenuButton>
 	<MenuItems class="dropdown-menu">
 		<MenuItem class="dropdown-menu-item">
-			<a href="/documents/{document.id}/header>" sveltekit:prefetch>Editar Cabeçalho</a>
+			<a href="/documents/{document.id}/header" sveltekit:prefetch>Editar Cabeçalho</a>
 		</MenuItem>
 		<MenuItem class="dropdown-menu-item">
-			<a href="/documents/{document.id}/images>" sveltekit:prefetch>Editar Imagens</a>
+			<a href="/documents/{document.id}/images" sveltekit:prefetch>Editar Imagens</a>
 		</MenuItem>
 		<MenuItem class="dropdown-menu-item !text-red-500 dark:!text-red-300">Apagar</MenuItem>
 	</MenuItems>
