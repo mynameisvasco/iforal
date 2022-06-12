@@ -1,5 +1,5 @@
 import { error, success } from '$lib/util/api';
-import { prisma } from '$lib/util/prisma';
+import { getPrismaClient } from '$lib/util/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export async function get(event: RequestEvent) {
@@ -9,6 +9,7 @@ export async function get(event: RequestEvent) {
 		return error(400, "Document doesn't exist");
 	}
 
+	const prisma = await getPrismaClient(event.locals.user.id);
 	const images = await prisma.documentImages.findMany({
 		where: { documentId },
 		orderBy: { position: 'asc' }
@@ -19,7 +20,7 @@ export async function get(event: RequestEvent) {
 
 export async function put(event: RequestEvent) {
 	const { image1, image2 } = await event.request.json();
-
+	const prisma = await getPrismaClient(event.locals.user.id);
 	const sourceImage = await prisma.documentImages.findUnique({ where: { id: image1 } });
 	const targetImage = await prisma.documentImages.findUnique({ where: { id: image2 } });
 

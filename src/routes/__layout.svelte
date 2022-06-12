@@ -15,12 +15,11 @@
 	import Navbar from '$lib/components/navbar/navbar.svelte';
 	import type { LoadInput } from '@sveltejs/kit';
 	import ModalContainer from './_modal-container.svelte';
-
-	if (browser && !$page?.url?.pathname?.includes('auth')) {
-	}
+	import NotificationsContainer from './_notifications-container.svelte';
 </script>
 
 <ModalContainer />
+<NotificationsContainer />
 {#if $page.url.pathname.includes('auth')}
 	<div class="bg-stone-100 dark:bg-stone-900 min-h-screen">
 		<slot />

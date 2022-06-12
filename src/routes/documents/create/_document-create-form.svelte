@@ -10,8 +10,9 @@
 	import { browser } from '$app/env';
 	import { modals } from '$lib/stores/modals';
 	import DocumentCreateFormEncoding from './_document-create-form-encoding.svelte';
+	import { goto } from '$app/navigation';
+	import { api } from '$lib/util/api';
 
-	const dispatcher = createEventDispatcher();
 	let cachedForm: any | null = null;
 
 	if (browser) {
@@ -49,14 +50,17 @@
 			imagesBase64.push({ name: image.name, contents: await fileToBase64(image) });
 		}
 
-		dispatcher('create', {
+		const { status } = await api.post(fetch, '/api/documents', {
 			...values,
 			images: imagesBase64,
 			editors: JSON.stringify(values.editors),
 			funders: values.funders.map((i: any) => i.name).join(',')
 		});
 
-		localStorage.removeItem('create-document-form');
+		if (status === 200) {
+			localStorage.removeItem('create-document-form');
+			await goto('/documents');
+		}
 	}
 
 	const unsubscribeForm = form.subscribe(

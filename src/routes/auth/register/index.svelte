@@ -1,16 +1,6 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { api } from '$lib/util/api';
 	import RegisterForm from './_register-form.svelte';
 	import RegisterHeader from './_register-header.svelte';
-
-	async function handleRegister({ detail }: CustomEvent) {
-		const { status } = await api.post(fetch, '/api/auth/register', detail);
-
-		if (status === 200) {
-			await goto('/documents');
-		}
-	}
 </script>
 
 <div class="min-h-screen flex">
@@ -19,7 +9,7 @@
 	>
 		<div class="mx-auto w-full max-w-sm lg:w-96">
 			<RegisterHeader />
-			<RegisterForm on:register={handleRegister} />
+			<RegisterForm />
 		</div>
 	</div>
 	<div class="hidden lg:block relative w-0 flex-1">

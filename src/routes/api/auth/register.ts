@@ -1,12 +1,14 @@
 import { error, success } from '$lib/util/api';
-import { prisma } from '$lib/util/prisma';
 import * as Bcrypt from 'bcrypt';
 import * as Jwt from 'jsonwebtoken';
 import * as Cookie from 'cookie';
 import type { RequestEvent } from '@sveltejs/kit';
+import { getPrismaClient } from '$lib/util/prisma';
 
 export async function post(event: RequestEvent) {
 	const { name, email, password } = await event.request.json();
+	const prisma = await getPrismaClient();
+
 	const isEmailInUse = await prisma.user.findUnique({ where: { email } });
 
 	if (isEmailInUse) {

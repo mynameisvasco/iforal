@@ -2,6 +2,7 @@
 	import { Icon, X } from 'svelte-hero-icons';
 
 	export let title: string;
+	export let description: string;
 
 	let isOpen = false;
 
@@ -34,7 +35,7 @@
 									</div>
 									<div class="mt-1">
 										<p class="label">
-											Get started by filling in the information below to create your new project.
+											{description}
 										</p>
 									</div>
 								</div>

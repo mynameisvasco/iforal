@@ -1,15 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { api } from '$lib/util/api';
 	import DocumentCreateForm from './_document-create-form.svelte';
-
-	async function handleDocumentCreate({ detail }: CustomEvent) {
-		const { status } = await api.post(fetch, '/api/documents', detail);
-
-		if (status === 200) {
-			await goto('/documents');
-		}
-	}
 </script>
 
 <svelte:head>
@@ -25,6 +15,6 @@
 </header>
 <main>
 	<div class="page-body">
-		<DocumentCreateForm on:create={handleDocumentCreate} />
+		<DocumentCreateForm />
 	</div>
 </main>

@@ -1,12 +1,15 @@
 <script lang="ts">
 	import SideCover from '$lib/components/side-cover/side-cover.svelte';
 	import { editorSettings } from '$lib/stores/editor-settings';
-	import { Cog, Icon } from 'svelte-hero-icons';
 
-	let sideCover: any;
+	export let sideCover: any;
 </script>
 
-<SideCover title="Definições do Editor" bind:this={sideCover}>
+<SideCover
+	title="Definições do Editor"
+	description="Adapte o editor de TEI ao momento de edição. Todas as configurações são guardadas na sua máquina pessoal."
+	bind:this={sideCover}
+>
 	<form>
 		<div class="sm:grid sm:grid-cols-6 sm:gap-6 sm:items-start">
 			<label for="username" class="col-span-3 sm:mt-px sm:pt-2 label"> Tamanho da fonte </label>
@@ -40,7 +43,3 @@
 		</div>
 	</form>
 </SideCover>
-<button on:click={sideCover.toggle} class="btn btn-secondary">
-	<Icon src={Cog} class="w-5 mr-1" solid />
-	Definições
-</button>

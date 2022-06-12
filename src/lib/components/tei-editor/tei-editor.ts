@@ -1,8 +1,6 @@
 import { browser } from '$app/env';
 import { editorSettings } from '$lib/stores/editor-settings';
 import type { Editor } from 'codemirror';
-import { get } from 'svelte/store';
-import { theme } from '../../stores/theme';
 import 'codemirror/lib/codemirror.css';
 
 export async function createEditor(): Promise<Editor> {
@@ -21,7 +19,8 @@ export async function createEditor(): Promise<Editor> {
 	editor = CodeMirror.fromTextArea(document.getElementById('editor') as HTMLTextAreaElement, {
 		mode: 'application/xml',
 		lineNumbers: true,
-		tabSize: 4
+		tabSize: 4,
+		pollInterval: 100
 	});
 
 	editor!.setSize('100%', '750');

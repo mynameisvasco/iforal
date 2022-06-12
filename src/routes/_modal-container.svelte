@@ -6,12 +6,10 @@
 {#each $modals as modal}
 	<Modal
 		id={modal.id}
-		isOpen={modal.isOpen}
 		title={modal.title}
 		icon={modal.icon}
-		actionName={modal.actionName}
 		action={modal.action}
-		color={modal.color}
+		actionName={modal.actionName}
 		actionColor={modal.actionColor}
 	>
 		{modal.description}

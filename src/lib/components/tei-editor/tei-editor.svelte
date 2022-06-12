@@ -1,17 +1,27 @@
 <script lang="ts">
 	import { createContextMenu } from '$lib/stores/context-menu';
 	import ContextMenu from '../context-menu/context-menu.svelte';
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { teiEditorContextMenu } from './tei-editor-context-menu';
-	import type { Editor } from 'codemirror';
+	import type { Editor, EditorChange } from 'codemirror';
 	import { createEditor } from './tei-editor';
 
 	let editor: Editor;
+	let changes = [] as EditorChange[];
+	let changeTimeout: NodeJS.Timeout;
 	const contextMenu = createContextMenu();
+	const dispatcher = createEventDispatcher();
 
 	onMount(async () => {
 		editor = await createEditor();
+		editor.on('change', handleChange);
 	});
+
+	function handleChange(_: Editor, newChanges: EditorChange) {
+		changes.push(newChanges);
+		clearTimeout(changeTimeout);
+		changeTimeout = setTimeout(() => dispatcher('change', changes), 1000);
+	}
 
 	function handleContextMenu(event: MouseEvent) {
 		const selectedText = editor.getSelection();

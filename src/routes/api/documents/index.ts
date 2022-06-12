@@ -1,4 +1,4 @@
-import { prisma } from '$lib/util/prisma';
+import { getPrismaClient } from '$lib/util/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 import { parse as parseDate } from 'date-fns';
 import * as Fs from 'fs/promises';
@@ -8,6 +8,7 @@ import { base64ToImage } from '$lib/util/base64';
 import { error, success } from '$lib/util/api';
 
 export async function get(event: RequestEvent) {
+	const prisma = await getPrismaClient(event.locals.user.id);
 	const documents = await prisma.document.findMany({
 		include: {
 			images: {
@@ -15,17 +16,21 @@ export async function get(event: RequestEvent) {
 			}
 		}
 	});
+
 	return success(documents);
 }
 
 export async function post(event: RequestEvent) {
 	const { images, ...data } = await event.request.json();
+	const prisma = await getPrismaClient(event.locals.user.id);
 	const document = await prisma.document.create({
 		data: {
 			title: data.title,
 			header: {
 				create: { ...data, originDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date()) }
-			}
+			},
+			body: '',
+			user: { connect: { id: event.locals.user.id } }
 		}
 	});
 

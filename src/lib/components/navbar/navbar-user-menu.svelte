@@ -5,6 +5,7 @@
 	import { theme } from '$lib/stores/theme';
 	import { api } from '$lib/util/api';
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
+	import Avatar from '../avatar/avatar.svelte';
 	import Toggle from '../toggle/toggle.svelte';
 
 	async function handleLogout() {
@@ -19,11 +20,7 @@
 <div class="flex items-center gap-6">
 	<Menu>
 		<MenuButton class="flex gap-3 items-center text-sm rounded-full ">
-			<img
-				class="h-8 w-8 rounded-full"
-				src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-				alt="Me"
-			/>
+			<Avatar name={$session.name} />
 			<span class="text-stone-900 dark:text-white">
 				{$session.name}
 			</span>

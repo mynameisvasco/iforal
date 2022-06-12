@@ -1,16 +1,6 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { api } from '$lib/util/api';
 	import LoginForm from './_login-form.svelte';
 	import LoginHeader from './_login-header.svelte';
-
-	async function handleLogin({ detail }: CustomEvent) {
-		const { status } = await api.post(fetch, '/api/auth/login', detail);
-
-		if (status === 200) {
-			await goto('/documents');
-		}
-	}
 </script>
 
 <div class="min-h-screen flex">
@@ -19,7 +9,7 @@
 	>
 		<div class="mx-auto w-full max-w-sm lg:w-96">
 			<LoginHeader />
-			<LoginForm on:login={handleLogin} />
+			<LoginForm />
 		</div>
 	</div>
 

@@ -5,7 +5,7 @@
 declare namespace App {
 	interface Locals {
 		user: {
-			id: string;
+			id: number;
 			name: string;
 			email: string;
 			isAuthenticated: boolean;
@@ -13,7 +13,7 @@ declare namespace App {
 	}
 
 	interface Session {
-		id: string;
+		id: number;
 		name: string;
 		email: string;
 		isAuthenticated: boolean;

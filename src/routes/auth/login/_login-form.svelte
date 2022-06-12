@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import LoadingIcon from '$lib/components/loading-icon/loading-icon.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { notifications } from '$lib/stores/notifications';
+	import { api } from '$lib/util/api';
 	import { createForm } from 'svelte-forms-lib';
 	import * as Yup from 'yup';
-
-	const dispatcher = createEventDispatcher();
 
 	const { form, errors, isSubmitting, isValid, handleSubmit, handleChange } = createForm({
 		initialValues: { email: '', password: '' },
@@ -16,7 +16,17 @@
 	});
 
 	async function handleLogin(values: { email: string; password: string }) {
-		dispatcher('login', values);
+		const { status } = await api.post(fetch, '/api/auth/login', values);
+
+		if (status === 200) {
+			await goto('/documents');
+		} else {
+			notifications.show({
+				title: 'Erro ao fazer login',
+				message: 'As credenciais fornecidas não são válidas.',
+				type: 'error'
+			});
+		}
 	}
 </script>
 
