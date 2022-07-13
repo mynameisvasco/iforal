@@ -7,6 +7,7 @@
 	import type { Writable } from 'svelte/store';
 
 	let addingAuthor = { name: '', role: '' };
+	let addingAltIdentifier = { type: '', value: '' };
 	const form = getContext<Writable<any>>('form');
 	const errors = getContext<Writable<any>>('errors');
 	const handleChange = getContext<(e: any) => any>('handleChange');
@@ -57,6 +58,22 @@
 					{/if}
 				</div>
 				<div class="col-span-12 lg:col-span-6">
+					<label for="settlement" class="label">Local</label>
+					<input
+						id="settlement"
+						name="settlement"
+						type="text"
+						class="input"
+						placeholder="Aveiro"
+						class:input-error={$errors.settlement}
+						on:change={handleChange}
+						bind:value={$form.settlement}
+					/>
+					{#if $errors.institution}
+						<div class="error-label">{$errors.institution}</div>
+					{/if}
+				</div>
+				<div class="col-span-12 lg:col-span-6">
 					<label for="repository" class="label">Repositório</label>
 					<input
 						id="repository"
@@ -88,35 +105,7 @@
 						<div class="error-label">{$errors.idno}</div>
 					{/if}
 				</div>
-				<div class="col-span-12 lg:col-span-6">
-					<label for="authors" class="label">Autores</label>
-					<InputList bind:values={$form.authors} bind:addingValues={addingAuthor}>
-						<span slot="list" let:value>
-							<div class="flex flex-col">
-								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
-								<p class="text-sm text-stone-500 dark:text-stone-300">{value.role}</p>
-							</div>
-						</span>
-						<span slot="inputs" let:handleAdd class="flex gap-6 flex-1">
-							<select class="input" bind:value={addingAuthor.role} on:blur={handleAdd}>
-								<option value="" default disabled selected>Selecionar tipo</option>
-								<option value="jurídico">Jurídico</option>
-								<option value="material">Material</option>
-								<option value="diplomático">Diplomático</option>
-							</select>
-							<input
-								type="text"
-								class="input"
-								placeholder="D. XYZ"
-								bind:value={addingAuthor.name}
-								on:blur={handleAdd}
-							/>
-						</span>
-					</InputList>
-					{#if $errors.author}
-						<div class="error-label">{$errors.author}</div>
-					{/if}
-				</div>
+
 				<div class="col-span-12 lg:col-span-6">
 					<label for="origindate" class="label">Data de Origem</label>
 					<input
@@ -168,6 +157,61 @@
 					{#if $errors.filliation}
 						<div class="error-label">{$errors.filliation}</div>
 					{/if}
+				</div>
+				<div class="col-span-12 lg:col-span-6">
+					<label for="authors" class="label">Autores</label>
+					<InputList bind:values={$form.authors} bind:addingValues={addingAuthor}>
+						<span slot="list" let:value>
+							<div class="flex flex-col">
+								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
+								<p class="text-sm text-stone-500 dark:text-stone-300">{value.role}</p>
+							</div>
+						</span>
+						<span slot="inputs" let:handleAdd class="flex gap-6 flex-1">
+							<select class="input" bind:value={addingAuthor.role} on:blur={handleAdd}>
+								<option value="" default disabled selected>Selecionar tipo</option>
+								<option value="jurídico">Jurídico</option>
+								<option value="material">Material</option>
+								<option value="diplomático">Diplomático</option>
+							</select>
+							<input
+								type="text"
+								class="input"
+								placeholder="D. XYZ"
+								bind:value={addingAuthor.name}
+								on:blur={handleAdd}
+							/>
+						</span>
+					</InputList>
+					{#if $errors.author}
+						<div class="error-label">{$errors.author}</div>
+					{/if}
+				</div>
+				<div class="col-span-12 lg:col-span-6">
+					<label for="editors" class="label">Identificadores Alternativos</label>
+					<InputList bind:values={$form.altIdentifier} bind:addingValues={addingAltIdentifier}>
+						<span slot="list" let:value>
+							<div class="flex flex-col">
+								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.type}</p>
+								<a href={value.value} class="text-sm text-stone-500 dark:text-stone-300">
+									{value.value}
+								</a>
+							</div>
+						</span>
+						<span slot="inputs" let:handleAdd class="flex gap-6 flex-1">
+							<select class="input" bind:value={addingAltIdentifier.type}>
+								<option value="" disabled default>Selecionar tipo</option>
+								<option value="BITAGAP">BITAGAP</option>
+							</select>
+							<input
+								type="text"
+								class="input"
+								placeholder="Ref"
+								bind:value={addingAltIdentifier.value}
+								on:blur={handleAdd}
+							/>
+						</span>
+					</InputList>
 				</div>
 				<div class="col-span-12">
 					<label for="title" class="label">Filiação</label>

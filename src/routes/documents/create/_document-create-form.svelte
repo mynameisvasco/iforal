@@ -8,10 +8,13 @@
 	import DocumentCreateFormTitle from './_document-create-form-title.svelte';
 	import { fileToBase64 } from '$lib/util/base64';
 	import { browser } from '$app/env';
-	import { modals } from '$lib/stores/modals';
+	import { modals } from '$lib/components/stores/modals';
 	import DocumentCreateFormEncoding from './_document-create-form-encoding.svelte';
 	import { goto } from '$app/navigation';
 	import { api } from '$lib/util/api';
+	import DocumentCreateFormPublication from './_document-create-form-publication.svelte';
+	import LoadingIcon from '$lib/components/loading-icon/loading-icon.svelte';
+	import { notifications } from '$lib/components/stores/notifications';
 
 	let cachedForm: any | null = null;
 
@@ -19,7 +22,7 @@
 		cachedForm = JSON.parse(localStorage.getItem('create-document-form') ?? 'null');
 	}
 
-	const { form, errors, handleChange, handleSubmit } = createForm({
+	const { form, errors, handleChange, handleSubmit, isSubmitting, isValid } = createForm({
 		initialValues: {
 			title: '',
 			editors: [],
@@ -35,6 +38,12 @@
 			filliation: '',
 			summary: '',
 			encoding: '',
+			publisher: '',
+			publisherPlace: '',
+			publisherDate: '',
+			altIdentifier: [],
+			settlement: '',
+			license: 'Creative Commons Attribution-ShareAlike (CC BY-SA)',
 			images: []
 		},
 		validationSchema: Yup.object().shape({
@@ -54,10 +63,16 @@
 			...values,
 			images: imagesBase64,
 			editors: JSON.stringify(values.editors),
+			altIdentifier: JSON.stringify(values.altIdentifier),
 			funders: values.funders.map((i: any) => i.name).join(',')
 		});
 
 		if (status === 200) {
+			notifications.show({
+				title: 'Documento criado',
+				message: 'O documento encontra-se agora guardado no sistema.',
+				type: 'success'
+			});
 			localStorage.removeItem('create-document-form');
 			await goto('/documents');
 		}
@@ -91,6 +106,10 @@
 <div class="py-8">
 	<div class="border-t border-stone-300 dark:border-stone-700" />
 </div>
+<DocumentCreateFormPublication />
+<div class="py-8">
+	<div class="border-t border-stone-300 dark:border-stone-700" />
+</div>
 <DocumentCreateFormSource />
 <div class="py-8">
 	<div class="border-t border-stone-300 dark:border-stone-700" />
@@ -104,8 +123,8 @@
 	<div class="border-t border-stone-300 dark:border-stone-700" />
 </div>
 <div class="flex justify-end gap-6">
-	<button class="btn btn-primary" on:click={handleSubmit}>
-		<Icon src={Check} class="w-5 mr-1" solid />
+	<button class="btn btn-primary" on:click={handleSubmit} disabled={$isSubmitting || !$isValid}>
+		<LoadingIcon isLoading={$isSubmitting} otherIcon={Check} />
 		Guardar
 	</button>
 </div>

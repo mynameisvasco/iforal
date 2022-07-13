@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SideCover from '$lib/components/side-cover/side-cover.svelte';
-	import { editorSettings } from '$lib/stores/editor-settings';
+	import { editorSettings } from '$lib/components/stores/editor-settings';
 
 	export let sideCover: any;
 </script>

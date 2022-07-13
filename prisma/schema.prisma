@@ -32,23 +32,29 @@ model Document {
 }
 
 model DocumentHeader {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(255)
-  editors     Json
-  funders     String   @db.VarChar(255)
-  country     String   @db.VarChar(4)
-  institution String   @db.VarChar(255)
-  repository  String   @db.VarChar(255)
-  idno        String   @db.VarChar(255)
-  authors     Json
-  originDate  DateTime
-  originPlace String   @db.VarChar(255)
-  lang        String
-  filliation  String
-  summary     String
-  encoding    String
-  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  documentId  Int      @unique
+  id             Int      @id @default(autoincrement())
+  title          String   @db.VarChar(255)
+  editors        Json
+  funders        String   @db.VarChar(255)
+  country        String   @db.VarChar(4)
+  institution    String   @db.VarChar(255)
+  repository     String   @db.VarChar(255)
+  idno           String   @db.VarChar(255)
+  authors        Json
+  altIdentifier  Json
+  settlement     String   @db.VarChar(255)
+  publisher      String   @db.VarChar(255)
+  publisherPlace String   @db.VarChar(255)
+  publisherDate  DateTime
+  license        String   @db.VarChar(255)
+  originDate     DateTime
+  originPlace    String   @db.VarChar(255)
+  lang           String
+  filliation     String
+  summary        String
+  encoding       String
+  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId     Int      @unique
 }
 
 model DocumentImages {

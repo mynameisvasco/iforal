@@ -1,8 +1,8 @@
-import { success } from '$lib/util/api';
+import { redirect, success } from '$lib/util/api';
 import * as Cookie from 'cookie';
 import type { RequestEvent } from '@sveltejs/kit';
 
-export async function post(event: RequestEvent) {
+export async function get(event: RequestEvent) {
 	const headers = {
 		'Set-Cookie': Cookie.serialize('accessToken', '', {
 			httpOnly: true,
@@ -12,5 +12,5 @@ export async function post(event: RequestEvent) {
 		})
 	};
 
-	return success('Logout with success', undefined, headers);
+	return redirect('/auth/login', 303, headers);
 }

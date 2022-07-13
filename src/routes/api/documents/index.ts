@@ -27,7 +27,11 @@ export async function post(event: RequestEvent) {
 		data: {
 			title: data.title,
 			header: {
-				create: { ...data, originDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date()) }
+				create: {
+					...data,
+					originDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date()),
+					publisherDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date())
+				}
 			},
 			body: '',
 			user: { connect: { id: event.locals.user.id } }

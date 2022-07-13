@@ -2,8 +2,8 @@
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { parseISO, format as formatDate } from 'date-fns';
 	import { DotsVertical, Icon } from 'svelte-hero-icons';
-	import { pt } from 'date-fns/locale';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import * as locales from 'date-fns/locale';
+	import { createEventDispatcher } from 'svelte';
 	import type { Document, DocumentImages } from '@prisma/client';
 
 	export let document: Document & { images: DocumentImages[] };
@@ -24,7 +24,9 @@
 			<div class="flex flex-col">
 				<h2 class="text-stone-900 dark:text-white font-medium text-md">{document.title}</h2>
 				<span class="text-stone-500 dark:text-stone-400 text-sm">
-					{formatDate(parseISO(document.createdAt.toString()), 'dd MMMM, HH:mm', { locale: pt })}
+					{formatDate(parseISO(document.createdAt.toString()), 'dd MMMM, HH:mm', {
+						locale: locales.pt
+					})}
 				</span>
 			</div>
 			<Menu class="relative">

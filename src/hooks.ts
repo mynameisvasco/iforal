@@ -6,15 +6,11 @@ export async function handle({ event, resolve }: { event: RequestEvent; resolve:
 	const cookiesHeader = event.request.headers.get('cookie');
 	const cookies = Cookie.parse(cookiesHeader ?? '');
 
-	if (!cookies.accessToken) {
-		event.locals.user = {} as any;
-		event.locals.user.isAuthenticated = false;
-	} else {
+	if (cookies.accessToken) {
 		const payload = Jwt.verify(cookies.accessToken, '1h29r781gf987ubg198723ghd182');
 
 		if (payload) {
 			event.locals.user = payload as any;
-			event.locals.user.isAuthenticated = true;
 		}
 	}
 
@@ -22,6 +18,5 @@ export async function handle({ event, resolve }: { event: RequestEvent; resolve:
 }
 
 export async function getSession(event: RequestEvent) {
-	const user = event.locals.user;
-	return { ...user };
+	return event.locals.user;
 }

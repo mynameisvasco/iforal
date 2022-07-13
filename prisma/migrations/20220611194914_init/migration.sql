@@ -91,4 +91,4 @@ ALTER TABLE "DocumentPermission" ADD CONSTRAINT "DocumentPermission_documentId_f
 CREATE POLICY read_documents ON "Document" USING ("Document"."userId" = current_setting('iforal.current_user_id')::int 
 OR current_setting('iforal.current_user_id')::int IN (SELECT "userId" FROM "DocumentPermission" WHERE "documentId" = "Document"."id"));
 
-ALTER TABLE "Document" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "Document" ENABLE ROW LEVEL SECURITY;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createContextMenu } from '$lib/stores/context-menu';
+	import { createContextMenu } from '$lib/components/stores/context-menu';
 	import ContextMenu from '../context-menu/context-menu.svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { teiEditorContextMenu } from './tei-editor-context-menu';

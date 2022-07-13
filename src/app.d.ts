@@ -8,7 +8,6 @@ declare namespace App {
 			id: number;
 			name: string;
 			email: string;
-			isAuthenticated: boolean;
 		};
 	}
 
@@ -16,7 +15,6 @@ declare namespace App {
 		id: number;
 		name: string;
 		email: string;
-		isAuthenticated: boolean;
 	}
 	// interface Platform {}
 	// interface Stuff {}

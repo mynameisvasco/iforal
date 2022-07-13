@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/modal.svelte';
-	import { modals } from '$lib/stores/modals';
+	import { modals } from '$lib/components/stores/modals';
 </script>
 
 {#each $modals as modal}

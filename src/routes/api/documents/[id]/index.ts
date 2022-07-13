@@ -33,7 +33,6 @@ export async function put(event: RequestEvent) {
 	}
 
 	const body = await event.request.json();
-	console.log(body);
 }
 
 export async function del(event: RequestEvent) {

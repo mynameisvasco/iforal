@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { modals } from '$lib/stores/modals';
+	import { modals } from '$lib/components/stores/modals';
 	import { disableScrolling, enableScrolling } from '$lib/util/scroll';
 	import { onMount } from 'svelte';
 	import { Icon } from 'svelte-hero-icons';

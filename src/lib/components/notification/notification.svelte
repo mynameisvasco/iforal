@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { notifications } from '$lib/stores/notifications';
+	import { notifications } from '$lib/components/stores/notifications';
 	import { Check, Exclamation, Icon, X } from 'svelte-hero-icons';
 	import { fade } from 'svelte/transition';
 

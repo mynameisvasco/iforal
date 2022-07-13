@@ -1,17 +1,21 @@
 import type { HttpMethod } from '@sveltejs/kit/types/private';
 
-export interface ApiResponse<T> {
+export interface Result<T> {
 	status: number;
-	message: string;
-	data: T;
+	data?: T | undefined;
+	errors?: any | undefined;
 }
 
-export function error(status: number, message: string) {
-	return { status, body: { message, status } };
+export function error(status: number, errors: any) {
+	return { status, body: { errors, status } };
 }
 
-export function success<T>(data?: T | T[], message?: string, headers?: any) {
-	return { status: 200, body: { message, data, status: 200 }, headers };
+export function redirect<T>(path: string, status: number, headers?: any) {
+	return { status, headers: { ...headers, location: path } };
+}
+
+export function success<T>(data?: T | T[], headers?: any) {
+	return { status: 200, body: { data, status: 200 }, headers };
 }
 
 export const api = {
@@ -34,5 +38,5 @@ export const api = {
 
 async function request<T>(fetch: any, url: string, method: HttpMethod, body?: any) {
 	const response = await fetch(url, { method, body: body ? JSON.stringify(body) : undefined });
-	return response.json() as ApiResponse<T>;
+	return response.json() as Result<T>;
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Menu, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
-	import { createContextMenu, type ContextMenuStore } from '$lib/stores/context-menu';
+	import { createContextMenu, type ContextMenuStore } from '$lib/components/stores/context-menu';
 	import { ChevronRight, Icon } from 'svelte-hero-icons';
 	import { slide } from 'svelte/transition';
 

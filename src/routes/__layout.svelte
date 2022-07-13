@@ -1,22 +1,20 @@
-<script context="module" lang="ts">
-	export async function load(context: LoadInput) {
-		if (!context.url.pathname.includes('auth') && !context.session.isAuthenticated) {
-			return { status: 302, redirect: '/auth/login' };
-		}
-
-		return {};
-	}
-</script>
-
 <script lang="ts">
 	import '../app.css';
-	import { browser } from '$app/env';
 	import { page } from '$app/stores';
 	import Navbar from '$lib/components/navbar/navbar.svelte';
-	import type { LoadInput } from '@sveltejs/kit';
 	import ModalContainer from './_modal-container.svelte';
 	import NotificationsContainer from './_notifications-container.svelte';
 </script>
+
+<svelte:head>
+	<script>
+		if (localStorage.theme === 'dark') {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+	</script>
+</svelte:head>
 
 <ModalContainer />
 <NotificationsContainer />

@@ -16,7 +16,7 @@
 <script lang="ts">
 	import type { LoadInput } from '@sveltejs/kit';
 	import TeiEditor from '$lib/components/tei-editor/tei-editor.svelte';
-	import { editorSettings } from '$lib/stores/editor-settings';
+	import { editorSettings } from '$lib/components/stores/editor-settings';
 	import DocumentEditorActions from './_document-editor-actions.svelte';
 	import { api } from '$lib/util/api';
 	import type { Document, DocumentImages, User } from '@prisma/client';

@@ -15,7 +15,7 @@
 	import IndexDocumentNew from './_index-document-new.svelte';
 	import type { LoadInput } from '@sveltejs/kit';
 	import { api } from '$lib/util/api';
-	import { modals } from '$lib/stores/modals';
+	import { modals } from '$lib/components/stores/modals';
 
 	export let documents: any[] = [];
 
@@ -28,7 +28,6 @@
 			actionName: 'Apagar',
 			icon: Exclamation,
 			actionColor: 'red',
-			color: 'red',
 			action: async () => {
 				await api.delete(fetch, `/api/documents/${detail.id}`);
 				documents = documents.filter((d) => d.id !== detail.id);

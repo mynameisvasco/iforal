@@ -55,13 +55,14 @@
 								bind:value={addingEditor.name}
 								on:blur={handleAdd}
 							/>
-							<input
-								type="text"
-								class="input"
-								placeholder="Editor"
-								bind:value={addingEditor.role}
-								on:blur={handleAdd}
-							/>
+							<select class="input" bind:value={addingEditor.role} on:blur={handleAdd}>
+								<option default disabled value="">Selecionar papel</option>
+								<option value="supervisor">Supervisor</option>
+								<option value="transcriber">Transcritor</option>
+								<option value="encoder">Codificador de Texto</option>
+								<option value="annotator">Anotador</option>
+								<option value="revisor">Revisor</option>
+							</select>
 						</span>
 					</InputList>
 				</div>
