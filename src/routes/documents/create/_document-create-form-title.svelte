@@ -1,14 +1,7 @@
 <script lang="ts">
 	import InputList from '$lib/components/input-list/input-list.svelte';
-	import { getContext } from 'svelte';
-	import type { Writable } from 'svelte/store';
-
-	const form = getContext<Writable<any>>('form');
-	const errors = getContext<Writable<any>>('errors');
-	const handleChange = getContext<(e: any) => any>('handleChange');
 
 	let addingEditor = { name: '', role: '' };
-	let addingResponsible = { text: '' };
 	let addingFunder = { name: '' };
 </script>
 
@@ -30,17 +23,11 @@
 						class="input mt-1"
 						type="text"
 						placeholder="O Foral Manuelino da Feira e Terra de Santa Maria"
-						class:input-error={$errors.title}
-						bind:value={$form.title}
-						on:change={handleChange}
 					/>
-					{#if $errors.title}
-						<div class="error-label">{$errors.title}</div>
-					{/if}
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="editors" class="label">Editores</label>
-					<InputList bind:values={$form.editors} bind:addingValues={addingEditor}>
+					<InputList id="editors" bind:addingValues={addingEditor}>
 						<span slot="list" let:value>
 							<div class="flex flex-col">
 								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
@@ -68,7 +55,7 @@
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="funders" class="label">Financiadores</label>
-					<InputList bind:values={$form.funders} bind:addingValues={addingFunder}>
+					<InputList id="funders" bind:addingValues={addingFunder}>
 						<span slot="list" let:value>
 							<div class="flex flex-col">
 								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>

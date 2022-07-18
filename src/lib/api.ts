@@ -2,12 +2,12 @@ import type { HttpMethod } from '@sveltejs/kit/types/private';
 
 export interface Result<T> {
 	status: number;
-	data?: T | undefined;
+	data: T;
 	errors?: any | undefined;
 }
 
 export function error(status: number, errors: any) {
-	return { status, body: { errors, status } };
+	return { status, body: { errors } };
 }
 
 export function redirect<T>(path: string, status: number, headers?: any) {
@@ -15,7 +15,7 @@ export function redirect<T>(path: string, status: number, headers?: any) {
 }
 
 export function success<T>(data?: T | T[], headers?: any) {
-	return { status: 200, body: { data, status: 200 }, headers };
+	return { status: 200, body: { data }, headers };
 }
 
 export const api = {

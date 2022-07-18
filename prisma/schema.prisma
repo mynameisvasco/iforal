@@ -8,27 +8,26 @@ datasource db {
 }
 
 model User {
-  id                 Int                  @id @default(autoincrement())
-  name               String               @db.VarChar(90)
-  email              String               @unique @db.VarChar(90)
-  password           String               @db.VarChar(90)
-  createdAt          DateTime             @default(now())
-  Document           Document[]
-  DocumentPermission DocumentPermission[]
+  id                  Int                   @id @default(autoincrement())
+  name                String                @db.VarChar(90)
+  email               String                @unique @db.VarChar(90)
+  password            String                @db.VarChar(90)
+  createdAt           DateTime              @default(now())
+  Document            Document[]
+  DocumentPermissions DocumentPermissions[]
 }
 
 model Document {
-  id                 Int                  @id @default(autoincrement())
-  title              String               @db.VarChar(255)
-  createdAt          DateTime             @default(now())
-  modifiedAt         DateTime             @updatedAt
-  body               String               @db.Xml
-  user               User                 @relation(fields: [userId], references: [id])
-  images             DocumentImages[]
-  header             DocumentHeader?
-  userId             Int
-  headerId           Int?
-  DocumentPermission DocumentPermission[]
+  id          Int                   @id @default(autoincrement())
+  title       String                @db.VarChar(255)
+  createdAt   DateTime              @default(now())
+  modifiedAt  DateTime              @updatedAt
+  body        String                @db.Xml
+  user        User                  @relation(fields: [userId], references: [id])
+  images      DocumentImages[]
+  header      DocumentHeader?
+  userId      Int
+  permissions DocumentPermissions[]
 }
 
 model DocumentHeader {
@@ -67,11 +66,20 @@ model DocumentImages {
   documentId Int
 }
 
-model DocumentPermission {
+model DocumentPermissions {
   id         Int      @id @default(autoincrement())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   type       Int      @default(0)
   userId     Int
   documentId Int
+}
+
+model Tag {
+  id             Int      @id @default(autoincrement())
+  name           String   @db.VarChar(255)
+  friendlyName   String   @db.VarChar(255)
+  isChildAllowed Boolean
+  attributes     String[]
+  category       String
 }

@@ -1,13 +1,8 @@
-<script context="module" lang="ts">
-	export async function load(context: LoadInput) {}
-</script>
-
 <script lang="ts">
 	import { createEventDispatcher, setContext } from 'svelte';
 	import * as Yup from 'yup';
 	import { createForm } from 'svelte-forms-lib';
 	import { Check, Icon, Save } from 'svelte-hero-icons';
-	import type { LoadInput } from '@sveltejs/kit';
 
 	const dispatcher = createEventDispatcher();
 

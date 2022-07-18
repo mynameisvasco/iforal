@@ -7,11 +7,17 @@ export async function handle({ event, resolve }: { event: RequestEvent; resolve:
 	const cookies = Cookie.parse(cookiesHeader ?? '');
 
 	if (cookies.accessToken) {
-		const payload = Jwt.verify(cookies.accessToken, '1h29r781gf987ubg198723ghd182');
+		event.locals.user = Jwt.verify(cookies.accessToken, '1h29r781gf987ubg198723ghd182') as any;
+	}
 
-		if (payload) {
-			event.locals.user = payload as any;
-		}
+	const isAuthed = !!event.locals.user;
+
+	if (event.url.pathname.includes('auth') && !event.url.pathname.includes('logout') && isAuthed) {
+		return Response.redirect(`${event.url.origin}/documents`);
+	}
+
+	if (!event.url.pathname.includes('auth') && event.url.pathname.includes('logout') && !isAuthed) {
+		return Response.redirect(`${event.url.origin}/auth/login`);
 	}
 
 	return resolve(event);

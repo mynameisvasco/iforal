@@ -2,26 +2,27 @@
 	import { modals } from '$lib/components/stores/modals';
 	import { disableScrolling, enableScrolling } from '$lib/util/scroll';
 	import { onMount } from 'svelte';
-	import { Icon } from 'svelte-hero-icons';
+	import { Exclamation, Icon, InformationCircle } from 'svelte-hero-icons';
 
 	export let id: string;
 	export let title: string;
-	export let icon: any;
+	export let type: 'info' | 'danger';
 	export let actionName: string;
-	export let actionColor = 'primary';
-	export let action: () => void;
+	export let onAction: (() => void) | undefined;
+	export let onCancel: (() => void) | undefined;
 
 	onMount(() => {
 		disableScrolling();
 	});
 
 	function handleAction() {
-		action();
+		onAction && onAction();
 		modals.close(id);
 		enableScrolling();
 	}
 
 	function handleCancel() {
+		onCancel && onCancel();
 		modals.close(id);
 		enableScrolling();
 	}
@@ -44,7 +45,11 @@
 						class="mx-auto flex-shrink-0 flex items-center justify-center h-24 w-24 rounded-full 
             bg-stone-200 dark:bg-stone-800 sm:mx-0 sm:h-10 sm:w-10"
 					>
-						<Icon src={icon} class="w-6 text-stone-700 dark:text-stone-300" solid />
+						<Icon
+							src={type === 'danger' ? Exclamation : InformationCircle}
+							class="w-6 text-stone-700 dark:text-stone-300"
+							solid
+						/>
 					</div>
 					<div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
 						<h3 class="title-2 text-stone-900 dark:text-white">
@@ -58,7 +63,13 @@
 					</div>
 				</div>
 				<div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-3">
-					<button type="button" class="btn btn-{actionColor}" on:click={handleAction}>
+					<button
+						type="button"
+						class="btn"
+						class:btn-red={type === 'danger'}
+						class:btn-primary={type === 'info'}
+						on:click={handleAction}
+					>
 						{actionName}
 					</button>
 					<button type="button" class="btn btn-secondary" on:click={handleCancel}>

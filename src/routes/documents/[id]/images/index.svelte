@@ -1,33 +1,15 @@
-<script context="module" lang="ts">
-	import type { LoadInput } from '@sveltejs/kit';
-
-	export async function load(context: LoadInput) {
-		const id = parseInt(context.params.id);
-		const { data: images } = await api.get(context.fetch, `/api/documents/${id}/images`);
-
-		return {
-			props: {
-				id,
-				images
-			}
-		};
-	}
-</script>
-
 <script lang="ts">
 	import type { DocumentImages } from '@prisma/client';
-	import { api } from '$lib/util/api';
+	import { api } from '$lib/api';
 	import DocumentImagesPositions from './_document-images-positions.svelte';
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
+	import DocumentImagesEmpty from './_document-images-empty.svelte';
+	import { page } from '$app/stores';
 
-	export let id: number;
-	export let images: DocumentImages;
-
-	setContext('images', writable(images));
+	const documentId = parseInt($page.params.id);
+	export let data: DocumentImages[];
 
 	async function handleImageOrderChange({ detail }: CustomEvent) {
-		await api.put(window.fetch, `/api/documents/${id}/images`, detail);
+		await api.put(window.fetch, `/api/documents/${documentId}/images`, detail);
 	}
 </script>
 
@@ -40,16 +22,16 @@
 		<div class="flex items-center justify-between">
 			<div>
 				<h1 class="title-1">Editar imagens</h1>
-				<p class="mt-1 label">
-					Possibilita carregar novas imagens e ordenar as existentes através do mecanismo de clicar
-					e arrastar na imagem.
-				</p>
 			</div>
 		</div>
 	</div>
 </header>
 <main>
 	<div class="page-body">
-		<DocumentImagesPositions on:change={handleImageOrderChange} />
+		{#if data.length === 0}
+			<DocumentImagesEmpty />
+		{:else}
+			<DocumentImagesPositions images={data} on:change={handleImageOrderChange} />
+		{/if}
 	</div>
 </main>

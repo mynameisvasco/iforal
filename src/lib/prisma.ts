@@ -12,7 +12,7 @@ export async function getPrismaClient(userId: number = -1) {
 		clients[userId] = new PrismaClient();
 
 		if (userId !== -1) {
-			await clients[userId].$executeRawUnsafe(`SET iforal.current_user_id = '${userId}'`);
+			await clients[userId].$executeRawUnsafe(`SET iforalapp.current_user_id = '${userId}'`);
 		}
 	}
 

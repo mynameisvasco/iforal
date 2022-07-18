@@ -1,23 +1,39 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { Icon, X } from 'svelte-hero-icons';
-
-	export let values: any[] = [];
+	export let id: string;
 	export let addingValues: any = {};
 
+	let value: string = '[]';
+	let values: any = [];
+	let input: HTMLInputElement;
+
+	const updateInterval = setInterval(() => {
+		if (values.length === 0) values = JSON.parse(input.value);
+	}, 200);
+
 	function handleRemove(index: number) {
-		values = values.filter((_, i) => i !== index);
+		values = JSON.parse(value).filter((_: any, i: number) => i !== index) as any;
+		input.value = JSON.stringify(values);
+		input.dispatchEvent(new Event('change'));
 	}
 
 	function handleAdd() {
 		if (Object.values(addingValues).filter((v: any) => v === '').length === 0) {
-			values = [...values, { ...addingValues }];
+			values = [...(JSON.parse(value) as any), { ...addingValues }];
+			input.value = JSON.stringify(values);
+			input.dispatchEvent(new Event('change'));
 
 			for (const key of Object.keys(addingValues)) {
 				addingValues[key] = '';
 			}
 		}
 	}
+
+	onDestroy(() => clearInterval(updateInterval));
 </script>
+
+<input type="hidden" {id} name={id} bind:this={input} bind:value />
 
 <div class="flex flex-col">
 	{#each values as value, i}

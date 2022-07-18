@@ -1,9 +1,9 @@
-import { error, redirect, success } from '$lib/util/api';
+import { error, redirect, success } from '$lib/api';
 import * as Bcrypt from 'bcrypt';
 import * as Jwt from 'jsonwebtoken';
 import * as Cookie from 'cookie';
 import type { RequestEvent } from '@sveltejs/kit';
-import { getPrismaClient } from '$lib/util/prisma';
+import { getPrismaClient } from '$lib/prisma';
 import { formDataToJson } from '$lib/forms';
 import * as Yup from 'yup';
 

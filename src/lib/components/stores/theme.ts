@@ -11,7 +11,9 @@ function createTheme() {
 
 			if (value === 'white') {
 				document.documentElement.classList.remove('dark');
+				(document.querySelector("meta[name='theme-color']") as any).content = 'white';
 			} else {
+				(document.querySelector("meta[name='theme-color']") as any).content = '#292524';
 				document.documentElement.classList.add('dark');
 			}
 		});

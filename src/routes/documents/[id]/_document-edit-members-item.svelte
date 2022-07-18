@@ -1,9 +1,12 @@
 <script lang="ts">
 	import Avatar from '$lib/components/avatar/avatar.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let name: string;
 	export let email: string;
 	export let permissionType: number;
+
+	const dispatcher = createEventDispatcher();
 </script>
 
 <div class="flex items-center justify-between w-full ">
@@ -15,10 +18,17 @@
 		</div>
 	</div>
 	<div>
-		<select class="input-sm" disabled bind:value={permissionType}>
+		<select
+			class="input-sm"
+			disabled={permissionType === 2}
+			bind:value={permissionType}
+			on:blur={() => dispatcher('permissionChange', { type: permissionType })}
+		>
 			<option value={0}>Leitor</option>
 			<option value={1}>Editor</option>
-			<option value={2}>Criador</option>
+			{#if permissionType === 2}
+				<option value={2}>Criador</option>
+			{/if}
 		</select>
 	</div>
 </div>

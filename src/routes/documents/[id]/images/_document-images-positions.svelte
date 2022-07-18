@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { DocumentImages } from '@prisma/client';
-	import { createEventDispatcher, getContext } from 'svelte';
-	import type { Writable } from 'svelte/store';
+	import { createEventDispatcher } from 'svelte';
 
-	const images = getContext<Writable<DocumentImages[]>>('images');
+	export let images: DocumentImages[];
+
 	const dispatcher = createEventDispatcher();
 	let swapImage1 = { id: 0, name: '' };
 	let swapImage2 = { id: 0, name: '' };
@@ -13,8 +13,8 @@
 	}
 
 	async function handleDragEnd() {
-		images.update((old) => [
-			...old.map((i) => {
+		images = [
+			...images.map((i) => {
 				if (i.id === swapImage1.id) {
 					return { ...i, name: swapImage2.name };
 				} else if (i.id === swapImage2.id) {
@@ -22,7 +22,7 @@
 				}
 				return i;
 			})
-		]);
+		];
 
 		dispatcher('change', { image1: swapImage1.id, image2: swapImage2.id });
 	}
@@ -33,7 +33,7 @@
 </script>
 
 <div class="grid grid-cols-12 gap-6 ">
-	{#each $images as image}
+	{#each images as image}
 		<div class="col-span-6 lg:col-span-4 xl:col-span-3 flex flex-col items-center">
 			<a href="/api/storage/{image.name}" target="_blank">
 				<img

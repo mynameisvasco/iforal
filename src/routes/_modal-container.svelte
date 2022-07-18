@@ -7,10 +7,10 @@
 	<Modal
 		id={modal.id}
 		title={modal.title}
-		icon={modal.icon}
-		action={modal.action}
+		type={modal.type}
 		actionName={modal.actionName}
-		actionColor={modal.actionColor}
+		onAction={modal.onAction}
+		onCancel={modal.onCancel}
 	>
 		{modal.description}
 	</Modal>

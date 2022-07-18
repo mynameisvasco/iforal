@@ -1,5 +1,5 @@
-import { error, success } from '$lib/util/api';
-import { getPrismaClient } from '$lib/util/prisma';
+import { error, success } from '$lib/api';
+import { getPrismaClient } from '$lib/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export async function get(event: RequestEvent) {
@@ -13,9 +13,10 @@ export async function get(event: RequestEvent) {
 	const document = await prisma.document.findFirst({
 		where: { id },
 		include: {
-			images: {
-				orderBy: {
-					position: 'asc'
+			images: { orderBy: { position: 'asc' } },
+			permissions: {
+				include: {
+					user: { select: { name: true, email: true } }
 				}
 			},
 			user: true
@@ -44,5 +45,5 @@ export async function del(event: RequestEvent) {
 
 	const prisma = await getPrismaClient(event.locals.user.id);
 	await prisma.document.delete({ where: { id } });
-	return success(null, 'Document deleted');
+	return success(null);
 }

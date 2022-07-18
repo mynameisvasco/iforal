@@ -4,11 +4,11 @@ export interface Modal {
 	id: string;
 	title: string;
 	description: string;
-	icon: any;
-	action: () => void;
+	type: 'info' | 'danger';
 	isOpen?: boolean;
 	actionName: string;
-	actionColor?: string;
+	onCancel?: () => void;
+	onAction?: () => void;
 }
 
 function createModals() {

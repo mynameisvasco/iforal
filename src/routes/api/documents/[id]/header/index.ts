@@ -1,5 +1,5 @@
-import { error, success } from '$lib/util/api';
-import { getPrismaClient } from '$lib/util/prisma';
+import { error, success } from '$lib/api';
+import { getPrismaClient } from '$lib/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export async function get(event: RequestEvent) {

@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
-
-	const form = getContext<Writable<any>>('form');
-	const errors = getContext<Writable<any>>('errors');
-	const handleChange = getContext<(e: any) => any>('handleChange');
 </script>
 
 <div>
@@ -23,14 +19,8 @@
 						class="input mt-1"
 						type="text"
 						placeholder="Neste foral..."
-						class:input-error={$errors.encoding}
 						rows="9"
-						bind:value={$form.encoding}
-						on:change={handleChange}
 					/>
-					{#if $errors.encoding}
-						<div class="error-label">{$errors.encoding}</div>
-					{/if}
 				</div>
 			</div>
 		</div>

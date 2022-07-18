@@ -17,7 +17,6 @@ CREATE TABLE "Document" (
     "modifiedAt" TIMESTAMP(3) NOT NULL,
     "body" XML NOT NULL,
     "userId" INTEGER NOT NULL,
-    "headerId" INTEGER,
 
     CONSTRAINT "Document_pkey" PRIMARY KEY ("id")
 );
@@ -33,6 +32,12 @@ CREATE TABLE "DocumentHeader" (
     "repository" VARCHAR(255) NOT NULL,
     "idno" VARCHAR(255) NOT NULL,
     "authors" JSONB NOT NULL,
+    "altIdentifier" JSONB NOT NULL,
+    "settlement" VARCHAR(255) NOT NULL,
+    "publisher" VARCHAR(255) NOT NULL,
+    "publisherPlace" VARCHAR(255) NOT NULL,
+    "publisherDate" TIMESTAMP(3) NOT NULL,
+    "license" VARCHAR(255) NOT NULL,
     "originDate" TIMESTAMP(3) NOT NULL,
     "originPlace" VARCHAR(255) NOT NULL,
     "lang" TEXT NOT NULL,
@@ -57,13 +62,13 @@ CREATE TABLE "DocumentImages" (
 );
 
 -- CreateTable
-CREATE TABLE "DocumentPermission" (
+CREATE TABLE "DocumentPermissions" (
     "id" SERIAL NOT NULL,
     "type" INTEGER NOT NULL DEFAULT 0,
     "userId" INTEGER NOT NULL,
     "documentId" INTEGER NOT NULL,
 
-    CONSTRAINT "DocumentPermission_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "DocumentPermissions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -82,13 +87,7 @@ ALTER TABLE "DocumentHeader" ADD CONSTRAINT "DocumentHeader_documentId_fkey" FOR
 ALTER TABLE "DocumentImages" ADD CONSTRAINT "DocumentImages_documentId_fkey" FOREIGN KEY ("documentId") REFERENCES "Document"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DocumentPermission" ADD CONSTRAINT "DocumentPermission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "DocumentPermissions" ADD CONSTRAINT "DocumentPermissions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DocumentPermission" ADD CONSTRAINT "DocumentPermission_documentId_fkey" FOREIGN KEY ("documentId") REFERENCES "Document"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- RLS
-CREATE POLICY read_documents ON "Document" USING ("Document"."userId" = current_setting('iforal.current_user_id')::int 
-OR current_setting('iforal.current_user_id')::int IN (SELECT "userId" FROM "DocumentPermission" WHERE "documentId" = "Document"."id"));
-
-ALTER TABLE "Document" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "DocumentPermissions" ADD CONSTRAINT "DocumentPermissions_documentId_fkey" FOREIGN KEY ("documentId") REFERENCES "Document"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,6 +1,9 @@
 import { error, success } from '$lib/api';
 import { getPrismaClient } from '$lib/prisma';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 import type { RequestEvent } from '@sveltejs/kit';
+import { v4 as uuidV4 } from 'uuid';
 
 export async function get(event: RequestEvent) {
 	const documentId = parseInt(event.params.id);
@@ -16,6 +19,37 @@ export async function get(event: RequestEvent) {
 	});
 
 	return success(images);
+}
+
+export async function post(event: RequestEvent) {
+	const documentId = parseInt(event.params.id);
+
+	if (isNaN(documentId)) {
+		return error(400, "Document doesn't exist");
+	}
+
+	const prisma = await getPrismaClient();
+	const body = await event.request.formData();
+	const files = body.getAll('images') as File[];
+	const filesNames = [];
+
+	for (const file of files) {
+		const fileExtension = file.name.split('.')[1];
+		const fileName = `${uuidV4()}.${fileExtension}`;
+		const filePath = path.join('storage', fileName);
+		filesNames.push(fileName);
+		await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
+	}
+
+	await prisma.documentImages.createMany({
+		data: filesNames.map((fileName, i) => ({
+			name: fileName,
+			position: i,
+			documentId
+		}))
+	});
+
+	return success(null);
 }
 
 export async function put(event: RequestEvent) {

@@ -1,8 +1,8 @@
 import type { ObjectSchema, ValidationError } from 'yup';
-import type { Result } from './util/api';
 import { goto, invalidate } from '$app/navigation';
 import { page } from '$app/stores';
-import { beforeNavigate } from '$app/navigation';
+import { modals, type Modal } from './components/stores/modals';
+import type { Result } from './api';
 
 export async function formDataToJson(
 	formData: FormData,
@@ -25,10 +25,7 @@ export async function formDataToJson(
 	return { data, errors, status: errors && Object.keys(errors).length !== 0 ? 400 : 200 };
 }
 
-type Destroy = { destroy: () => void };
-type Enhance = (form?: HTMLFormElement, redirect?: string) => Destroy;
-
-export const enhance: Enhance = (form, redirect?: string) => {
+export const enhance = (form: HTMLFormElement, options?: { redirect: string }) => {
 	let invalidatePath: URL;
 	page.subscribe((path) => (invalidatePath = path.url));
 
@@ -45,8 +42,8 @@ export const enhance: Enhance = (form, redirect?: string) => {
 					inputErrorLabel.id = `${input.id}-error-label`;
 					inputErrorLabel.classList.add('error-label', 'mt-2');
 					inputErrorLabel.innerText = errors[input.id];
-					input.classList.add('input-error');
 					input.parentNode?.append(inputErrorLabel);
+					input.classList.add('input-error');
 				}
 			}
 		}
@@ -62,14 +59,14 @@ export const enhance: Enhance = (form, redirect?: string) => {
 			}
 		}
 
-		if (redirect) {
-			goto(redirect);
+		if (options?.redirect) {
+			await goto('/documents');
 		} else {
 			const url = new URL(invalidatePath);
 			url.search = '';
 			url.hash = '';
-			invalidate(url.href);
 			form!.reset();
+			await invalidate(url.href);
 		}
 	}
 
@@ -94,6 +91,48 @@ export const enhance: Enhance = (form, redirect?: string) => {
 	return {
 		destroy() {
 			form!.removeEventListener('submit', handleSubmit);
+		}
+	};
+};
+
+export const draft = (form: HTMLFormElement, modal: Modal) => {
+	const inputs = Array.from(form.elements).filter((i) => i.id) as HTMLInputElement[];
+	let hasDraft = inputs.map((i) => !!localStorage.getItem(`${form.id}-${i.id}`)).find((i) => true);
+
+	function handleSubmit(event: any) {
+		inputs.forEach((i) => localStorage.removeItem(`${form.id}-${i.id}`));
+	}
+
+	function handleChange(event: any) {
+		localStorage.setItem(`${form.id}-${event.target.id}`, event.target.value);
+	}
+
+	if (modal && hasDraft) {
+		modals.open({
+			...modal,
+			onAction: () =>
+				inputs.forEach((i) => (i.value = localStorage.getItem(`${form.id}-${i.id}`) ?? i.value)),
+			onCancel: () => inputs.forEach((i) => localStorage.removeItem(`${form.id}-${i.id}`))
+		});
+	} else if (hasDraft) {
+		for (const input of inputs) {
+			input.value = localStorage.getItem(`${form.id}-${input.id}`) ?? '';
+		}
+	}
+
+	form.addEventListener('submit', handleSubmit);
+
+	for (const input of inputs) {
+		input.addEventListener('change', handleChange);
+	}
+
+	return {
+		destroy() {
+			form.removeEventListener('submit', handleSubmit);
+
+			for (const input of inputs) {
+				input.removeEventListener('change', handleChange);
+			}
 		}
 	};
 };

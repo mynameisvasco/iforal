@@ -7,7 +7,7 @@ html {
 }
 
 .dropdown-menu {
-	@apply origin-top-right absolute right-0 mt-2 w-48 rounded-md bg-white dark:bg-stone-800 
+	@apply origin-top-right absolute left-0 mt-2 w-48 rounded-md bg-white dark:bg-stone-800 
 	border border-stone-300 dark:border-stone-700 shadow z-40 outline-none;
 }
 
@@ -32,6 +32,11 @@ html {
 	dark:hover:bg-orange-200  border-stone-700 dark:border-orange-200;
 }
 
+.btn-tertiary {
+	@apply text-stone-900 dark:text-white hover:bg-stone-100 
+	dark:hover:bg-stone-700 border-stone-300 dark:border-stone-700;
+}
+
 .btn-secondary {
 	@apply text-stone-900 dark:text-white bg-white dark:bg-stone-800 hover:bg-stone-100 
 	dark:hover:bg-stone-700 border-stone-300 dark:border-stone-700;
@@ -48,7 +53,7 @@ html {
 }
 
 .page-header {
-	@apply px-4 xl:px-20 2xl:px-32 py-10;
+	@apply px-4 xl:px-20 2xl:px-32 py-6;
 }
 
 .page-body {
