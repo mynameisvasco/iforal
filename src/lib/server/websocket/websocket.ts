@@ -1,12 +1,12 @@
 import { Server as WebSocketServer, Socket } from 'socket.io';
 import type { Server } from 'http';
-import { useDocumentsNamespace } from './documents-namespace';
 import * as Cookie from 'cookie';
 import Jwt from 'jsonwebtoken';
+import { documentsWs } from '../../../routes/documents/ws';
 
 export async function createWebSocketServer(server: Server) {
 	const webSocketServer = new WebSocketServer(server);
-	useDocumentsNamespace(webSocketServer);
+	documentsWs(webSocketServer);
 }
 
 export function authenticate(client: Socket, next: any) {
