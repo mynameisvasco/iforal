@@ -22,7 +22,7 @@ model Document {
   title       String                @db.VarChar(255)
   createdAt   DateTime              @default(now())
   modifiedAt  DateTime              @updatedAt
-  body        String                @db.Xml
+  body        String                @db.Text
   user        User                  @relation(fields: [userId], references: [id])
   images      DocumentImages[]
   header      DocumentHeader?
@@ -76,10 +76,10 @@ model DocumentPermissions {
 }
 
 model Tag {
-  id             Int      @id @default(autoincrement())
-  name           String   @db.VarChar(255)
-  friendlyName   String   @db.VarChar(255)
+  id             Int     @id @default(autoincrement())
+  name           String  @db.VarChar(255)
+  friendlyName   String  @db.VarChar(255)
   isChildAllowed Boolean
-  attributes     String[]
+  attributes     Json
   category       String
 }

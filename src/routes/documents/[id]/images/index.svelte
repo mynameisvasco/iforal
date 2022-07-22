@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DocumentImages } from '@prisma/client';
-	import { api } from '$lib/api';
+	import { api } from '$lib/client/api';
 	import DocumentImagesPositions from './_document-images-positions.svelte';
 	import DocumentImagesEmpty from './_document-images-empty.svelte';
 	import { page } from '$app/stores';
@@ -9,7 +9,7 @@
 	export let data: DocumentImages[];
 
 	async function handleImageOrderChange({ detail }: CustomEvent) {
-		await api.put(window.fetch, `/api/documents/${documentId}/images`, detail);
+		await api.put(window.fetch, `/documents/${documentId}/images`, detail);
 	}
 </script>
 

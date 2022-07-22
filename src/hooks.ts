@@ -1,6 +1,6 @@
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
 import * as Cookie from 'cookie';
-import * as Jwt from 'jsonwebtoken';
+import Jwt from 'jsonwebtoken';
 
 export async function handle({ event, resolve }: { event: RequestEvent; resolve: RequestHandler }) {
 	const cookiesHeader = event.request.headers.get('cookie');
@@ -16,7 +16,7 @@ export async function handle({ event, resolve }: { event: RequestEvent; resolve:
 		return Response.redirect(`${event.url.origin}/documents`);
 	}
 
-	if (!event.url.pathname.includes('auth') && event.url.pathname.includes('logout') && !isAuthed) {
+	if (!event.url.pathname.includes('auth') && !isAuthed) {
 		return Response.redirect(`${event.url.origin}/auth/login`);
 	}
 

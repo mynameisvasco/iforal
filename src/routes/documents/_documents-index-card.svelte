@@ -4,8 +4,8 @@
 	import { DotsVertical, Icon } from 'svelte-hero-icons';
 
 	import type { Document, DocumentImages } from '@prisma/client';
-	import { modals } from '$lib/components/stores/modals';
-	import { enhance } from '$lib/forms';
+	import { modals } from '$lib/client/modals';
+	import { enhance } from '$lib/client/forms';
 	import pt from 'date-fns/locale/pt/index.js';
 
 	export let document: Document & { images: DocumentImages[] };
@@ -36,7 +36,7 @@
 		<img
 			src="/api/storage/{document.images.at(0)?.name}"
 			alt="Imagem ilustrativa do foral"
-			class="h-72 object-cover rounded-t-lg"
+			class="h-72 object-cover rounded-t-lg w-full"
 		/>
 	</a>
 	<div class="p-3 border-t border-stone-300 dark:border-stone-700 rounded-b-lg">

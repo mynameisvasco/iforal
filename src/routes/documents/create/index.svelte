@@ -3,9 +3,10 @@
 	import DocumentCreateFormTitle from './_document-create-form-title.svelte';
 	import DocumentCreateFormEncoding from './_document-create-form-encoding.svelte';
 	import DocumentCreateFormPublication from './_document-create-form-publication.svelte';
-	import { enhance, draft } from '$lib/forms';
-	import type { Modal } from '$lib/components/stores/modals';
+	import { enhance, draft } from '$lib/client/forms';
+	import type { Modal } from '$lib/client/modals';
 	import { browser } from '$app/env';
+	import { Icon, Save } from 'svelte-hero-icons';
 
 	const draftTitle = browser ? localStorage.getItem('document-create-title') : undefined;
 	const draftModal: Modal = {
@@ -21,15 +22,8 @@
 	<title>iForal - Novo documento</title>
 </svelte:head>
 
-<header>
-	<div class="page-header">
-		<div class="flex items-center justify-between">
-			<h1 class="title-1">Novo Documento</h1>
-		</div>
-	</div>
-</header>
 <main>
-	<div class="page-body">
+	<div class="page-body mt-12">
 		<form
 			id="document-create"
 			action="/documents"
@@ -54,7 +48,9 @@
 				<div class="border-t border-stone-300 dark:border-stone-700" />
 			</div>
 			<div class="flex justify-end gap-6">
-				<button class="btn btn-primary" type="submit"> Guardar </button>
+				<button class="btn btn-primary" type="submit">
+					<Icon src={Save} solid class="w-5 mr-1" />Guardar
+				</button>
 			</div>
 		</form>
 	</div>

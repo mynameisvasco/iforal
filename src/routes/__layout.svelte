@@ -1,10 +1,11 @@
 <script lang="ts">
 	import '../app.css';
 	import { page } from '$app/stores';
-	import Navbar from '$lib/components/navbar/navbar.svelte';
+	import Navbar from '$lib/client/components/navbar/navbar.svelte';
 	import ModalContainer from './_modal-container.svelte';
 	import NotificationsContainer from './_notifications-container.svelte';
-	import Breadcrumb from '$lib/components/breadcrumb/breadcrumb.svelte';
+	import Breadcrumb from '$lib/client/components/breadcrumb/breadcrumb.svelte';
+	import { onMount } from 'svelte';
 </script>
 
 <svelte:head>

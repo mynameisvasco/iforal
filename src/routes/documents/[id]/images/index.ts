@@ -1,5 +1,5 @@
-import { error, success } from '$lib/api';
-import { getPrismaClient } from '$lib/prisma';
+import { error, success } from '$lib/client/api';
+import { getPrismaClient } from '$lib/server/prisma';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import type { RequestEvent } from '@sveltejs/kit';
@@ -49,7 +49,7 @@ export async function post(event: RequestEvent) {
 		}))
 	});
 
-	return success(null);
+	return success();
 }
 
 export async function put(event: RequestEvent) {

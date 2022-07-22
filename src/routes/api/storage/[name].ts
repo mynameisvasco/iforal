@@ -1,4 +1,4 @@
-import { error } from '$lib/api';
+import { error } from '$lib/client/api';
 import type { RequestEvent } from '@sveltejs/kit';
 import * as Fs from 'fs/promises';
 import * as Path from 'path';

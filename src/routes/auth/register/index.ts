@@ -1,10 +1,10 @@
-import { error, redirect, success } from '$lib/api';
+import { error, redirect, success } from '$lib/client/api';
 import * as Bcrypt from 'bcrypt';
 import * as Jwt from 'jsonwebtoken';
 import * as Cookie from 'cookie';
 import type { RequestEvent } from '@sveltejs/kit';
-import { getPrismaClient } from '$lib/prisma';
-import { formDataToJson } from '$lib/forms';
+import { getPrismaClient } from '$lib/server/prisma';
+import { formDataToJson } from '$lib/client/forms';
 import * as Yup from 'yup';
 
 export async function post(event: RequestEvent) {

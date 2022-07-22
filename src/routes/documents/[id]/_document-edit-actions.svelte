@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { ChevronDown, Icon } from 'svelte-hero-icons';
-
-	export let editorSettingsSideCover: any;
 
 	const documentId = parseInt($page.params.id);
 </script>
 
 <Menu class="relative">
 	<MenuButton>
-		<button class="btn btn-secondary flex items-center">
+		<button type="button" class="btn btn-secondary flex items-center">
 			Ações
 			<Icon src={ChevronDown} class="w-4 ml-1" />
 		</button>
@@ -22,9 +19,6 @@
 		</MenuItem>
 		<MenuItem href="/documents/{documentId}/images" class="dropdown-menu-item">
 			Editar Imagens
-		</MenuItem>
-		<MenuItem class="dropdown-menu-item" on:click={editorSettingsSideCover.toggle}>
-			Configurar Editor
 		</MenuItem>
 		<MenuItem class="dropdown-menu-item !text-red-500 dark:!text-red-300">Apagar</MenuItem>
 	</MenuItems>

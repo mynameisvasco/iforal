@@ -23,7 +23,9 @@
 						</div>
 					</div>
 					<div class="flex items-center justify-between">
-						<a href="/forget-password" class="link text-sm"> Esqueci-me da password </a>
+						<a href="/forget-password" class="link text-sm" sveltekit:prefetch>
+							Esqueci-me da password
+						</a>
 					</div>
 					<div>
 						<button type="submit" class="btn btn-primary w-full justify-center"> Entrar </button>

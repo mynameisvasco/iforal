@@ -3,7 +3,11 @@
 	<h2 class="mt-6 text-3xl font-extrabold text-stone-900 dark:text-white">Entre na sua conta</h2>
 	<p class="mt-2 text-sm text-stone-700 dark:text-stone-500">
 		Ou
-		<a href="/auth/register" class="font-medium text-stone-900 dark:text-orange-300">
+		<a
+			href="/auth/register"
+			class="font-medium text-stone-900 dark:text-orange-300"
+			sveltekit:prefetch
+		>
 			crie a sua agora mesmo
 		</a>
 	</p>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import EmptyState from '$lib/components/empty-state/empty-state.svelte';
-	import { enhance } from '$lib/forms';
+	import EmptyState from '$lib/client/components/empty-state/empty-state.svelte';
+	import { enhance } from '$lib/client/forms';
 	import { Photograph, Icon, Upload } from 'svelte-hero-icons';
 
 	const documentId = parseInt($page.params.id);

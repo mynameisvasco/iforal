@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DragDropUpload from '$lib/components/drag-drop-upload/drag-drop-upload.svelte';
+	import DragDropUpload from '$lib/client/components/drag-drop-upload/drag-drop-upload.svelte';
 
 	export let images: File[] = [];
 </script>

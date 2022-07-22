@@ -1,4 +1,4 @@
-import { redirect, success } from '$lib/api';
+import { redirect, success } from '$lib/client/api';
 import * as Cookie from 'cookie';
 import type { RequestEvent } from '@sveltejs/kit';
 

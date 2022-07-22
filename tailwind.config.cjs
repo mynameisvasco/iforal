@@ -13,7 +13,9 @@ module.exports = {
 	safelist: [
 		{ pattern: /col-span-(.+)/ },
 		{ pattern: /bg-(.+)-(.+)/ },
-		{ pattern: /text-(.+)-(.+)/ }
+		{ pattern: /text-(.+)-(.+)/ },
+		'dropdown-menu-item-disabled',
+		'dropdown-menu-item'
 	],
 	plugins: [require('@tailwindcss/forms')]
 };

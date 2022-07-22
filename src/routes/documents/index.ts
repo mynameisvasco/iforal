@@ -1,8 +1,8 @@
-import { getPrismaClient } from '$lib/prisma';
+import { getPrismaClient } from '$lib/server/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 import { parse as parseDate } from 'date-fns';
-import { error, success } from '$lib/api';
-import { formDataToJson } from '$lib/forms';
+import { error, success } from '$lib/client/api';
+import { formDataToJson } from '$lib/client/forms';
 import * as Yup from 'yup';
 
 export async function get(event: RequestEvent) {

@@ -1,5 +1,5 @@
 <script>
-	import EmptyState from '$lib/components/empty-state/empty-state.svelte';
+	import EmptyState from '$lib/client/components/empty-state/empty-state.svelte';
 	import { DocumentAdd, Icon, Plus } from 'svelte-hero-icons';
 </script>
 

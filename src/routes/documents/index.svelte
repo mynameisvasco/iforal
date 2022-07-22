@@ -16,20 +16,18 @@
 
 <header>
 	<div class="page-header">
-		<div class="flex items-center justify-between">
-			<h1 class="title-1">Documentos Recentes</h1>
-		</div>
+		<h1 class="title-1">Documentos Recentes</h1>
 	</div>
 </header>
 <main>
 	<div class="page-body h-full">
 		<div class="grid grid-cols-12 gap-6">
 			{#if documents.length !== 0}
-				<div class="col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
+				<div class="col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2">
 					<IndexDocumentsNew />
 				</div>
 				{#each documents as document}
-					<div class="col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
+					<div class="col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2">
 						<IndexDocumentsCard {document} />
 					</div>
 				{/each}
