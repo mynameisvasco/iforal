@@ -25,7 +25,10 @@ export async function formDataToJson(
 	return { data, errors, status: errors && Object.keys(errors).length !== 0 ? 400 : 200 };
 }
 
-export const enhance = (form: HTMLFormElement, options?: { redirect: string }) => {
+export const enhance = (
+	form: HTMLFormElement,
+	options?: { redirect?: string; confirmModal?: Modal }
+) => {
 	let invalidatePath: URL;
 	page.subscribe((path) => (invalidatePath = path.url));
 
@@ -73,16 +76,24 @@ export const enhance = (form: HTMLFormElement, options?: { redirect: string }) =
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
-		const response = await fetch(form!.action, {
-			method: form!.method,
-			headers: { accept: 'application/json' },
-			body: new FormData(form)
-		});
+		const submit = async () => {
+			const response = await fetch(form!.action, {
+				method: form!.method,
+				headers: { accept: 'application/json' },
+				body: new FormData(form)
+			});
 
-		if (response.status >= 400) {
-			handleError(response);
-		} else if (response.status >= 200 && response.status) {
-			handleSuccess();
+			if (response.status >= 400) {
+				handleError(response);
+			} else if (response.status >= 200 && response.status) {
+				handleSuccess();
+			}
+		};
+
+		if (options?.confirmModal) {
+			modals.open({ ...options.confirmModal, onAction: submit });
+		} else {
+			submit();
 		}
 	}
 

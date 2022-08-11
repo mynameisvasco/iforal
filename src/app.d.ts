@@ -1,21 +1,22 @@
 /// <reference types="@sveltejs/kit" />
+import type { Role } from '@prisma/client';
 
-// See https://kit.svelte.dev/docs/types#app
-// for information about these interfaces
-declare namespace App {
-	interface Locals {
-		user: {
+declare global {
+	declare namespace App {
+		interface Locals {
+			user: {
+				id: number;
+				name: string;
+				email: string;
+				role: Role;
+			};
+		}
+
+		interface Session {
 			id: number;
 			name: string;
 			email: string;
-		};
+			role: Role;
+		}
 	}
-
-	interface Session {
-		id: number;
-		name: string;
-		email: string;
-	}
-	// interface Platform {}
-	// interface Stuff {}
 }

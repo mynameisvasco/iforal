@@ -7,14 +7,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  Admin
+  Regular
+}
+
 model User {
   id                  Int                   @id @default(autoincrement())
   name                String                @db.VarChar(90)
   email               String                @unique @db.VarChar(90)
   password            String                @db.VarChar(90)
   createdAt           DateTime              @default(now())
-  Document            Document[]
-  DocumentPermissions DocumentPermissions[]
+  role                Role                  @default(Regular)
+  document            Document[]
+  documentPermissions DocumentPermissions[]
+  userInvites         UserInvite[]
+}
+
+model UserInvite {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(90)
+  email      String    @unique @db.VarChar(90)
+  role       Role      @default(Regular)
+  createdAt  DateTime  @default(now())
+  acceptedAt DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
 }
 
 model Document {

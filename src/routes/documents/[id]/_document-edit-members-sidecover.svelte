@@ -43,7 +43,7 @@
 		<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
 			<SearchEndpointInput
 				placeholder="Adicionar membro pelo nome ou email"
-				endpoint="/users"
+				endpoint="/users/search"
 				searchParams={['name', 'email']}
 				on:selected={({ detail }) => handlePermissionAdd(detail.item.email)}
 				let:item

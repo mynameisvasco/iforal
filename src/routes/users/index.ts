@@ -3,19 +3,18 @@ import { getPrismaClient } from '$lib/server/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export async function get(event: RequestEvent) {
-	const email = event.url.searchParams.get('email')?.toLowerCase();
-	const name = event.url.searchParams.get('name')?.toLowerCase();
+	const prisma = await getPrismaClient(event.locals.user.id);
+	const page = parseInt(event.url.searchParams.get('page') ?? '1');
 
-	if (!email && !name) {
-		return error(400, 'Search must contain at least one parameter (email, name)');
+	if (isNaN(page)) {
+		return error(400);
 	}
 
-	const prisma = await getPrismaClient(event.locals.user.id);
-	const user = await prisma.user.findMany({
-		where: {
-			OR: [{ name: { contains: name ?? '' } }, { email: { contains: email ?? '' } }]
-		}
+	const users = await prisma.user.findMany({
+		take: 20,
+		skip: (page - 1) * 20,
+		select: { id: true, name: true, email: true, role: true }
 	});
 
-	return success(user);
+	return success(users);
 }

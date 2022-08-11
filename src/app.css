@@ -9,7 +9,7 @@ html {
 .dropdown-menu {
 	@apply origin-top-right absolute left-0 mt-2 w-48 rounded-md bg-white/75 filter backdrop-blur-md 
 	dark:bg-stone-800/50 border border-stone-300 dark:border-stone-700 
-	shadow-lg z-40 outline-none;
+	shadow-lg z-10 outline-none;
 }
 
 .dropdown-menu-item {
@@ -27,6 +27,11 @@ html {
 .btn {
 	@apply flex items-center px-4 py-2 border text-sm font-medium	rounded-md shadow-sm
 	transition-all outline-none;
+}
+
+.btn-editor {
+	@apply flex items-center text-sm hover:bg-stone-200 dark:hover:bg-stone-800 py-1 px-0.5 
+	rounded-md text-stone-900 dark:text-white font-medium mr-2;
 }
 
 .btn-icon {
@@ -130,14 +135,27 @@ html {
 }
 
 .cm-scroller {
-	overflow: auto;
-	min-height: 750px;
-	max-height: 750px;
 	@apply border-r border-l border-b border-stone-300 dark:border-stone-700 rounded-b-md;
 }
 
 .cm-content {
-	min-height: 740px !important;
+	min-height: 748px !important;
 	overflow: auto;
 	border: none;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	@apply rounded-md bg-white dark:bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-stone-300  dark:bg-stone-700 rounded-md;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-stone-400 dark:bg-stone-600;
 }

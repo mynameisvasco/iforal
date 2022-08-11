@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { DocumentText, Icon, MenuAlt2, Minus, Plus } from 'svelte-hero-icons';
+	import { DocumentText, Icon, MenuAlt2, Minus, Plus, Search } from 'svelte-hero-icons';
 	import xmlFormat from 'xml-formatter';
-	import { editorSettings } from '../stores/editor-settings';
 	import type { Writable } from 'svelte/store';
 	import type { EditorView } from '@codemirror/view';
+	import { editorSettings } from '$lib/client/editor';
+	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
+	import { openSearchPanel } from '@codemirror/search';
 
 	const editor = getContext<Writable<EditorView>>('editor');
 
@@ -24,13 +26,13 @@
 	}
 </script>
 
-<div class="flex items-center gap-2 ">
-	<button
-		type="button"
-		class="flex items-center text-sm hover:bg-stone-200 dark:hover:bg-stone-800 py-1 px-0.5 
-    rounded-md text-stone-900 dark:text-white font-medium mr-2"
-		on:click={handleFormat}
-	>
+<div class="flex items-center gap-2">
+	<button type="button" class="btn-editor" on:click={() => openSearchPanel($editor)}>
+		<Icon src={Search} class="w-5 mr-1 text-stone-500 dark:text-stone-400" solid />
+		Pesquisar
+	</button>
+
+	<button type="button" class="btn-editor" on:click={handleFormat}>
 		<Icon src={MenuAlt2} class="w-5 mr-1 text-stone-500 dark:text-stone-400" solid />
 		Formatar
 	</button>

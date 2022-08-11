@@ -70,7 +70,7 @@
 						/>
 						<input
 							type="text"
-							placeholder="cancelled, damaged, ..."
+							placeholder="cancelled,damaged,..."
 							class="input"
 							bind:value={addingAttribute.values}
 							on:blur={handleAdd}

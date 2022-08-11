@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { editorSettings } from '$lib/client/components/stores/editor-settings';
 	import type { Document, DocumentImages, DocumentPermissions, User } from '@prisma/client';
 	import DocumentEditMembersSidecover from './_document-edit-members-sidecover.svelte';
 	import Gallery from '$lib/client/components/gallery/gallery.svelte';
 	import DocumentEditEditor from './_document-edit-editor.svelte';
 	import DocumentEditActions from './_document-edit-actions.svelte';
+	import { editorSettings } from '$lib/client/editor';
 
 	export let data: Document & { images: DocumentImages[] } & { user: User } & {
 		permissions: (DocumentPermissions & { user: User })[];

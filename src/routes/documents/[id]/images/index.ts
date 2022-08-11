@@ -3,7 +3,6 @@ import { getPrismaClient } from '$lib/server/prisma';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import type { RequestEvent } from '@sveltejs/kit';
-import { v4 as uuidV4 } from 'uuid';
 
 export async function get(event: RequestEvent) {
 	const documentId = parseInt(event.params.id);
@@ -32,10 +31,16 @@ export async function post(event: RequestEvent) {
 	const body = await event.request.formData();
 	const files = body.getAll('images') as File[];
 	const filesNames = [];
+	const lastImage = await prisma.documentImages.findFirst({
+		where: { documentId },
+		select: { position: true },
+		orderBy: { position: 'desc' }
+	});
 
 	for (const file of files) {
-		const fileExtension = file.name.split('.')[1];
-		const fileName = `${uuidV4()}.${fileExtension}`;
+		if (!file.name) continue;
+		const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
+		const fileName = `${crypto.randomUUID()}${fileExtension}`;
 		const filePath = path.join('storage', fileName);
 		filesNames.push(fileName);
 		await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
@@ -44,7 +49,7 @@ export async function post(event: RequestEvent) {
 	await prisma.documentImages.createMany({
 		data: filesNames.map((fileName, i) => ({
 			name: fileName,
-			position: i,
+			position: (lastImage ? lastImage.position + 1 : 0) + i,
 			documentId
 		}))
 	});

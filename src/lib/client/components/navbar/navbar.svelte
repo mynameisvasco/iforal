@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 	import NavbarItem from './navbar-item.svelte';
 	import NavbarUserMenu from './navbar-user-menu.svelte';
 	import { Icon, Menu, X } from 'svelte-hero-icons';
 	import NavbarItemMobile from './navbar-item-mobile.svelte';
 	import NavbarUserMenuMobile from './navbar-user-menu-mobile.svelte';
 	import { slide } from 'svelte/transition';
-
+	import { session } from '$app/stores';
+	import { Role } from '@prisma/client';
 	let isMobileMenuToggled = false;
 
 	function handleMobileMenuToggled() {
@@ -20,7 +21,10 @@
 				<div class="flex-shrink-0 flex items-center dark:text-white">iForal</div>
 				<div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
 					<NavbarItem path="/documents">Documentos</NavbarItem>
-					<NavbarItem path="/tags">Tags</NavbarItem>
+					{#if $session.role === Role.Admin}
+						<NavbarItem path="/tags">Tags</NavbarItem>
+						<NavbarItem path="/users">Utilizadores</NavbarItem>
+					{/if}
 				</div>
 			</div>
 			<div class="hidden sm:ml-6 sm:flex sm:items-center">

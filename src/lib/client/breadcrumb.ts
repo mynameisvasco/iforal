@@ -15,7 +15,9 @@ function createBreadcrumb() {
 		'^/documents/[0-9]+/images$': 'Imagens',
 		'^/documents/[0-9]+/header$': 'Cabeçalho',
 		'^/tags$': 'Tags',
-		'^/tags/create$': 'Nova'
+		'^/tags/create$': 'Nova',
+		'^/users$': 'Utilizadores',
+		'^/users/invite$': 'Convidar'
 	} as any;
 
 	function init() {

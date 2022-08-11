@@ -1,7 +1,5 @@
 import { error, success } from '$lib/client/api';
 import { getPrismaClient } from '$lib/server/prisma';
-import { redis } from '$lib/server/redis';
-import type { Update } from '@codemirror/collab';
 import { ChangeSet, Text } from '@codemirror/state';
 import type { RequestEvent } from '@sveltejs/kit';
 
@@ -41,10 +39,9 @@ export async function put(event: RequestEvent) {
 	}
 
 	const body = await event.request.json();
-	const changes = body.changes;
+	const changes = body.changes as ChangeSet[];
 	const prisma = await getPrismaClient(event.locals.user.id);
-	let document = await prisma.document.findUnique({ select: { body: true }, where: { id } });
-
+	const document = await prisma.document.findUnique({ select: { body: true }, where: { id } });
 	if (!document) {
 		return error(404);
 	}

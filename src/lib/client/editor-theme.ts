@@ -12,9 +12,10 @@ const lightChalky = 'rgb(253 186 116)',
 	lightStone = 'rgb(168 162 158)',
 	darkStone = 'rgb(163 163 163)',
 	darkBackground = 'rgb(41 37 36)',
-	highlightBackground = '#2c313a',
+	veryDarkBackground = '#1c1917',
 	background = 'rgb(255, 255, 255)',
-	selection = 'rgb(68 64 60)',
+	darkSelection = 'rgb(68 64 60)',
+	lightSelection = '#e7e5e4',
 	lightCursor = 'rbg(245 245 244)',
 	darkCursor = 'rgb(64 64 64)';
 
@@ -24,22 +25,34 @@ export const editorDarkThemeDefinition = EditorView.theme(
 			color: lightIvory,
 			backgroundColor: darkBackground
 		},
-
 		'.cm-content': {
 			caretColor: lightCursor
 		},
-
+		'.cm-textfield': {
+			'border-radius': '3px',
+			'font-size': '14px'
+		},
+		'.cm-panels': {
+			padding: '8px',
+			background: veryDarkBackground,
+			'border-right': `1px solid ${darkIvory}`,
+			'border-left': `1px solid ${darkIvory}`,
+			'border-bottom': `1px solid ${darkIvory}`
+		},
+		'.cm-button': {
+			background: darkIvory,
+			'border-radius': '3px',
+			'border-right': `1px solid ${lightStone}`
+		},
 		'.cm-cursor, .cm-dropCursor': { borderLeftColor: lightCursor },
 		'&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-			backgroundColor: selection
+			backgroundColor: darkSelection
 		},
-
 		'.cm-gutters': {
 			backgroundColor: darkBackground,
 			color: lightStone,
 			'border-right': `1px solid ${lightStone}`
 		},
-
 		'.cm-tooltip': {
 			border: lightIvory,
 			backgroundColor: darkIvory,
@@ -74,18 +87,31 @@ export const editorLightThemeDefinition = EditorView.theme(
 		'.cm-content': {
 			caretColor: darkCursor
 		},
-
+		'.cm-textfield': {
+			'border-radius': '3px',
+			'font-size': '14px'
+		},
+		'.cm-panels': {
+			padding: '8px',
+			background: lightIvory,
+			'border-right': `1px solid ${darkStone}`,
+			'border-left': `1px solid ${darkStone}`,
+			'border-bottom': `1px solid ${darkStone}`
+		},
+		'.cm-button': {
+			background: lightIvory,
+			'border-radius': '3px',
+			'border-right': `1px solid ${lightStone}`
+		},
 		'.cm-cursor, .cm-dropCursor': { borderLeftColor: lightCursor },
 		'&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-			backgroundColor: selection
+			backgroundColor: lightSelection
 		},
-
 		'.cm-gutters': {
 			backgroundColor: background,
 			color: darkStone,
 			'border-right': `1px solid ${darkStone}`
 		},
-
 		'.cm-tooltip': {
 			border: darkIvory,
 			backgroundColor: lightIvory,

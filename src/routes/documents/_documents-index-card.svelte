@@ -16,7 +16,7 @@
 			id: 'delete-document',
 			title: 'Apagar Documento',
 			description:
-				'Esta ação é irreversível! Após decidir apagar este documento não existe forma de recuperar qualquer tipo de dados, sejam estes metadados, imagens ou o corpo do documento.',
+				'Após decidir apagar este documento não existe forma de recuperar qualquer tipo de dados, sejam estes metadados, imagens ou o corpo do documento.',
 			actionName: 'Apagar',
 			type: 'danger',
 			onAction: () => deleteForm.dispatchEvent(new SubmitEvent('submit'))

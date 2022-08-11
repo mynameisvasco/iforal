@@ -28,13 +28,13 @@
 	}
 </script>
 
-<div class="relative z-10">
+<div class="relative z-20">
 	<div
 		class="fixed inset-0 bg-stone-500 dark:bg-stone-800 bg-opacity-75 dark:bg-opacity-75 
     transition-opacity"
 	/>
 
-	<div class="fixed z-10 inset-0 overflow-y-auto">
+	<div class="fixed inset-0 overflow-y-auto">
 		<div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
 			<div
 				class="relative bg-white dark:bg-stone-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden 
@@ -47,7 +47,9 @@
 					>
 						<Icon
 							src={type === 'danger' ? Exclamation : InformationCircle}
-							class="w-6 text-stone-700 dark:text-stone-300"
+							class="w-6 {type === 'danger'
+								? 'text-red-700 dark:text-red-300'
+								: 'text-stone-700 dark:text-stone-300'} "
 							solid
 						/>
 					</div>

@@ -25,7 +25,7 @@ export async function post(event: RequestEvent) {
 	const user = await prisma.user.findUnique({ where: { email } });
 
 	if (!user || !(await Bcrypt.compare(password, user.password))) {
-		return error(401, { email: '', password: 'As credenciais fornecidas estão erradas' });
+		return error(401, { email: ' ', password: 'As credenciais fornecidas estão erradas' });
 	}
 
 	const { password: _, ...payload } = user;

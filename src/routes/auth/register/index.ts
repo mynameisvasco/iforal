@@ -1,4 +1,4 @@
-import { error, redirect, success } from '$lib/client/api';
+import { error, redirect } from '$lib/client/api';
 import * as Bcrypt from 'bcrypt';
 import * as Jwt from 'jsonwebtoken';
 import * as Cookie from 'cookie';
@@ -12,7 +12,7 @@ export async function post(event: RequestEvent) {
 		await event.request.formData(),
 		Yup.object({
 			name: Yup.string().required('O nome é obrigatório'),
-			email: Yup.string().required('O email é obrigatório').email('Email deve ser válido'),
+			email: Yup.string().required('O email é obrigatório').email('O email deve ser válido'),
 			password: Yup.string().min(5, 'A palavra passe deve conter pelo menos 5 caracteres')
 		})
 	);
@@ -23,14 +23,20 @@ export async function post(event: RequestEvent) {
 
 	const { name, email, password } = data;
 	const prisma = await getPrismaClient();
+	const invite = await prisma.userInvite.findUnique({ where: { email } });
 	const isEmailInUse = await prisma.user.findUnique({ where: { email } });
 
-	if (isEmailInUse) {
-		return error(400, 'Email is already in use');
+	if (isEmailInUse || !invite) {
+		return error(400, { email: 'O email fornecido já se encontra em uso' });
 	}
 
 	const user = await prisma.user.create({
-		data: { name, email, password: await Bcrypt.hash(password, 10) }
+		data: {
+			name,
+			email,
+			password: await Bcrypt.hash(password, 10),
+			role: invite.role
+		}
 	});
 
 	const { password: _, ...payload } = user;
@@ -43,5 +49,6 @@ export async function post(event: RequestEvent) {
 		)
 	};
 
+	await prisma.userInvite.update({ where: { id: invite.id }, data: { acceptedAt: new Date() } });
 	return redirect('/documents', 303, headers);
 }

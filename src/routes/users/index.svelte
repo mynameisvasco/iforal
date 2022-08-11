@@ -1,30 +1,41 @@
 <script lang="ts">
-	import { enhance } from '$lib/client/forms';
 	import Table from '$lib/client/components/table/table.svelte';
-	import { ChevronDown, Icon, Plus } from 'svelte-hero-icons';
+	import { enhance } from '$lib/client/forms';
+	import type { Modal } from '$lib/client/modals';
+	import type { User } from '@prisma/client';
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
+	import { ChevronDown, Icon, UserAdd } from 'svelte-hero-icons';
 
-	export let data: any[];
+	export let data: User[];
+
+	const confirmDeleteModal: Modal = {
+		id: 'delete-user',
+		title: 'Apagar Utilizador',
+		description:
+			'Após decidir apagar este utilizador não existe forma de recuperar qualquer tipo de dados.',
+		actionName: 'Apagar',
+		type: 'danger'
+	};
 </script>
 
 <svelte:head>
-	<title>iForal - Tags</title>
+	<title>iForal - Utilizadores</title>
 </svelte:head>
 
 <header>
 	<div class="page-header">
 		<div class="flex items-center justify-between">
-			<h1 class="title-1">Tags de Marcação</h1>
-			<a href="/tags/create" class="btn btn-primary" sveltekit:prefetch>
-				<Icon src={Plus} solid class="w-5 mr-1" />
-				Adicionar
+			<h1 class="title-1">Utilizadores</h1>
+			<a href="/users/invite" class="btn btn-primary" sveltekit:prefetch>
+				<Icon src={UserAdd} solid class="w-5 mr-1" />
+				Convidar
 			</a>
 		</div>
 	</div>
 </header>
 <main>
 	<div class="page-body h-full">
-		<Table headers={['Nome', 'Nome Amigável', 'Categoria', 'Filhos?', 'Ações']} {data} let:item>
+		<Table headers={['Nome', 'Email', 'Cargo', 'Ações']} {data} let:item>
 			<tr>
 				<td
 					class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-stone-900 
@@ -33,13 +44,10 @@
 					{item.name}
 				</td>
 				<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
-					{item.friendlyName}
+					{item.email}
 				</td>
 				<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
-					{item.category}
-				</td>
-				<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
-					{item.isChildAllowed}
+					{item.role}
 				</td>
 				<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
 					<Menu class="relative">
@@ -47,14 +55,11 @@
 							Ações <Icon src={ChevronDown} class="w-5 ml-1" />
 						</MenuButton>
 						<MenuItems class="dropdown-menu">
-							<MenuItem class="dropdown-menu-item" href="/tags/{item.id}" sveltekit:prefetch>
-								Editar
-							</MenuItem>
 							<form
 								class="dropdown-menu-item"
-								action="/tags/{item.id}?_method=delete"
+								action="/users/{item.id}?_method=delete"
 								method="post"
-								use:enhance
+								use:enhance={{ confirmModal: confirmDeleteModal }}
 							>
 								<button type="submit" class="w-full text-left text-red-700 dark:text-red-300">
 									Apagar

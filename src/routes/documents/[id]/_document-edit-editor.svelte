@@ -1,33 +1,38 @@
 <script lang="ts">
+	import { onMount, setContext } from 'svelte';
+	import { writable } from 'svelte/store';
+	import type { EditorView } from '@codemirror/view';
+	import { tagToString } from '$lib/common/tags';
+	import DocumentEditEditorSettingsMenu from './_document-edit-editor-settings-menu.svelte';
+	import DocumentEditEditorTagsMenu from './_document-edit-editor-tags-menu.svelte';
+	import { createTeiEditor } from '$lib/client/editor';
 	import { page } from '$app/stores';
-	import { api } from '$lib/client/api';
-	import TeiEditor from '$lib/client/components/tei-editor/tei-editor.svelte';
-	import type { User } from '@prisma/client';
-	import { io, Socket } from 'socket.io-client';
-	import { onDestroy, onMount } from 'svelte';
 
 	export let body: string;
 
 	const documentId = parseInt($page.params.id);
-	let socket: Socket | undefined;
+	let editor = writable({} as EditorView);
+	setContext('editor', editor);
 
-	async function handleAutosave({ detail }: CustomEvent) {
-		await api.put(window.fetch, `/documents/${documentId}`, { changes: detail.changes });
+	function handleApplyTag({ detail }: CustomEvent) {
+		const [range] = $editor.state.selection.ranges;
+		const text = $editor.state.sliceDoc(range.from, range.to);
+		$editor.dispatch($editor.state.replaceSelection(tagToString(detail.tag, text)));
 	}
 
-	function handleUserJoined(currentUsers: User[]) {
-		console.log(currentUsers);
-	}
-
-	onMount(() => {
-		socket = io('ws://localhost:3000/documents');
-		socket.on('joined', (e) => console.log('test'));
-		socket.emit('join', { documentId });
-	});
-
-	onDestroy(() => {
-		socket?.disconnect();
+	onMount(async () => {
+		const element = document.getElementById('editor') as HTMLElement;
+		$editor = createTeiEditor(element, documentId, body);
 	});
 </script>
 
-<TeiEditor value={body} on:autosave={handleAutosave} />
+<div class="h-full">
+	<div
+		class="flex items-center justify-between gap-1 w-full bg-stone-50 dark:bg-stone-900 p-1 rounded-t-md border 
+		border-stone-300 dark:border-stone-700"
+	>
+		<DocumentEditEditorTagsMenu on:applyTag={handleApplyTag} />
+		<DocumentEditEditorSettingsMenu />
+	</div>
+	<div id="editor" />
+</div>
