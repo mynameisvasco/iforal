@@ -2,12 +2,11 @@ import type { ObjectSchema, ValidationError } from 'yup';
 import { goto, invalidate } from '$app/navigation';
 import { page } from '$app/stores';
 import { modals, type Modal } from './modals';
-import type { Result } from './api';
 
 export async function formDataToJson(
 	formData: FormData,
 	validationSchema: ObjectSchema<any>
-): Promise<Result<any>> {
+): Promise<any> {
 	const data = {} as any;
 	let errors = undefined;
 	formData.forEach((value, key) => (data[key] = value));
@@ -33,7 +32,7 @@ export const enhance = (
 	page.subscribe((path) => (invalidatePath = path.url));
 
 	async function handleError(response: Response) {
-		const { errors } = (await response.json()) as Result<any>;
+		const { errors } = await response.json();
 
 		if (errors) {
 			for (const input of Array.from(form!.elements)) {

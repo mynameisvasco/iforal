@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { DocumentText, Icon, MenuAlt2, Minus, Plus, Search } from 'svelte-hero-icons';
+	import { ArrowLeft, ArrowRight, Icon, MenuAlt2, Minus, Plus, Search } from 'svelte-hero-icons';
 	import xmlFormat from 'xml-formatter';
 	import type { Writable } from 'svelte/store';
 	import type { EditorView } from '@codemirror/view';
 	import { editorSettings } from '$lib/client/editor';
-	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { openSearchPanel } from '@codemirror/search';
 
 	const editor = getContext<Writable<EditorView>>('editor');
@@ -18,6 +17,10 @@
 		editorSettings.update((old) => ({ ...old, fontSize: old.fontSize - 1 }));
 	}
 
+	function handleToggleFullWidth() {
+		editorSettings.update((old) => ({ ...old, isFullWidth: !old.isFullWidth }));
+	}
+
 	function handleFormat() {
 		const text = $editor.state.sliceDoc(0, $editor.state.doc.length);
 		$editor.dispatch({
@@ -28,27 +31,19 @@
 
 <div class="flex items-center gap-2">
 	<button type="button" class="btn-editor" on:click={() => openSearchPanel($editor)}>
-		<Icon src={Search} class="w-5 mr-1 text-stone-500 dark:text-stone-400" solid />
-		Pesquisar
+		<Icon src={Search} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
-
 	<button type="button" class="btn-editor" on:click={handleFormat}>
-		<Icon src={MenuAlt2} class="w-5 mr-1 text-stone-500 dark:text-stone-400" solid />
-		Formatar
+		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
-	<div class="h-6 border-r border-stone-300 dark:border-stone-700" />
 	<div class="flex items-center">
-		<Icon src={DocumentText} class="w-5 mr-1 text-stone-500 dark:text-stone-400" solid />
-		<select
-			class="text-sm hover:bg-stone-200 dark:bg-stone-800 py-0.5 px-1 rounded-md border 
-    border-stone-300 dark:border-stone-700 font-medium ring-0 focus:ring-1 
-    focus:ring-orange-300 text-stone-900 dark:text-white"
-			bind:value={$editorSettings.editorColSize}
-		>
-			<option value="6">Pequeno</option>
-			<option value="8">Grande</option>
-			<option value="12">Ecrã Completo</option>
-		</select>
+		<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>
+			<Icon
+				src={$editorSettings.isFullWidth ? ArrowLeft : ArrowRight}
+				class="w-5 text-stone-500 dark:text-stone-400"
+				solid
+			/>
+		</button>
 	</div>
 	<div class="h-6 border-r border-stone-300 dark:border-stone-700" />
 	<button type="button" on:click={handleFontSizeDecrease}>

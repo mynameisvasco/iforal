@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+
 	import { page } from '$app/stores';
 	import { api } from '$lib/client/api';
 	import Avatar from '$lib/client/components/avatar/avatar.svelte';
@@ -20,17 +22,13 @@
 	}
 
 	async function handlePermissionAdd(email: number) {
-		const { data } = await api.post(fetch, `/documents/${documentId}/permissions`, {
-			documentId,
-			email
-		});
-
-		permissions = [...permissions, data as any];
+		await api.post(fetch, `/documents/${documentId}/permissions`, { documentId, email });
+		await invalidate($page.url.href);
 	}
 
 	async function handlePermissionRemove(id: number) {
 		await api.delete(fetch, `/documents/${documentId}/permissions/${id}`);
-		permissions = permissions.filter((p) => p.id !== id);
+		await invalidate($page.url.href);
 	}
 </script>
 
@@ -45,12 +43,12 @@
 				placeholder="Adicionar membro pelo nome ou email"
 				endpoint="/users/search"
 				searchParams={['name', 'email']}
-				on:selected={({ detail }) => handlePermissionAdd(detail.item.email)}
 				let:item
 			>
 				{@const hasPermissionsAlready =
 					creator.email === item.email || permissions.map((p) => p.user.email).includes(item.email)}
 				<div
+					on:click={() => !hasPermissionsAlready && handlePermissionAdd(item.email)}
 					class="flex items-center justify-between w-full"
 					class:opacity-50={hasPermissionsAlready}
 					class:cursor-not-allowed={hasPermissionsAlready}
@@ -58,7 +56,9 @@
 					<div class="flex gap-3">
 						<Avatar name={item.name} size={42} />
 						<div class="flex flex-col">
-							<span class="text-stone-900 dark:text-white text-sm font-medium">{item.name}</span>
+							<span class="text-stone-900 dark:text-white text-sm font-medium">
+								{item.name}
+							</span>
 							<span class="label">{item.email}</span>
 						</div>
 					</div>

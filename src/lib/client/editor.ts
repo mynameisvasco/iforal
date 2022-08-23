@@ -21,12 +21,13 @@ const xmlTagLinter = linter((view) => {
 	syntaxTree(view.state)
 		.cursor()
 		.iterate((node) => {
-			if (node.type.name === 'MissingCloseTag') {
+			console.log(node.type);
+			if (node.type.name === '⚠') {
 				diagnostics.push({
 					from: node.from,
 					to: node.to,
 					severity: 'error',
-					message: `Falta o fim da marcação da tag`
+					message: `Erro de início/fim de marcação`
 				});
 			}
 			if (node.type.name === 'MismatchedCloseTag') {
@@ -34,7 +35,7 @@ const xmlTagLinter = linter((view) => {
 					from: node.from,
 					to: node.to,
 					severity: 'error',
-					message: `O fim da marcação não corresponde ao início da marcação`
+					message: `Erro de início/fim de marcação`
 				});
 			}
 		});
@@ -43,11 +44,11 @@ const xmlTagLinter = linter((view) => {
 
 interface EditorSettings {
 	fontSize: number;
-	editorColSize: number;
+	isFullWidth: boolean;
 }
 
 function createEditorSettings() {
-	const store = writable('editor', { fontSize: 18, editorColSize: 8 } as EditorSettings);
+	const store = writable('editor', { fontSize: 18, isFullWidth: false } as EditorSettings);
 
 	return { ...store };
 }
@@ -102,7 +103,7 @@ export function createTeiEditor(parent: HTMLElement, documentId: number, body: s
 			lintGutter(),
 			collabortative(documentId),
 			highlightSelectionMatches(),
-			search({ top: true }),
+			search(),
 			xmlTagLinter,
 			editorTheme.of(get(theme) === 'dark' ? editorDarkTheme : editorLightTheme),
 			keymap.of([

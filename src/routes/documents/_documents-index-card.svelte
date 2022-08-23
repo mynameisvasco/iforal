@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { format as formatDate } from 'date-fns';
-	import { DotsVertical, Icon } from 'svelte-hero-icons';
+	import { DotsVertical, Icon, Photograph } from 'svelte-hero-icons';
 
 	import type { Document, DocumentImages } from '@prisma/client';
 	import { modals } from '$lib/client/modals';
@@ -33,11 +33,19 @@
 
 <div class="flex flex-col card hover:border-stone-900 dark:hover:border-orange-300">
 	<a href="/documents/{document.id}" sveltekit:prefetch>
-		<img
-			src="/api/storage/{document.images.at(0)?.name}"
-			alt="Imagem ilustrativa do foral"
-			class="h-72 object-cover rounded-t-lg w-full"
-		/>
+		{#if document.images.at(0)}
+			<img
+				src="/api/storage/{document.images.at(0)?.name}"
+				alt="Imagem ilustrativa do foral"
+				class="h-72 object-cover rounded-t-lg w-full"
+			/>
+		{:else}
+			<div
+				class="bg-stone-50 dark:bg-stone-900 w-full h-72 rounded-t-lg flex items-center justify-center"
+			>
+				<Icon src={Photograph} class="w-16 text-stone-400 dark:text-stone-500" />
+			</div>
+		{/if}
 	</a>
 	<div class="p-3 border-t border-stone-300 dark:border-stone-700 rounded-b-lg">
 		<div class="flex justify-between items-center">

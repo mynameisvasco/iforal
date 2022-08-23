@@ -28,8 +28,8 @@
 
 <div class="h-full">
 	<div
-		class="flex items-center justify-between gap-1 w-full bg-stone-50 dark:bg-stone-900 p-1 rounded-t-md border 
-		border-stone-300 dark:border-stone-700"
+		class="flex items-center justify-between gap-1 w-full bg-stone-50 dark:bg-stone-900 p-1 
+		rounded-t-md border border-stone-300 dark:border-stone-700 h-12"
 	>
 		<DocumentEditEditorTagsMenu on:applyTag={handleApplyTag} />
 		<DocumentEditEditorSettingsMenu />

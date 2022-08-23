@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { api } from '$lib/client/api';
-	import { createEventDispatcher } from 'svelte';
 
 	export let placeholder: string;
 	export let searchParams: string[];
@@ -8,19 +7,15 @@
 
 	let value = '';
 	let data = [] as any[];
-	const dispatcher = createEventDispatcher();
 
 	async function handleChange() {
-		const response = await api.get(
+		data = (await api.get<any[]>(
 			fetch,
 			`${endpoint}?${searchParams.map((p) => `${p}=${value}`).join('&')}`
-		);
-
-		data = (response.data as any[]) ?? [];
+		)) as any;
 	}
 
-	function handleSelected(item: any) {
-		dispatcher('selected', { item });
+	function handleClick() {
 		value = '';
 		data = [];
 	}
@@ -30,15 +25,17 @@
 	<input
 		type="text"
 		class="input"
+		name="search"
 		{placeholder}
 		bind:value
 		on:input={handleChange}
-		autocomplete="disabled"
+		autocomplete="off"
+		list="autocompleteOff"
 	/>
 	{#if value !== ''}
 		<div class="dropdown-menu !w-full">
 			{#each data as item}
-				<div class="dropdown-menu-item" on:click={() => handleSelected(item)}>
+				<div class="dropdown-menu-item" on:click={handleClick}>
 					<slot {item} />
 				</div>
 			{:else}

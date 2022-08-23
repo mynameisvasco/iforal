@@ -5,7 +5,7 @@
 	import NavbarItemMobile from './navbar-item-mobile.svelte';
 	import NavbarUserMenuMobile from './navbar-user-menu-mobile.svelte';
 	import { slide } from 'svelte/transition';
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
 	import { Role } from '@prisma/client';
 	let isMobileMenuToggled = false;
 
@@ -21,7 +21,7 @@
 				<div class="flex-shrink-0 flex items-center dark:text-white">iForal</div>
 				<div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
 					<NavbarItem path="/documents">Documentos</NavbarItem>
-					{#if $session.role === Role.Admin}
+					{#if $page.data.user.role === Role.Admin}
 						<NavbarItem path="/tags">Tags</NavbarItem>
 						<NavbarItem path="/users">Utilizadores</NavbarItem>
 					{/if}

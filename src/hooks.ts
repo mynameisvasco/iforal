@@ -1,8 +1,13 @@
-import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
+import type { RequestEvent, RequestHandler, ServerLoadEvent } from '@sveltejs/kit';
 import * as Cookie from 'cookie';
 import Jwt from 'jsonwebtoken';
 
-export async function handle({ event, resolve }: { event: RequestEvent; resolve: RequestHandler }) {
+type HooksHandle = {
+	event: ServerLoadEvent;
+	resolve: RequestHandler;
+};
+
+export async function handle({ event, resolve }: HooksHandle) {
 	const cookiesHeader = event.request.headers.get('cookie');
 	const cookies = Cookie.parse(cookiesHeader ?? '');
 
@@ -20,7 +25,7 @@ export async function handle({ event, resolve }: { event: RequestEvent; resolve:
 		return Response.redirect(`${event.url.origin}/auth/login`);
 	}
 
-	return resolve(event);
+	return resolve(event as any);
 }
 
 export async function getSession(event: RequestEvent) {

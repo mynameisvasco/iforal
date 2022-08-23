@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { enhance } from '$lib/client/forms';
-
 	import type { DocumentImages } from '@prisma/client';
 	import { createEventDispatcher } from 'svelte';
 	import { Icon, X } from 'svelte-hero-icons';
