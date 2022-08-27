@@ -1,10 +1,11 @@
-import * as Bcrypt from 'bcrypt';
 import * as Jwt from 'jsonwebtoken';
 import * as Cookie from 'cookie';
+import * as Bcrypt from 'bcrypt';
 import { redirect, type RequestEvent } from '@sveltejs/kit';
 import { getPrismaClient } from '$lib/server/prisma';
 import { formDataToJson } from '$lib/client/forms';
 import * as Yup from 'yup';
+import { UserStatus } from '@prisma/client';
 
 export async function POST(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
@@ -22,21 +23,15 @@ export async function POST(event: RequestEvent) {
 
 	const { name, email, password } = data;
 	const prisma = await getPrismaClient();
-	const invite = await prisma.userInvite.findUnique({ where: { email } });
-	const isEmailInUse = await prisma.user.findUnique({ where: { email } });
+	const user = await prisma.user.findUnique({ where: { email } });
 
-	if (isEmailInUse || !invite) {
+	if (user?.status === UserStatus.Active) {
 		return { errors: { email: 'O email fornecido já se encontra em uso' } };
 	}
 
-	const user = await prisma.user.create({
-		data: {
-			name,
-			email,
-			password: await Bcrypt.hash(password, 10),
-			role: invite.role
-		}
-	});
+	if (!user) {
+		return { errors: { email: 'O email fornecido não está convidado' } };
+	}
 
 	const { password: _, ...payload } = user;
 	event.setHeaders({
@@ -47,6 +42,14 @@ export async function POST(event: RequestEvent) {
 		)
 	});
 
-	await prisma.userInvite.update({ where: { id: invite.id }, data: { acceptedAt: new Date() } });
+	await prisma.user.update({
+		where: { id: user.id },
+		data: {
+			status: UserStatus.Active,
+			password: await Bcrypt.hash(password, 10),
+			name
+		}
+	});
+
 	throw redirect(303, '/documents');
 }

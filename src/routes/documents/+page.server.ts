@@ -14,7 +14,7 @@ export async function load(event: RequestEvent) {
 		}
 	});
 
-	return { documents: JSON.parse(JSON.stringify(documents)) };
+	return { documents };
 }
 
 export async function POST(event: RequestEvent) {

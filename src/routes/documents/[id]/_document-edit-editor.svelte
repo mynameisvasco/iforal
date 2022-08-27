@@ -5,8 +5,9 @@
 	import { tagToString } from '$lib/common/tags';
 	import DocumentEditEditorSettingsMenu from './_document-edit-editor-settings-menu.svelte';
 	import DocumentEditEditorTagsMenu from './_document-edit-editor-tags-menu.svelte';
-	import { createTeiEditor } from '$lib/client/editor';
+	import { createTeiEditor, editorSettings } from '$lib/client/editor';
 	import { page } from '$app/stores';
+	import DocumenEditEditorViewMode from './_documen-edit-editor-view-mode.svelte';
 
 	export let body: string;
 
@@ -31,8 +32,15 @@
 		class="flex items-center justify-between gap-1 w-full bg-stone-50 dark:bg-stone-900 p-1 
 		rounded-t-md border border-stone-300 dark:border-stone-700 h-12"
 	>
-		<DocumentEditEditorTagsMenu on:applyTag={handleApplyTag} />
+		{#if $editorSettings.isViewMode}
+			<div />
+		{:else}
+			<DocumentEditEditorTagsMenu on:applyTag={handleApplyTag} />
+		{/if}
 		<DocumentEditEditorSettingsMenu />
 	</div>
-	<div id="editor" />
+	{#if $editorSettings.isViewMode}
+		<DocumenEditEditorViewMode {body} />
+	{/if}
+	<div id="editor" class:hidden={$editorSettings.isViewMode} />
 </div>

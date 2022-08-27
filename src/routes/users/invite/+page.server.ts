@@ -2,6 +2,8 @@ import { formDataToJson } from '$lib/client/forms';
 import { getPrismaClient } from '$lib/server/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
+import { randomBytes } from 'crypto';
+import { UserStatus } from '@prisma/client';
 
 export async function POST(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
@@ -19,14 +21,13 @@ export async function POST(event: RequestEvent) {
 
 	const prisma = await getPrismaClient(event.locals.user.id);
 	const { name, email, role } = data;
-	await prisma.userInvite.create({
+	await prisma.user.create({
 		data: {
 			name,
 			email,
 			role,
-			user: {
-				connect: { id: event.locals.user.id }
-			}
+			password: randomBytes(12).toString('hex'),
+			status: UserStatus.Invited
 		}
 	});
 

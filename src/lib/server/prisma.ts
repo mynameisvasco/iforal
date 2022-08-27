@@ -1,4 +1,6 @@
+import { transformAllDatesToString } from '$lib/common/string';
 import { PrismaClient } from '@prisma/client';
+import type { Prisma } from '@prisma/client/';
 
 const clients = new Map<number, PrismaClient>();
 
@@ -12,6 +14,7 @@ export async function getPrismaClient(userId: number = -1) {
 	}
 
 	const client = new PrismaClient();
+	client.$use(dateToStringMiddleware);
 	clients.set(userId, client);
 
 	if (userId !== -1) {
@@ -19,4 +22,14 @@ export async function getPrismaClient(userId: number = -1) {
 	}
 
 	return clients.get(userId)!;
+}
+
+async function dateToStringMiddleware(params: Prisma.MiddlewareParams, next: any) {
+	if (params.action.includes('find')) {
+		const data = await next(params);
+		transformAllDatesToString(data);
+		return data;
+	}
+
+	return next();
 }

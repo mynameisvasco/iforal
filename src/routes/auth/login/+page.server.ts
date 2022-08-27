@@ -1,10 +1,11 @@
 import * as Bcrypt from 'bcrypt';
 import * as Jwt from 'jsonwebtoken';
 import * as Cookie from 'cookie';
-import { redirect, type RequestEvent } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 import { getPrismaClient } from '$lib/server/prisma';
 import { formDataToJson } from '$lib/client/forms';
 import * as Yup from 'yup';
+import { UserStatus } from '@prisma/client';
 
 export async function POST(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
@@ -23,8 +24,12 @@ export async function POST(event: RequestEvent) {
 	const prisma = await getPrismaClient();
 	const user = await prisma.user.findUnique({ where: { email } });
 
-	if (!user || !(await Bcrypt.compare(password, user.password))) {
-		return { errors: { email: '', password: 'As credenciais fornecidas estão erradas' } };
+	if (
+		!user ||
+		!(await Bcrypt.compare(password, user.password)) ||
+		user.status === UserStatus.Invited
+	) {
+		return { errors: { email: '', password: 'A password fornecida não está correta' } };
 	}
 
 	const { password: _, ...payload } = user;
@@ -36,5 +41,5 @@ export async function POST(event: RequestEvent) {
 		)
 	});
 
-	throw redirect(303, '/documents');
+	return new Response();
 }

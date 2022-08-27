@@ -21,7 +21,6 @@ const xmlTagLinter = linter((view) => {
 	syntaxTree(view.state)
 		.cursor()
 		.iterate((node) => {
-			console.log(node.type);
 			if (node.type.name === '⚠') {
 				diagnostics.push({
 					from: node.from,
@@ -45,10 +44,15 @@ const xmlTagLinter = linter((view) => {
 interface EditorSettings {
 	fontSize: number;
 	isFullWidth: boolean;
+	isViewMode: boolean;
 }
 
 function createEditorSettings() {
-	const store = writable('editor', { fontSize: 18, isFullWidth: false } as EditorSettings);
+	const store = writable('editor', {
+		fontSize: 18,
+		isFullWidth: false,
+		isViewMode: false
+	} as EditorSettings);
 
 	return { ...store };
 }
@@ -56,18 +60,9 @@ function createEditorSettings() {
 function collabortative(documentId: number) {
 	const plugin = ViewPlugin.fromClass(
 		class {
-			private buffer: ChangeSet[] = [];
-			private deboucedUpdate = debounce(async () => {
-				await api.put(fetch, `/documents/${documentId}`, { changes: this.buffer });
-				this.buffer = [];
-			}, 1500);
-
-			constructor(private view: EditorView) {}
-
 			async update(update: ViewUpdate) {
 				if (update.docChanged) {
-					this.buffer.push(update.changes);
-					this.deboucedUpdate();
+					await api.put(fetch, `/documents/${documentId}`, { changes: update.changes });
 				}
 			}
 		}

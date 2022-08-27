@@ -1,9 +1,6 @@
 <script lang="ts">
 	import RegisterForm from './_register-form.svelte';
 	import RegisterHeader from './_register-header.svelte';
-	import type { Errors } from './$types';
-
-	export let errors: Errors;
 </script>
 
 <div class="min-h-screen flex">
@@ -12,7 +9,7 @@
 	>
 		<div class="mx-auto w-full max-w-sm lg:w-96">
 			<RegisterHeader />
-			<RegisterForm {errors} />
+			<RegisterForm />
 		</div>
 	</div>
 	<div class="hidden lg:block relative w-0 flex-1">

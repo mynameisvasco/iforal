@@ -1,6 +1,16 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { ArrowLeft, ArrowRight, Icon, MenuAlt2, Minus, Plus, Search } from 'svelte-hero-icons';
+	import {
+		ArrowLeft,
+		ArrowRight,
+		Code,
+		Eye,
+		Icon,
+		MenuAlt2,
+		Minus,
+		Plus,
+		Search
+	} from 'svelte-hero-icons';
 	import xmlFormat from 'xml-formatter';
 	import type { Writable } from 'svelte/store';
 	import type { EditorView } from '@codemirror/view';
@@ -27,6 +37,10 @@
 			changes: { from: 0, to: $editor.state.doc.length, insert: xmlFormat(text) }
 		});
 	}
+
+	function handleToggleViewMode() {
+		editorSettings.update((old) => ({ ...old, isViewMode: !old.isViewMode }));
+	}
 </script>
 
 <div class="flex items-center gap-2">
@@ -35,6 +49,13 @@
 	</button>
 	<button type="button" class="btn-editor" on:click={handleFormat}>
 		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
+	</button>
+	<button type="button" class="btn-editor" on:click={handleToggleViewMode}>
+		<Icon
+			src={$editorSettings.isViewMode ? Code : Eye}
+			class="w-5 text-stone-500 dark:text-stone-400"
+			solid
+		/>
 	</button>
 	<div class="flex items-center">
 		<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>

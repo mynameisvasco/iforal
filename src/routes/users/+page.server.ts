@@ -14,7 +14,7 @@ export async function load(event: RequestEvent) {
 	const users = await prisma.user.findMany({
 		take: 20,
 		skip: (page - 1) * 20,
-		select: { id: true, name: true, email: true, role: true }
+		select: { id: true, name: true, email: true, role: true, status: true }
 	});
 
 	return { users };

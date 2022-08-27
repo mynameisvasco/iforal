@@ -1,9 +1,6 @@
 <script lang="ts">
 	import LoginForm from './_login-form.svelte';
 	import LoginHeader from './_login-header.svelte';
-	import type { Errors } from './$types';
-
-	export let errors: Errors;
 </script>
 
 <div class="min-h-screen flex">
@@ -12,7 +9,7 @@
 	>
 		<div class="mx-auto w-full max-w-sm lg:w-96">
 			<LoginHeader />
-			<LoginForm {errors} />
+			<LoginForm />
 		</div>
 	</div>
 

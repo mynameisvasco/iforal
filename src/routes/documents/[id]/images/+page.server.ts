@@ -15,7 +15,7 @@ export async function load(event: RequestEvent) {
 		orderBy: { position: 'asc' }
 	});
 
-	return { images: JSON.parse(JSON.stringify(images)) };
+	return { images };
 }
 
 export async function POST(event: RequestEvent) {

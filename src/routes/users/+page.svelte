@@ -1,10 +1,12 @@
 <script lang="ts">
+	import Badge from '$lib/client/components/badge/Badge.svelte';
 	import Table from '$lib/client/components/table/table.svelte';
 	import { enhance } from '$lib/client/forms';
 	import type { Modal } from '$lib/client/modals';
 	import { Menu, MenuButton, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { ChevronDown, Icon, UserAdd } from 'svelte-hero-icons';
 	import type { PageData } from './$types';
+	import { UserStatus } from '@prisma/client';
 
 	export let data: PageData;
 
@@ -35,7 +37,7 @@
 </header>
 <main>
 	<div class="page-body h-full">
-		<Table headers={['Nome', 'Email', 'Cargo', 'Ações']} data={data.users} let:item>
+		<Table headers={['Nome', 'Email', 'Estado', 'Cargo', 'Ações']} data={data.users} let:item>
 			<tr>
 				<td
 					class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-stone-900 
@@ -45,6 +47,11 @@
 				</td>
 				<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
 					{item.email}
+				</td>
+				<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
+					<Badge type={item.status === 'Active' ? 'success' : 'warning'}>
+						{item.status}
+					</Badge>
 				</td>
 				<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
 					{item.role}

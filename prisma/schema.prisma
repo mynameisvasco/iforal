@@ -12,6 +12,11 @@ enum Role {
   Regular
 }
 
+enum UserStatus {
+  Invited
+  Active
+}
+
 model User {
   id                  Int                   @id @default(autoincrement())
   name                String                @db.VarChar(90)
@@ -19,20 +24,9 @@ model User {
   password            String                @db.VarChar(90)
   createdAt           DateTime              @default(now())
   role                Role                  @default(Regular)
+  status              UserStatus            @default(Invited)
   document            Document[]
   documentPermissions DocumentPermissions[]
-  userInvites         UserInvite[]
-}
-
-model UserInvite {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(90)
-  email      String    @unique @db.VarChar(90)
-  role       Role      @default(Regular)
-  createdAt  DateTime  @default(now())
-  acceptedAt DateTime?
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
 }
 
 model Document {
