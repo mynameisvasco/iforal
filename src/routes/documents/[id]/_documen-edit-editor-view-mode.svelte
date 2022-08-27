@@ -10,8 +10,16 @@
 
 	export let body: string;
 
+	const CETEIcean = new CETEI({ ignoreFragmentId: true });
+	CETEIcean.addBehaviors({
+		namespaces: { tei: 'http://www.tei-c.org/ns/1.0' },
+		tei: {
+			lb: ['<br>']
+		},
+		lb: ['<br>']
+	});
+
 	onMount(() => {
-		const CETEIcean = new CETEI();
 		CETEIcean.makeHTML5(body, (data: any) => document.getElementById('viewer')?.appendChild(data));
 	});
 </script>

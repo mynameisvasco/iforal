@@ -29,7 +29,7 @@
 {:else}
 	<div class="bg-stone-100 dark:bg-stone-900 min-h-screen">
 		<Navbar />
-		<div class="px-4 xl:px-20 2xl:px-32 pt-6">
+		<div class="px-4 xl:px-16 2xl:px-24 pt-6">
 			<Breadcrumb />
 		</div>
 		<slot />

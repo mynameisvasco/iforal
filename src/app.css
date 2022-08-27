@@ -65,11 +65,11 @@ html {
 }
 
 .page-header {
-	@apply px-4 xl:px-20 2xl:px-32 py-6;
+	@apply px-4 xl:px-16 2xl:px-24 py-6;
 }
 
 .page-body {
-	@apply px-4 xl:px-20 2xl:px-32 pb-8;
+	@apply px-4 xl:px-16 2xl:px-24 pb-8;
 }
 
 .title-1 {

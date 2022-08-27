@@ -28,7 +28,7 @@
 	<div class="page-body h-full">
 		<div class="grid grid-cols-12 gap-6">
 			{#each data.documents as document}
-				<div class="col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2">
+				<div class="col-span-5 md:col-span-4 lg:col-span-3 2xl:col-span-2">
 					<IndexDocumentsCard {document} />
 				</div>
 			{:else}

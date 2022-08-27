@@ -109,8 +109,9 @@
 						value={$page.data.documentHeader.lang}
 					>
 						<option value="pt">Português</option>
-						<option value="pt-lt">Português / Latin</option>
-						<option value="lt-pt">Latin / Português</option>
+						<option value="pt-lt">Português / Latim</option>
+						<option value="lt-pt">Latim / Português</option>
+						<option value="lt">Latim</option>
 					</select>
 				</div>
 				<div class="col-span-12 lg:col-span-6">

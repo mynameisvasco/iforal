@@ -15,7 +15,7 @@
 </script>
 
 <nav class="bg-white dark:bg-stone-800 shadow-sm">
-	<div class="px-4 xl:px-20 2xl:px-32">
+	<div class="px-4 xl:px-16 2xl:px-24">
 		<div class="flex justify-between h-16">
 			<div class="flex">
 				<div class="flex-shrink-0 flex items-center dark:text-white">iForal</div>
