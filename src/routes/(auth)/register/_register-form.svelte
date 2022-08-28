@@ -4,7 +4,7 @@
 
 <form
 	class="space-y-6 mt-8"
-	action="/auth/register"
+	action="/register"
 	method="post"
 	use:enhance={{ redirect: '/documents' }}
 >

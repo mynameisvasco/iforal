@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$lib/client/forms';
 	import { Icon, Save } from 'svelte-hero-icons';
-	import type { PageData } from './$types';
+	import type { PageData } from '../../../../../../.svelte-kit/types/src/routes/documents/[id]/header/$types';
 	import DocumentHeaderEditFormEncoding from './_document-header-edit-form-encoding.svelte';
 	import DocumentHeaderEditFormPublication from './_document-header-edit-form-publication.svelte';
 	import DocumentHeaderEditFormSource from './_document-header-edit-form-source.svelte';

@@ -1,10 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import { page } from '$app/stores';
-	import Navbar from '$lib/client/components/navbar/navbar.svelte';
-	import ModalContainer from './_modal-container.svelte';
-	import NotificationsContainer from './_notifications-container.svelte';
-	import Breadcrumb from '$lib/client/components/breadcrumb/breadcrumb.svelte';
 </script>
 
 <svelte:head>
@@ -20,18 +15,4 @@
 	<meta name="theme-color" content="rgb(41, 37, 36)" media="(prefers-color-scheme: dark)" />
 </svelte:head>
 
-<ModalContainer />
-<NotificationsContainer />
-{#if $page.url.pathname.includes('auth')}
-	<div class="bg-stone-100 dark:bg-stone-900 min-h-screen">
-		<slot />
-	</div>
-{:else}
-	<div class="bg-stone-100 dark:bg-stone-900 min-h-screen">
-		<Navbar />
-		<div class="px-4 xl:px-16 2xl:px-24 pt-6">
-			<Breadcrumb />
-		</div>
-		<slot />
-	</div>
-{/if}
+<slot />

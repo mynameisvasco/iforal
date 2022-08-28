@@ -11,5 +11,5 @@ export async function GET(event: RequestEvent) {
 		})
 	});
 
-	throw redirect(303, '/auth/login');
+	throw redirect(303, '/login');
 }

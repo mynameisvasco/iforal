@@ -29,10 +29,7 @@
 	});
 </script>
 
-<div
-	class="card !bg-black h-full rounded-md bg-cover relative overflow-hidden flex items-center"
-	style="height: 750px;"
->
+<div class="card !bg-black h-full rounded-md bg-cover relative overflow-hidden flex items-center">
 	{#if images[currentImageIndex]}
 		<img
 			id="foral"

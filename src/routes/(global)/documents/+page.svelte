@@ -1,7 +1,7 @@
 <script lang="ts">
 	import IndexDocumentsCard from './_documents-index-card.svelte';
 	import IndexDocumentsEmpty from './_documents-index-empty.svelte';
-	import type { PageData } from './$types';
+	import type { PageData } from '../../../../.svelte-kit/types/src/routes/documents/$types';
 	import { Icon, Plus } from 'svelte-hero-icons';
 
 	export let data: PageData;

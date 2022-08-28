@@ -14,11 +14,18 @@
 		</button>
 	</MenuButton>
 	<MenuItems class="dropdown-menu">
-		<MenuItem href="/documents/{documentId}/header" class="dropdown-menu-item">
-			Editar Cabeçalho
+		<MenuItem class="dropdown-menu-item">
+			<a href="/documents/{documentId}/viewer" class="w-full" sveltekit:prefetch> Ler Documento </a>
+		</MenuItem>
+		<MenuItem class="dropdown-menu-item">
+			<a href="/documents/{documentId}/header" class="w-full" sveltekit:prefetch>
+				Editar Cabeçalho
+			</a>
 		</MenuItem>
 		<MenuItem href="/documents/{documentId}/images" class="dropdown-menu-item">
-			Editar Imagens
+			<a href="/documents/{documentId}/header" class="w-full" sveltekit:prefetch>
+				Editar Imagens
+			</a>
 		</MenuItem>
 		<MenuItem class="dropdown-menu-item !text-red-500 dark:!text-red-300">Apagar</MenuItem>
 	</MenuItems>

@@ -16,13 +16,16 @@ export async function handle({ event, resolve }: HooksHandle) {
 	}
 
 	const isAuthed = !!event.locals.user;
+	const isLoginRoute = event.url.pathname.includes('login');
+	const isRegisterRoute = event.url.pathname.includes('register');
+	const isLogoutRoute = event.url.pathname.includes('logout');
 
-	if (event.url.pathname.includes('auth') && !event.url.pathname.includes('logout') && isAuthed) {
+	if ((isLoginRoute || isRegisterRoute) && !isLogoutRoute && isAuthed) {
 		return Response.redirect(`${event.url.origin}/documents`);
 	}
 
-	if (!event.url.pathname.includes('auth') && !isAuthed) {
-		return Response.redirect(`${event.url.origin}/auth/login`);
+	if (!(isLoginRoute || isRegisterRoute) && !isAuthed) {
+		return Response.redirect(`${event.url.origin}/login`);
 	}
 
 	return resolve(event as any);

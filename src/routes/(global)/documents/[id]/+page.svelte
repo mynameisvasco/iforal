@@ -36,7 +36,6 @@
 			>
 				<DocumentEditEditor body={data.document.body} />
 			</div>
-
 			{#if !$editorSettings.isFullWidth}
 				<div class="h-full col-span-4">
 					<Gallery images={data.document.images} />

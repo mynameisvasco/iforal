@@ -5,7 +5,7 @@
 	import DocumentCreateFormPublication from './_document-create-form-publication.svelte';
 	import { enhance, draft } from '$lib/client/forms';
 	import type { Modal } from '$lib/client/modals';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { Icon, Save } from 'svelte-hero-icons';
 
 	const draftTitle = browser ? localStorage.getItem('document-create-title') : undefined;

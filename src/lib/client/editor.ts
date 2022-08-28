@@ -44,14 +44,12 @@ const xmlTagLinter = linter((view) => {
 interface EditorSettings {
 	fontSize: number;
 	isFullWidth: boolean;
-	isViewMode: boolean;
 }
 
 function createEditorSettings() {
 	const store = writable('editor', {
 		fontSize: 18,
-		isFullWidth: false,
-		isViewMode: false
+		isFullWidth: false
 	} as EditorSettings);
 
 	return { ...store };

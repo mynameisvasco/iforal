@@ -2,12 +2,7 @@
 	import { enhance } from '$lib/client/forms';
 </script>
 
-<form
-	class="space-y-6 mt-8"
-	method="post"
-	action="/auth/login"
-	use:enhance={{ redirect: '/documents' }}
->
+<form class="space-y-6 mt-8" method="post" action="/login" use:enhance={{ redirect: '/documents' }}>
 	<div>
 		<label for="email" class="label"> Endereço de Email </label>
 		<div class="mt-1">

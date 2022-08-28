@@ -37,10 +37,6 @@
 			changes: { from: 0, to: $editor.state.doc.length, insert: xmlFormat(text) }
 		});
 	}
-
-	function handleToggleViewMode() {
-		editorSettings.update((old) => ({ ...old, isViewMode: !old.isViewMode }));
-	}
 </script>
 
 <div class="flex items-center gap-2">
@@ -50,13 +46,7 @@
 	<button type="button" class="btn-editor" on:click={handleFormat}>
 		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
-	<button type="button" class="btn-editor" on:click={handleToggleViewMode}>
-		<Icon
-			src={$editorSettings.isViewMode ? Code : Eye}
-			class="w-5 text-stone-500 dark:text-stone-400"
-			solid
-		/>
-	</button>
+
 	<div class="flex items-center">
 		<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>
 			<Icon
