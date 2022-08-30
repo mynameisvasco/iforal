@@ -5,6 +5,9 @@ import preprocess from 'svelte-preprocess';
 const config = {
 	kit: {
 		adapter: adapter(),
+		alias: {
+			$stores: './src/stores'
+		},
 		methodOverride: {
 			allowed: ['PUT', 'DELETE']
 		}

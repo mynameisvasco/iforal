@@ -1,4 +1,4 @@
-import { getPrismaClient } from '$lib/server/prisma';
+import { getPrismaClient } from '$lib/prisma';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { error, type RequestEvent } from '@sveltejs/kit';

@@ -1,4 +1,4 @@
-import { getPrismaClient } from '$lib/server/prisma';
+import { getPrismaClient } from '$lib/prisma';
 import { error, type RequestEvent } from '@sveltejs/kit';
 
 export async function DELETE(event: RequestEvent) {

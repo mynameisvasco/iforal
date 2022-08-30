@@ -1,0 +1,113 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+	import InputList from '$lib/components/input-list.svelte';
+	import { enhance } from '$lib/forms';
+	import type { Tag } from '@prisma/client';
+	import { Icon, Save } from 'svelte-hero-icons';
+
+	export let tag: Tag;
+
+	let addingAttribute: { name: string; values: string } = { name: '', values: '' };
+</script>
+
+<form
+	class="mt-12"
+	action="/tags/{$page.data.tag.id}?_method=PUT"
+	method="post"
+	use:enhance={{ redirect: '/tags' }}
+>
+	<div class="md:grid md:grid-cols-3 md:gap-6">
+		<div class="md:col-span-1">
+			<h3 class="title-2">Detalhes</h3>
+			<p class="mt-1 label">Conjunto de informações que caracteriza o marcador em questão</p>
+		</div>
+		<div class="mt-5 md:mt-0 md:col-span-2">
+			<div class="grid grid-cols-12 gap-6 card p-6">
+				<div class="col-span-12 lg:col-span-6">
+					<label for="name" class="label">Nome</label>
+					<input
+						id="name"
+						name="name"
+						class="input mt-1"
+						type="text"
+						placeholder="pb"
+						value={tag.name}
+					/>
+				</div>
+				<div class="col-span-12 lg:col-span-6">
+					<label for="friendlyName" class="label">Nome Amigável</label>
+					<input
+						id="friendlyName"
+						name="friendlyName"
+						class="input mt-1"
+						type="text"
+						placeholder="Início de Página"
+						value={tag.friendlyName}
+					/>
+				</div>
+				<div class="col-span-12 lg:col-span-6">
+					<label for="category" class="label">Categoria</label>
+					<input
+						id="category"
+						name="category"
+						class="input mt-1"
+						type="text"
+						placeholder="Estrutura"
+						value={tag.category}
+					/>
+				</div>
+				<div class="col-span-12 lg:col-span-6 mt-6">
+					<div class="relative flex items-start">
+						<div class="flex items-center h-5">
+							<input
+								id="isChildAllowed"
+								name="isChildAllowed"
+								type="checkbox"
+								checked={tag.isChildAllowed}
+								class="focus:ring-stone-900 dark:focus:ring-orange-300 h-4 w-4 
+                text-stone-600 border-stone-300 dark:border-stone-700 rounded dark:bg-stone-800"
+							/>
+						</div>
+						<div class="ml-3 text-sm">
+							<label for="isChildAllowed" class="label">Contém filho?</label>
+							<p class="text-stone-500">Um filho é um marcador que existe dentro de outro</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-span-12 lg:col-span-6">
+					<label for="attributes" class="label">Atributos</label>
+					<InputList id="attributes" bind:addingValues={addingAttribute} value={tag.attributes}>
+						<span slot="list" let:value>
+							<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
+							<p class="text-sm text-stone-500 dark:text-stone-300">{value.values}</p>
+						</span>
+						<span slot="inputs" class="flex w-full gap-6" let:handleAdd>
+							<input
+								type="text"
+								placeholder="n"
+								class="input"
+								bind:value={addingAttribute.name}
+								on:blur={handleAdd}
+							/>
+							<input
+								type="text"
+								placeholder="cancelled, damaged, ..."
+								class="input"
+								bind:value={addingAttribute.values}
+								on:blur={handleAdd}
+							/>
+						</span>
+					</InputList>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="py-8">
+		<div class="border-t border-stone-300 dark:border-stone-700" />
+	</div>
+	<div class="flex justify-end gap-6">
+		<button class="btn btn-primary" type="submit">
+			<Icon src={Save} solid class="w-5 mr-1" /> Guardar
+		</button>
+	</div>
+</form>

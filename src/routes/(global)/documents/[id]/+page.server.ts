@@ -1,4 +1,4 @@
-import { getPrismaClient } from '$lib/server/prisma';
+import { getPrismaClient } from '$lib/prisma';
 import { ChangeSet, Text } from '@codemirror/state';
 import { error, type RequestEvent } from '@sveltejs/kit';
 
@@ -13,11 +13,7 @@ export async function load(event: RequestEvent) {
 		where: { id },
 		include: {
 			images: { orderBy: { position: 'asc' } },
-			permissions: {
-				include: {
-					user: { select: { name: true, email: true } }
-				}
-			},
+			permissions: { include: { user: { select: { name: true, email: true } } } },
 			user: true
 		}
 	});
@@ -26,7 +22,8 @@ export async function load(event: RequestEvent) {
 		throw error(404);
 	}
 
-	return { document };
+	const tags = await prisma.tag.findMany({ orderBy: { id: 'asc' } });
+	return { document, tags };
 }
 
 export async function PUT(event: RequestEvent) {

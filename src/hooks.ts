@@ -1,18 +1,21 @@
-import type { RequestEvent, RequestHandler, ServerLoadEvent } from '@sveltejs/kit';
+import { JWT_SECRET } from '$env/static/private';
+import type { RequestEvent, ResolveOptions } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 import * as Cookie from 'cookie';
 import Jwt from 'jsonwebtoken';
 
-type HooksHandle = {
-	event: ServerLoadEvent;
-	resolve: RequestHandler;
-};
+interface HandleInput {
+	event: RequestEvent;
+	resolve(event: RequestEvent, opts?: ResolveOptions): any;
+}
 
-export async function handle({ event, resolve }: HooksHandle) {
+export async function authentication(input: HandleInput) {
+	const { event, resolve } = input;
 	const cookiesHeader = event.request.headers.get('cookie');
 	const cookies = Cookie.parse(cookiesHeader ?? '');
 
 	if (cookies.accessToken) {
-		event.locals.user = Jwt.verify(cookies.accessToken, '1h29r781gf987ubg198723ghd182') as any;
+		event.locals.user = Jwt.verify(cookies.accessToken, JWT_SECRET) as any;
 	}
 
 	const isAuthed = !!event.locals.user;
@@ -31,6 +34,4 @@ export async function handle({ event, resolve }: HooksHandle) {
 	return resolve(event as any);
 }
 
-export async function getSession(event: RequestEvent) {
-	return event.locals.user;
-}
+export const handle = sequence(authentication);

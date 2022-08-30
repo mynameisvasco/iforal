@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$lib/client/forms';
+	import { enhance } from '$lib/forms';
 </script>
 
 <form class="space-y-6 mt-8" method="post" action="/login" use:enhance={{ redirect: '/documents' }}>
@@ -16,7 +16,9 @@
 		</div>
 	</div>
 	<div class="flex items-center justify-between">
-		<a href="/forget-password" class="link text-sm" sveltekit:prefetch> Esqueci-me da password </a>
+		<a href="/forget-password" class="link text-sm" data-sveltekit-prefetch>
+			Esqueci-me da password
+		</a>
 	</div>
 	<div>
 		<button type="submit" class="btn btn-primary w-full justify-center"> Entrar </button>

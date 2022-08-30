@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import InputList from '$lib/client/components/input-list/input-list.svelte';
+	import InputList from '$lib/components/input-list.svelte';
 
 	let addingEditor = { name: '', role: '' };
 	let addingFunder = { name: '' };

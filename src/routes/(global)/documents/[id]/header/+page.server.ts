@@ -1,5 +1,5 @@
-import { formDataToJson } from '$lib/client/forms';
-import { getPrismaClient } from '$lib/server/prisma';
+import { formDataToJson } from '$lib/forms';
+import { getPrismaClient } from '$lib/prisma';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
 

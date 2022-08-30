@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$lib/client/forms';
+	import { enhance } from '$lib/forms';
 </script>
 
 <form

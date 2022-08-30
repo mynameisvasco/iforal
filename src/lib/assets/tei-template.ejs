@@ -1,0 +1,53 @@
+<TEI version="3.3.0" xmlns="http://www.tei-c.org/ns/1.0">
+	<teiHeader>
+		<fileDesc>
+			<titleStmt>
+				<title><%= title %></title>
+				<% header.editors.forEach(({name, role}) => { %>
+				<editor role="<%= role %>"><%= name %></editor>
+				<% }) %> <% header.funders.forEach(({name}) => { %>
+				<funder><%= name %></funder>
+				<% }) %>
+			</titleStmt>
+			<publicationStmt>
+				<publisher><%= header.publisher %></publisher>
+				<pubPlace><%= header.publisherPlace %></pubPlace>
+				<date><%= header.publisherDate %></date>
+				<licence><%= header.licence %></licence>
+			</publicationStmt>
+			<sourceDesc>
+				<msDesc>
+					<msIdentifier>
+						<country><%= header.country %></country>
+						<institution><%= header.institution %></institution>
+						<repository><%= header.repository %></repository>
+						<idno><%= header.idno %></idno>
+						<author>
+							<% header.authors.forEach(({name, role}) => { %>
+							<person role="<%= role %>">
+								<persName><%= name %></persName>
+							</person>
+							<% }) %>
+						</author>
+						<origDate><%= header.originDate %></origDate>
+						<origPlace><%= header.originPlace %></origPlace>
+						<% header.altIdentifier.forEach(({value, type}) => { %>
+						<altIdentifier type="<%= type %>">
+							<idno><%= value %></idno>
+						</altIdentifier>
+						<% }) %>
+					</msIdentifier>
+					<msContents>
+						<filiation><%= header.filiation %></filiation>
+						<summary><%= header.summary %></summary>
+					</msContents>
+				</msDesc>
+			</sourceDesc>
+		</fileDesc>
+	</teiHeader>
+	<text>
+		<body>
+			<p>This is about the shortest TEI document imaginable.</p>
+		</body>
+	</text>
+</TEI>

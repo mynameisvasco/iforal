@@ -46,7 +46,7 @@ model DocumentHeader {
   id             Int      @id @default(autoincrement())
   title          String   @db.VarChar(255)
   editors        Json
-  funders        String   @db.VarChar(255)
+  funders        Json
   country        String   @db.VarChar(4)
   institution    String   @db.VarChar(255)
   repository     String   @db.VarChar(255)
@@ -61,7 +61,7 @@ model DocumentHeader {
   originDate     DateTime
   originPlace    String   @db.VarChar(255)
   lang           String
-  filliation     String
+  filiation      String
   summary        String
   encoding       String
   document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)

@@ -1,10 +1,30 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { enhance } from '$lib/forms';
+	import { modals } from '$stores/modals';
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { ChevronDown, Icon } from 'svelte-hero-icons';
 
-	const documentId = parseInt($page.params.id);
+	let deleteForm: HTMLFormElement;
+	async function handleDelete() {
+		modals.open({
+			id: 'delete-document',
+			title: 'Apagar Documento',
+			description:
+				'Após decidir apagar este documento não existe forma de recuperar qualquer tipo de dados, sejam estes metadados, imagens ou o corpo do documento.',
+			actionName: 'Apagar',
+			type: 'danger',
+			onAction: () => deleteForm.dispatchEvent(new SubmitEvent('submit'))
+		});
+	}
 </script>
+
+<form
+	action="/documents/{$page.data.document.id}?_method=DELETE"
+	method="post"
+	use:enhance
+	bind:this={deleteForm}
+/>
 
 <Menu class="relative">
 	<MenuButton>
@@ -14,19 +34,22 @@
 		</button>
 	</MenuButton>
 	<MenuItems class="dropdown-menu">
-		<MenuItem class="dropdown-menu-item">
-			<a href="/documents/{documentId}/viewer" class="w-full" sveltekit:prefetch> Ler Documento </a>
+		<MenuItem
+			class="dropdown-menu-item"
+			href="/documents/{$page.data.document.id}/header"
+			data-sveltekit-prefetch
+		>
+			Editar Cabeçalho
 		</MenuItem>
-		<MenuItem class="dropdown-menu-item">
-			<a href="/documents/{documentId}/header" class="w-full" sveltekit:prefetch>
-				Editar Cabeçalho
-			</a>
+		<MenuItem
+			class="dropdown-menu-item"
+			href="/documents/{$page.data.document.id}/images"
+			data-sveltekit-prefetch
+		>
+			Editar Imagens
 		</MenuItem>
-		<MenuItem href="/documents/{documentId}/images" class="dropdown-menu-item">
-			<a href="/documents/{documentId}/header" class="w-full" sveltekit:prefetch>
-				Editar Imagens
-			</a>
+		<MenuItem class="dropdown-menu-item !text-red-500 dark:!text-red-300" on:click={handleDelete}>
+			Apagar
 		</MenuItem>
-		<MenuItem class="dropdown-menu-item !text-red-500 dark:!text-red-300">Apagar</MenuItem>
 	</MenuItems>
 </Menu>

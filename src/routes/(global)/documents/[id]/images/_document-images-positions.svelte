@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { enhance } from '$lib/client/forms';
+	import { enhance } from '$lib/forms';
 	import type { DocumentImages } from '@prisma/client';
 	import { createEventDispatcher } from 'svelte';
 	import { Icon, X } from 'svelte-hero-icons';
@@ -39,11 +39,11 @@
 <div class="grid grid-cols-12 gap-6 ">
 	{#each images as image}
 		<div class="col-span-6 md:col-span-3 xl:col-span-2 flex flex-col items-center">
-			<a href="/api/storage/{image.name}" target="_blank">
+			<a href="/images/{image.name}" target="_blank">
 				<img
 					class="cursor-pointer border border-stone-300 dark:border-stone-700 shadow rounded-md
 					mb-1"
-					src="/api/storage/{image.name}"
+					src="/images/{image.name}"
 					alt={image.name}
 					on:dragstart={() => handleDragStart(image.id, image.name)}
 					on:dragend={handleDragEnd}

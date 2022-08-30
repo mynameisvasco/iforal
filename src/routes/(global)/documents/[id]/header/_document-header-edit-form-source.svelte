@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import InputList from '$lib/client/components/input-list/input-list.svelte';
-	import countries from '$lib/common/countries.json';
+	import InputList from '$lib/components/input-list.svelte';
+	import countries from '$lib/assets/countries.json';
 
 	let addingAuthor = { name: '', role: '' };
 	let addingAltIdentifier = { type: '', value: '' };

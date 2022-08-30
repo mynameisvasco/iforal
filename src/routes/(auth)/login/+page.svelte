@@ -3,9 +3,9 @@
 	import LoginHeader from './_login-header.svelte';
 </script>
 
-<sveltekit:head>
+<data-sveltekit-head>
 	<title>iForal - Entrar na conta</title>
-</sveltekit:head>
+</data-sveltekit-head>
 
 <div class="min-h-screen flex">
 	<div

@@ -1,7 +1,7 @@
-import { getPrismaClient } from '$lib/server/prisma';
+import { getPrismaClient } from '$lib/prisma';
 import type { RequestEvent } from '@sveltejs/kit';
 import { parse as parseDate } from 'date-fns';
-import { formDataToJson } from '$lib/client/forms';
+import { formDataToJson } from '$lib/forms';
 import * as Yup from 'yup';
 
 export async function load(event: RequestEvent) {
@@ -51,7 +51,11 @@ export async function POST(event: RequestEvent) {
 				create: {
 					...data,
 					originDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date()),
-					publisherDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date())
+					publisherDate: parseDate(data.originDate, 'yyyy-MM-dd', new Date()),
+					editors: JSON.parse(data.editors),
+					funders: JSON.parse(data.funders),
+					authors: JSON.parse(data.authors),
+					altIdentifier: JSON.parse(data.altIdentifier)
 				}
 			},
 			body: '',

@@ -1,8 +1,10 @@
 <script lang="ts">
-	import IndexDocumentsCard from './_documents-index-card.svelte';
-	import IndexDocumentsEmpty from './_documents-index-empty.svelte';
-	import type { PageData } from '../../../../.svelte-kit/types/src/routes/documents/$types';
-	import { Icon, Plus } from 'svelte-hero-icons';
+	import { DocumentAdd, Icon, Plus } from 'svelte-hero-icons';
+	import PageHeader from '$lib/components/page-header.svelte';
+	import PageBody from '$lib/components/page-body.svelte';
+	import DocumentCard from '$lib/components/document-card.svelte';
+	import EmptyState from '$lib/components/empty-state.svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 </script>
@@ -11,31 +13,31 @@
 	<title>iForal - Documentos recentes</title>
 </svelte:head>
 
-<header>
-	<div class="page-header">
-		<div class="flex items-center justify-between">
-			<h1 class="title-1">Documentos Recentes</h1>
-			<div class="flex items-center">
-				<a class="btn btn-primary" href="/documents/create" sveltekit:prefetch>
-					<Icon class="w-5 mr-1" src={Plus} solid />
-					Documento
-				</a>
+<PageHeader title="Documentos Recentes">
+	<a class="btn btn-primary" href="/documents/create" data-sveltekit-prefetch>
+		<Icon class="w-5 mr-1" src={Plus} solid />
+		Documento
+	</a>
+</PageHeader>
+<PageBody>
+	<div class="grid grid-cols-12 gap-6">
+		{#each data.documents as document}
+			<div class="col-span-5 md:col-span-4 lg:col-span-3 2xl:col-span-2">
+				<DocumentCard {document} />
 			</div>
-		</div>
+		{:else}
+			<div class="col-span-12">
+				<EmptyState
+					title="Não existem documentos"
+					description="Ainda não criou nem faz parte da edição de nenhum documento"
+					icon={DocumentAdd}
+				>
+					<a href="/documents/create" class="btn btn-primary" data-sveltekit-prefetch>
+						<Icon src={Plus} class="w-5 mr-1" solid />
+						Documento
+					</a>
+				</EmptyState>
+			</div>
+		{/each}
 	</div>
-</header>
-<main>
-	<div class="page-body h-full">
-		<div class="grid grid-cols-12 gap-6">
-			{#each data.documents as document}
-				<div class="col-span-5 md:col-span-4 lg:col-span-3 2xl:col-span-2">
-					<IndexDocumentsCard {document} />
-				</div>
-			{:else}
-				<div class="col-span-12">
-					<IndexDocumentsEmpty />
-				</div>
-			{/each}
-		</div>
-	</div>
-</main>
+</PageBody>

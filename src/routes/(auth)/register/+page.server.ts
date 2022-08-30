@@ -2,10 +2,11 @@ import * as Jwt from 'jsonwebtoken';
 import * as Cookie from 'cookie';
 import * as Bcrypt from 'bcrypt';
 import { redirect, type RequestEvent } from '@sveltejs/kit';
-import { getPrismaClient } from '$lib/server/prisma';
-import { formDataToJson } from '$lib/client/forms';
+import { getPrismaClient } from '$lib/prisma';
+import { formDataToJson } from '$lib/forms';
 import * as Yup from 'yup';
 import { UserStatus } from '@prisma/client';
+import { JWT_SECRET } from '$env/static/private';
 
 export async function POST(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
@@ -35,11 +36,12 @@ export async function POST(event: RequestEvent) {
 
 	const { password: _, ...payload } = user;
 	event.setHeaders({
-		'Set-Cookie': Cookie.serialize(
-			'accessToken',
-			Jwt.sign({ ...payload }, '1h29r781gf987ubg198723ghd182'),
-			{ httpOnly: true, sameSite: 'lax', maxAge: 60 * 60 * 24 * 7, path: '/' }
-		)
+		'Set-Cookie': Cookie.serialize('accessToken', Jwt.sign({ ...payload }, JWT_SECRET), {
+			httpOnly: true,
+			sameSite: 'lax',
+			maxAge: 60 * 60 * 24 * 7,
+			path: '/'
+		})
 	});
 
 	await prisma.user.update({
