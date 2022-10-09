@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { api } from '$lib/api';
 	import DocumentImagesPositions from './_document-images-positions.svelte';
-	import DocumentImagesEmpty from './_document-images-empty.svelte';
 	import { page } from '$app/stores';
-	import { Icon, Upload } from 'svelte-hero-icons';
-	import { enhance } from '$lib/forms';
+	import { Icon, Photograph, Upload } from 'svelte-hero-icons';
+	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
 	import PageHeader from '$lib/components/page-header.svelte';
 	import PageBody from '$lib/components/page-body.svelte';
+	import EmptyState from '$lib/components/empty-state.svelte';
+	import { formHandler } from '$lib/forms';
 
 	export let data: PageData;
 
@@ -29,7 +30,12 @@
 </svelte:head>
 
 <PageHeader title="Editar imagens">
-	<form action="/documents/{documentId}/images" method="post" use:enhance bind:this={form}>
+	<form
+		action="/documents/{documentId}/images?/create"
+		method="POST"
+		use:enhance={formHandler()}
+		bind:this={form}
+	>
 		<input
 			id="images"
 			name="images"
@@ -48,7 +54,11 @@
 </PageHeader>
 <PageBody>
 	{#if data.images.length === 0}
-		<DocumentImagesEmpty />
+		<EmptyState
+			title="Não existem imagens"
+			description="Ainda não foram carregadas imagens neste documento"
+			icon={Photograph}
+		/>
 	{:else}
 		<DocumentImagesPositions images={data.images} on:change={handleImageOrderChange} />
 	{/if}

@@ -1,15 +1,16 @@
 <script lang="ts">
-	import DocumentEditMembersSidecover from './_document-edit-members-sidecover.svelte';
-	import DocumentEditActions from './_document-edit-actions.svelte';
-	import { editorSettings } from '$stores/editor';
-	import { viewerSettings } from '$stores/viewer';
 	import PageHeader from '$lib/components/page-header.svelte';
 	import PageBody from '$lib/components/page-body.svelte';
-	import type { PageData } from './$types';
 	import Editor from '$lib/components/editor/editor.svelte';
-	import Viewer from '$lib/components/viewer/viewer.svelte';
+	import { setContext } from 'svelte';
+	import { writable } from 'svelte/store';
+	import DocumentActions from '$lib/components/documents/document-actions.svelte';
+	import { ChevronDown, Icon } from 'svelte-hero-icons';
+	import type { PageData } from './$types';
+	import DocumentPermissionsSidecover from '$lib/components/documents/document-permissions-sidecover.svelte';
 
 	export let data: PageData;
+	setContext('body', writable(data.document.body));
 </script>
 
 <svelte:head>
@@ -17,13 +18,22 @@
 </svelte:head>
 
 <PageHeader title={data.document.title}>
-	<DocumentEditActions />
-	<DocumentEditMembersSidecover />
+	<DocumentActions id={data.document.id}>
+		<button type="button" class="btn btn-secondary flex items-center">
+			Ações <Icon src={ChevronDown} class="w-4 ml-1" />
+		</button>
+	</DocumentActions>
+	<DocumentPermissionsSidecover
+		id={data.document.id}
+		owner={data.document.user}
+		permissions={data.document.permissions}
+	/>
 </PageHeader>
 <PageBody>
-	{#if $viewerSettings.isViewerMode}
-		<Viewer />
-	{:else if $editorSettings.isEditorMode}
-		<Editor body={data.document.body} documentId={data.document.id} tags={data.tags} />
-	{/if}
+	<Editor
+		documentId={data.document.id}
+		images={data.document.images}
+		body={data.document.body}
+		tags={data.tags}
+	/>
 </PageBody>

@@ -7,9 +7,6 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$stores: './src/stores'
-		},
-		methodOverride: {
-			allowed: ['PUT', 'DELETE']
 		}
 	},
 	preprocess: preprocess({ postcss: true, typescript: true })

@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { ScrollUtils } from '$lib/util';
 	import { modals } from '$stores/modals';
-	import { disableScrolling, enableScrolling } from '$lib/util';
 	import { onMount } from 'svelte';
 	import { Exclamation, Icon, InformationCircle } from 'svelte-hero-icons';
 
@@ -12,19 +12,19 @@
 	export let onCancel: (() => void) | undefined;
 
 	onMount(() => {
-		disableScrolling();
+		ScrollUtils.disableScrolling();
 	});
 
 	function handleAction() {
 		onAction && onAction();
 		modals.close(id);
-		enableScrolling();
+		ScrollUtils.enableScrolling();
 	}
 
 	function handleCancel() {
 		onCancel && onCancel();
 		modals.close(id);
-		enableScrolling();
+		ScrollUtils.enableScrolling();
 	}
 </script>
 

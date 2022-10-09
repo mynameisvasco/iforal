@@ -1,13 +1,14 @@
 <script lang="ts">
 	import Badge from '$lib/components/badge.svelte';
 	import Table from '$lib/components/table.svelte';
-	import { enhance } from '$lib/forms';
+	import { enhance } from '$app/forms';
 	import type { Modal } from '$stores/modals';
 	import { Menu, MenuButton, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { ChevronDown, Icon, UserAdd } from 'svelte-hero-icons';
 	import type { PageData } from './$types';
 	import PageHeader from '$lib/components/page-header.svelte';
 	import PageBody from '$lib/components/page-body.svelte';
+	import { formHandler } from '$lib/forms';
 
 	export let data: PageData;
 
@@ -26,7 +27,7 @@
 </svelte:head>
 
 <PageHeader title="Utilizadores">
-	<a href="/users/invite" class="btn btn-primary" data-sveltekit-prefetch>
+	<a href="/users/invite" class="btn btn-primary">
 		<Icon src={UserAdd} solid class="w-5 mr-1" /> Convidar
 	</a>
 </PageHeader>
@@ -53,14 +54,15 @@
 			<td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500 dark:text-stone-300">
 				<Menu class="relative">
 					<MenuButton class="flex items-center text-stone-900 dark:text-orange-300 text-sm">
-						Ações <Icon src={ChevronDown} class="w-5 ml-1" />
+						Ações
+						<Icon src={ChevronDown} class="w-5 ml-1" />
 					</MenuButton>
 					<MenuItems class="dropdown-menu">
 						<form
 							class="dropdown-menu-item"
-							action="/users/{item.id}?_method=delete"
-							method="post"
-							use:enhance={{ confirmModal: confirmDeleteModal }}
+							action="/users/{item.id}?/destroy"
+							method="POST"
+							use:enhance={formHandler()}
 						>
 							<button type="submit" class="w-full text-left text-red-700 dark:text-red-300">
 								Apagar

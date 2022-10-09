@@ -3,6 +3,7 @@
 	import {
 		ArrowLeft,
 		ArrowRight,
+		Code,
 		Eye,
 		Icon,
 		MenuAlt2,
@@ -15,7 +16,6 @@
 	import type { EditorView } from '@codemirror/view';
 	import { editorSettings } from '$stores/editor';
 	import { openSearchPanel } from '@codemirror/search';
-	import { viewerSettings } from '$stores/viewer';
 
 	const editor = getContext<Writable<EditorView>>('editor');
 
@@ -32,8 +32,7 @@
 	}
 
 	function handleToggleViewMode() {
-		editorSettings.update((old) => ({ ...old, isEditorMode: !old.isEditorMode }));
-		viewerSettings.update((old) => ({ ...old, isViewerMode: !old.isViewerMode }));
+		editorSettings.update((old) => ({ ...old, isViewerMode: !old.isViewerMode }));
 	}
 
 	function handleFormat() {
@@ -52,7 +51,11 @@
 		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
 	<button type="button" class="btn-editor" on:click={handleToggleViewMode}>
-		<Icon src={Eye} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<Icon
+			src={$editorSettings.isViewerMode ? Code : Eye}
+			class="w-5 text-stone-500 dark:text-stone-400"
+			solid
+		/>
 	</button>
 	<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>
 		<Icon

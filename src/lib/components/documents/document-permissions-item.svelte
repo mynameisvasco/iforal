@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Avatar from '$lib/components/avatar.svelte';
-	import { enhance } from '$lib/forms';
+	import UserAvatar from '$lib/components/users/user-avatar.svelte';
+	import { enhance } from '$app/forms';
 	import { Icon, Trash } from 'svelte-hero-icons';
+	import { formHandler } from '$lib/forms';
 
 	export let id: number;
 	export let name: string;
@@ -18,31 +19,30 @@
 
 <div class="flex items-center justify-between w-full ">
 	<div class="flex gap-3">
-		<Avatar {name} size={42} />
+		<UserAvatar {name} size={42} />
 		<div class="flex flex-col">
 			<div class="flex items-center gap-2 text-stone-900 dark:text-white text-sm font-medium">
 				{name}
-				{#if permissionType !== 2}
-					<form
-						action="/documents/{$page.data.document.id}/permissions/{id}?_method=DELETE"
-						method="post"
-						use:enhance
-					>
-						<button type="submit">
-							<Icon src={Trash} class="w-4 text-stone-500 dark:text-stone-400" solid />
-						</button>
-					</form>
-				{/if}
+				<form
+					action="/documents/{$page.data.document.id}/permissions/{id}?/destroy"
+					method="POST"
+					class:hidden={permissionType === 2}
+					use:enhance={formHandler()}
+				>
+					<button type="submit">
+						<Icon src={Trash} class="w-4 text-stone-500 dark:text-stone-400" solid />
+					</button>
+				</form>
 			</div>
 			<span class="label text-xs">{email}</span>
 		</div>
 	</div>
 	<div class="flex items-center gap-3">
 		<form
-			action="/documents/{$page.data.document.id}/permissions/{id}?_method=PUT"
-			method="post"
+			action="/documents/{$page.data.document.id}/permissions/{id}?/update"
+			method="POST"
 			bind:this={changePermissionForm}
-			use:enhance
+			use:enhance={formHandler()}
 		>
 			<select
 				id="type"

@@ -3,22 +3,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { error, type RequestEvent } from '@sveltejs/kit';
 
-export async function load(event: RequestEvent) {
-	const documentId = parseInt(event.params.id ?? '');
-	if (isNaN(documentId)) {
-		throw error(404, 'Document not found');
-	}
-
-	const prisma = await getPrismaClient(event.locals.user.id);
-	const images = await prisma.documentImages.findMany({
-		where: { documentId },
-		orderBy: { position: 'asc' }
-	});
-
-	return { images };
-}
-
-export async function POST(event: RequestEvent) {
+async function create(event: RequestEvent) {
 	const documentId = parseInt(event.params.id ?? '');
 
 	if (isNaN(documentId)) {
@@ -52,10 +37,10 @@ export async function POST(event: RequestEvent) {
 		}))
 	});
 
-	return new Response();
+	return {};
 }
 
-export async function PUT(event: RequestEvent) {
+async function update(event: RequestEvent) {
 	const { image1, image2 } = await event.request.json();
 	const prisma = await getPrismaClient(event.locals.user.id);
 	const sourceImage = await prisma.documentImages.findUnique({ where: { id: image1 } });
@@ -76,5 +61,22 @@ export async function PUT(event: RequestEvent) {
 		})
 	]);
 
-	return new Response();
+	return {};
 }
+
+export async function load(event: RequestEvent) {
+	const documentId = parseInt(event.params.id ?? '');
+	if (isNaN(documentId)) {
+		throw error(404, 'Document not found');
+	}
+
+	const prisma = await getPrismaClient(event.locals.user.id);
+	const images = await prisma.documentImages.findMany({
+		where: { documentId },
+		orderBy: { position: 'asc' }
+	});
+
+	return { images };
+}
+
+export const actions = { create, update };

@@ -50,9 +50,9 @@ model DocumentHeader {
   country        String   @db.VarChar(4)
   institution    String   @db.VarChar(255)
   repository     String   @db.VarChar(255)
-  idno           String   @db.VarChar(255)
+  idno           String?  @db.VarChar(255)
   authors        Json
-  altIdentifier  Json
+  altIdentifier  Json?
   settlement     String   @db.VarChar(255)
   publisher      String   @db.VarChar(255)
   publisherPlace String   @db.VarChar(255)

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { randomBytes } from 'crypto';
 import { UserStatus } from '@prisma/client';
 
-export async function POST(event: RequestEvent) {
+async function create(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
 		await event.request.formData(),
 		Yup.object({
@@ -31,5 +31,7 @@ export async function POST(event: RequestEvent) {
 		}
 	});
 
-	return new Response();
+	return {};
 }
+
+export const actions = { create };

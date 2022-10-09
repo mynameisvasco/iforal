@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { enhance } from '$lib/forms';
+	import { enhance } from '$app/forms';
 	import type { DocumentImages } from '@prisma/client';
 	import { createEventDispatcher } from 'svelte';
 	import { Icon, X } from 'svelte-hero-icons';
+	import { formHandler } from '$lib/forms';
 
 	export let images: DocumentImages[];
 
@@ -51,9 +52,9 @@
 				/>
 			</a>
 			<form
-				action="/documents/{documentId}/images/{image.id}?_method=delete"
-				method="post"
-				use:enhance
+				action="/documents/{documentId}/images/{image.id}?/destroy"
+				method="POST"
+				use:enhance={formHandler()}
 			>
 				<div class="flex items-center mt-1">
 					<span class="label">Imagem {image.position + 1}</span>

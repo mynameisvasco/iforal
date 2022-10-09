@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { format } from 'date-fns';
 </script>
 
 <div>
@@ -40,7 +41,7 @@
 						class="input mt-1"
 						type="date"
 						placeholder="Aveiro"
-						value={$page.data.documentHeader.publisherDate}
+						value={format($page.data.documentHeader.publisherDate, 'yyyy-MM-dd')}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">

@@ -3,6 +3,7 @@
 
 	import InputList from '$lib/components/input-list.svelte';
 	import countries from '$lib/assets/countries.json';
+	import { format } from 'date-fns';
 
 	let addingAuthor = { name: '', role: '' };
 	let addingAltIdentifier = { type: '', value: '' };
@@ -84,7 +85,7 @@
 						type="date"
 						class="input"
 						placeholder="26/01/2000"
-						value={$page.data.documentHeader.originDate}
+						value={format($page.data.documentHeader.publisherDate, 'yyyy-MM-dd')}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
@@ -145,7 +146,7 @@
 					</InputList>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="editors" class="label">Identificadores Alternativos</label>
+					<label for="altIdentifier" class="label">Identificadores Alternativos</label>
 					<InputList
 						id="altIdentifier"
 						bind:addingValues={addingAltIdentifier}
@@ -175,15 +176,15 @@
 					</InputList>
 				</div>
 				<div class="col-span-12">
-					<label for="title" class="label">Filiação</label>
+					<label for="filiation" class="label">Filiação</label>
 					<textarea
-						id="filliation"
-						name="filliation"
+						id="filiation"
+						name="filiation"
 						type="text"
 						class="input"
 						placeholder="Este foral..."
 						rows="6"
-						value={$page.data.documentHeader.filliation}
+						value={$page.data.documentHeader.filiation}
 					/>
 				</div>
 				<div class="col-span-12">

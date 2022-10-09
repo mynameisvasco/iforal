@@ -49,7 +49,6 @@
 						class:text-stone-800={$page.url.pathname === crumb.url}
 						class:dark:text-stone-300={$page.url.pathname === crumb.url}
 						href={crumb.url}
-						data-sveltekit-prefetch
 					>
 						{crumb.name}
 					</a>

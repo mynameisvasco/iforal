@@ -3,22 +3,23 @@
 	import { writable } from 'svelte/store';
 	import type { EditorView } from '@codemirror/view';
 	import { createTeiEditor, editorSettings } from '$stores/editor';
-	import { page } from '$app/stores';
 	import Gallery from '$lib/components/gallery.svelte';
 	import EditorTagsMenu from './editor-tags-menu.svelte';
 	import EditorSettingsMenu from './editor-settings-menu.svelte';
-	import type { Tag } from '@prisma/client';
+	import type { DocumentImages, Tag } from '@prisma/client';
 
 	export let documentId: number;
-	export let body: string;
+	export let images: DocumentImages[];
 	export let tags: Tag[];
+	export let body: string;
 
 	let editor = writable({} as EditorView);
 	setContext('editor', editor);
 
 	onMount(async () => {
-		const element = document.getElementById('editor') as HTMLElement;
-		$editor = createTeiEditor(element, documentId, body, tags);
+		const editorElement = document.getElementById('editor') as HTMLElement;
+		const viewerElement = document.getElementById('viewer') as HTMLElement;
+		$editor = createTeiEditor(editorElement, viewerElement, documentId, body, tags);
 	});
 </script>
 
@@ -32,10 +33,15 @@
 			class="flex items-center justify-between gap-1 w-full bg-stone-50 dark:bg-stone-900 p-1 
 		rounded-t-md border border-stone-300 dark:border-stone-700 h-12"
 		>
-			<EditorTagsMenu {tags} />
+			{#if $editorSettings.isViewerMode}
+				<div />
+			{:else}
+				<EditorTagsMenu {tags} />
+			{/if}
 			<EditorSettingsMenu />
 		</div>
-		<div id="editor" />
+		<div id="viewer" class:hidden={!$editorSettings.isViewerMode} />
+		<div id="editor" class:hidden={$editorSettings.isViewerMode} />
 	</div>
 
 	<div
@@ -44,6 +50,6 @@
 		class:hidden={$editorSettings.isFullWidth}
 		style="min-height: 800px;"
 	>
-		<Gallery images={$page.data.document.images} />
+		<Gallery {images} />
 	</div>
 </div>

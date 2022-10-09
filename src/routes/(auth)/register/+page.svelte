@@ -3,9 +3,9 @@
 	import RegisterHeader from './_register-header.svelte';
 </script>
 
-<data-sveltekit-head>
+<svelte:head>
 	<title>iForal - Criar conta</title>
-</data-sveltekit-head>
+</svelte:head>
 
 <div class="min-h-screen flex">
 	<div

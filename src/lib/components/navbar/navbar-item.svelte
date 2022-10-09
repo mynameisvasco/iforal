@@ -19,7 +19,6 @@
 	class:dark:text-stone-300={$page.url.pathname !== path}
 	class:dark:hover:text-stone-200={$page.url.pathname !== path}
 	class:dark:hover:border-stone-200={$page.url.pathname !== path}
-	data-sveltekit-prefetch
 >
 	<slot />
 </a>

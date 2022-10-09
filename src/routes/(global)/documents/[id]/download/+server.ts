@@ -19,6 +19,9 @@ export async function GET(event: RequestEvent) {
 	}
 
 	return new Response(await exportTei(document), {
-		headers: { 'Content-Type': 'application/xml' }
+		headers: {
+			'Content-Type': 'file/xml',
+			'Content-Disposition': `attachment; filename="${document.title}.xml"`
+		}
 	});
 }

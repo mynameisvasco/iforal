@@ -41,7 +41,7 @@ CREATE TABLE "DocumentHeader" (
     "originDate" TIMESTAMP(3) NOT NULL,
     "originPlace" VARCHAR(255) NOT NULL,
     "lang" TEXT NOT NULL,
-    "filliation" TEXT NOT NULL,
+    "filiation" TEXT NOT NULL,
     "summary" TEXT NOT NULL,
     "encoding" TEXT NOT NULL,
     "documentId" INTEGER NOT NULL,

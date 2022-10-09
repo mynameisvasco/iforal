@@ -3,22 +3,7 @@ import { getPrismaClient } from '$lib/prisma';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
 
-export async function load(event: RequestEvent) {
-	const tagId = parseInt(event.params.id ?? '');
-	if (isNaN(tagId)) {
-		throw error(404, 'Tag not found');
-	}
-
-	const prisma = await getPrismaClient();
-	const tag = await prisma.tag.findUnique({ where: { id: tagId } });
-	if (!tag) {
-		throw error(404, 'Tag not found');
-	}
-
-	return { tag };
-}
-
-export async function PUT(event: RequestEvent) {
+async function update(event: RequestEvent) {
 	const tagId = parseInt(event.params.id ?? '');
 	if (isNaN(tagId)) {
 		return error(404, 'Tag not found');
@@ -49,10 +34,10 @@ export async function PUT(event: RequestEvent) {
 		}
 	});
 
-	return new Response();
+	return {};
 }
 
-export async function DELETE(event: RequestEvent) {
+async function destroy(event: RequestEvent) {
 	const tagId = parseInt(event.params.id ?? '');
 	if (isNaN(tagId)) {
 		return error(404, 'Tag not found');
@@ -60,5 +45,22 @@ export async function DELETE(event: RequestEvent) {
 
 	const prisma = await getPrismaClient();
 	await prisma.tag.delete({ where: { id: tagId } });
-	return new Response();
+	return {};
 }
+
+export async function load(event: RequestEvent) {
+	const tagId = parseInt(event.params.id ?? '');
+	if (isNaN(tagId)) {
+		throw error(404, 'Tag not found');
+	}
+
+	const prisma = await getPrismaClient();
+	const tag = await prisma.tag.findUnique({ where: { id: tagId } });
+	if (!tag) {
+		throw error(404, 'Tag not found');
+	}
+
+	return { tag };
+}
+
+export const actions = { destroy, update };

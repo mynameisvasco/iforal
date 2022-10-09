@@ -1,6 +1,8 @@
 import type { ObjectSchema, ValidationError } from 'yup';
-import { goto, invalidate } from '$app/navigation';
+import { goto, invalidateAll } from '$app/navigation';
 import { modals, type Modal } from '$stores/modals';
+import type { ActionResult } from '@sveltejs/kit';
+import { notifications, type Notification } from '$stores/notifications';
 
 export async function formDataToJson(
 	formData: FormData,
@@ -23,78 +25,36 @@ export async function formDataToJson(
 	return { data, errors, status: errors && Object.keys(errors).length !== 0 ? 400 : 200 };
 }
 
-export const enhance = (
-	form: HTMLFormElement,
-	options?: { redirect?: string; confirmModal?: Modal }
-) => {
-	async function handleError(response: Response) {
-		const { errors } = await response.json();
-
-		if (errors) {
-			for (const input of Array.from(form!.elements)) {
-				if (errors[input.id]) {
-					const inputErrorLabel =
-						document.getElementById(`${input.id}-error-label`) ?? document.createElement('div');
-
-					inputErrorLabel.remove();
-					inputErrorLabel.id = `${input.id}-error-label`;
-					inputErrorLabel.classList.add('error-label', 'mt-2');
-					inputErrorLabel.innerText = errors[input.id];
-					input.parentNode?.append(inputErrorLabel);
-					input.classList.add('input-error');
+export const formHandler = (notification?: Notification) => {
+	return ({ data, form }: { data: any; form: HTMLFormElement }) =>
+		async ({ result }: { result: ActionResult }) => {
+			if (result.type === 'invalid') {
+				const { errors } = result.data as any;
+				for (const input of Array.from(form!.elements)) {
+					if (errors[input.id]) {
+						const labelId = `${input.id}-error-label`;
+						const label = document.getElementById(labelId) ?? document.createElement('div');
+						label.remove();
+						label.id = `${input.id}-error-label`;
+						label.classList.add('error-label', 'mt-2');
+						label.innerText = errors[input.id];
+						input.parentNode?.append(label);
+						input.classList.add('input-error');
+					}
 				}
+				return;
 			}
-		}
-	}
 
-	async function handleSuccess() {
-		for (const input of Array.from(form!.elements)) {
-			input.classList.remove('input-error');
-			const inputErrorLabels = document.getElementsByClassName('error-label');
-
-			for (const inputErrorLabel of Array.from(inputErrorLabels)) {
-				inputErrorLabel.remove();
+			if (notification) {
+				notifications.show(notification);
 			}
-		}
 
-		if (options?.redirect) {
-			await goto(options.redirect);
-		} else {
-			await invalidate();
-		}
-	}
-
-	async function handleSubmit(event: Event) {
-		event.preventDefault();
-
-		const submit = async () => {
-			const response = await fetch(form!.action, {
-				method: form!.method,
-				headers: { accept: 'application/json' },
-				body: new FormData(form)
-			});
-
-			if (response.status >= 400) {
-				handleError(response);
-			} else if (response.status >= 200 && response.status) {
-				handleSuccess();
+			if (result.type === 'redirect') {
+				return await goto(result.location);
 			}
+
+			await invalidateAll();
 		};
-
-		if (options?.confirmModal) {
-			modals.open({ ...options.confirmModal, onAction: submit });
-		} else {
-			submit();
-		}
-	}
-
-	form!.addEventListener('submit', handleSubmit);
-
-	return {
-		destroy() {
-			form!.removeEventListener('submit', handleSubmit);
-		}
-	};
 };
 
 export const draft = (form: HTMLFormElement, modal: Modal) => {

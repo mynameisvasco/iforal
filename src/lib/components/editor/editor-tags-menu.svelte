@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { tagToString } from '$lib/util';
+	import { EditorUtils } from '$lib/util';
+
 	import type { EditorView } from '@codemirror/view';
 	import type { Tag } from '@prisma/client';
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
@@ -14,7 +15,7 @@
 	function handleApplyTag(tag: Tag) {
 		const [range] = $editor.state.selection.ranges;
 		const text = $editor.state.sliceDoc(range.from, range.to);
-		$editor.dispatch($editor.state.replaceSelection(tagToString(tag, text)));
+		$editor.dispatch($editor.state.replaceSelection(EditorUtils.tagToString(tag, text)));
 	}
 </script>
 

@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div class="flex-1 w-full flex flex-col items-end z-10" transition:fade={{ duration: 125 }}>
+<div class="w-full flex flex-col items-end" transition:fade={{ duration: 125 }}>
 	<div
 		class="max-w-sm w-full bg-white dark:bg-stone-800 shadow-lg rounded-lg 
 			pointer-events-auto overflow-hidden border border-stone-300 dark:border-stone-700"

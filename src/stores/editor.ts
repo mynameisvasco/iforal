@@ -1,12 +1,12 @@
 import { xml } from '@codemirror/lang-xml';
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { keymap, rectangularSelection, lineNumbers } from '@codemirror/view';
-import { ChangeSet, Compartment, EditorState } from '@codemirror/state';
+import { Compartment, EditorState } from '@codemirror/state';
 import { indentOnInput, bracketMatching, foldGutter, foldKeymap } from '@codemirror/language';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { autocompletion, completionKeymap } from '@codemirror/autocomplete';
 import { lintKeymap, lintGutter, linter, type Diagnostic } from '@codemirror/lint';
-import { get } from 'svelte/store';
+import { get, type Writable } from 'svelte/store';
 import { theme } from '$stores/theme';
 import { writable } from 'svelte-local-storage-store';
 import { editorDarkTheme, editorLightTheme } from '../lib/components/editor/editor-theme';
@@ -14,16 +14,25 @@ import { api } from '../lib/api';
 import { syntaxTree } from '@codemirror/language';
 import { searchKeymap, highlightSelectionMatches, search } from '@codemirror/search';
 import type { Tag } from '@prisma/client';
+//@ts-ignore
+import CETEIcean from 'CETEIcean';
+import { EditorUtils } from '$lib/util';
+
+interface EditorSettings {
+	fontSize: number;
+	isFullWidth: boolean;
+	isViewerMode: boolean;
+}
 
 const xmlTagLinter = linter((view) => {
 	let diagnostics: Diagnostic[] = [];
 	syntaxTree(view.state)
 		.cursor()
 		.iterate((node) => {
-			if (node.type.name === '⚠') {
+			if (node.type.name === 'MissingCloseTag') {
 				diagnostics.push({
-					from: node.from,
-					to: node.to,
+					from: node.node.prevSibling?.from ?? node.from,
+					to: node.node.prevSibling?.to ?? node.to,
 					severity: 'error',
 					message: `Erro de início/fim de marcação`
 				});
@@ -40,28 +49,44 @@ const xmlTagLinter = linter((view) => {
 	return diagnostics;
 });
 
-interface EditorSettings {
-	fontSize: number;
-	isFullWidth: boolean;
-	isEditorMode: boolean;
-}
-
 function createEditorSettings() {
 	const store = writable('editor', {
 		fontSize: 18,
 		isFullWidth: false,
-		isEditorMode: true
+		isViewerMode: false
 	} as EditorSettings);
 
 	return { ...store };
 }
 
-function collabortative(documentId: number) {
+function iforalPlugin(documentId: number, viewer: HTMLElement) {
 	const plugin = ViewPlugin.fromClass(
 		class {
+			private editor: EditorView;
+			private reader: any;
+
+			constructor(editor: EditorView) {
+				this.editor = editor;
+				this.reader = new CETEIcean();
+				this.reader.addBehaviors(EditorUtils.getTEIBehavior());
+				this.reader.makeHTML5(
+					EditorUtils.addTeiBeginTag(this.editor.state.doc.toString()),
+					(data: any) => {
+						viewer.appendChild(data);
+					}
+				);
+			}
+
 			async update(update: ViewUpdate) {
 				if (update.docChanged) {
 					await api.put(fetch, `/documents/${documentId}`, { changes: update.changes });
+					this.reader.makeHTML5(
+						EditorUtils.addTeiBeginTag(this.editor.state.doc.toString()),
+						(data: any) => {
+							viewer.innerHTML = '';
+							viewer.appendChild(data);
+						}
+					);
 				}
 			}
 		}
@@ -73,7 +98,8 @@ function collabortative(documentId: number) {
 export const editorSettings = createEditorSettings();
 
 export function createTeiEditor(
-	parent: HTMLElement,
+	editorElement: HTMLElement,
+	viewerElement: HTMLElement,
 	documentId: number,
 	body: string,
 	tags: Tag[]
@@ -100,7 +126,7 @@ export function createTeiEditor(
 			autocompletion(),
 			rectangularSelection(),
 			lintGutter(),
-			collabortative(documentId),
+			iforalPlugin(documentId, viewerElement),
 			highlightSelectionMatches(),
 			search(),
 			xmlTagLinter,
@@ -117,7 +143,7 @@ export function createTeiEditor(
 		]
 	});
 
-	const editor = new EditorView({ state, parent });
+	const editor = new EditorView({ state, parent: editorElement });
 	theme.subscribe((t) => {
 		editor.dispatch({
 			effects: editorTheme.reconfigure(t === 'dark' ? editorDarkTheme : editorLightTheme)
@@ -126,8 +152,11 @@ export function createTeiEditor(
 
 	editorSettings.subscribe((s) => {
 		const editorElement = document.getElementsByClassName('cm-editor');
+		const viewerElement = document.getElementById('viewer');
+
 		if (editorElement.length === 1) {
 			(editorElement[0] as HTMLElement).style.fontSize = `${s.fontSize}px`;
+			viewerElement!.style.fontSize = `${s.fontSize}px`;
 		}
 	});
 

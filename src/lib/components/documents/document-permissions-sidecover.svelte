@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { api } from '$lib/api';
-	import Avatar from '$lib/components/avatar.svelte';
+	import UserAvatar from '$lib/components/users/user-avatar.svelte';
 	import SearchEndpointInput from '$lib/components/search-endpoint-input.svelte';
 	import SideCover from '$lib/components/side-cover.svelte';
-	import { enhance } from '$lib/forms';
+	import { enhance } from '$app/forms';
 	import { Icon, Users } from 'svelte-hero-icons';
-	import DocumentEditorMembersSidecoverItem from './_document-edit-members-sidecover-item.svelte';
+	import DocumentPermissionsItem from './document-permissions-item.svelte';
+	import type { DocumentPermissions, User } from '@prisma/client';
+	import { formHandler } from '$lib/forms';
+
+	export let id: number;
+	export let owner: User;
+	export let permissions: (DocumentPermissions & { user: { name: string; email: string } })[];
 
 	let sideCover: any;
-
-	async function handlePermissionChange(id: number, type: number) {
-		await api.put(fetch, `/documents/${$page.data.document.id}/permissions/${id}`, { type });
-	}
 </script>
 
 <SideCover
@@ -28,10 +28,14 @@
 				searchParams={['name', 'email']}
 				let:item
 			>
-				<form action="/documents/{$page.data.document.id}/permissions" method="POST" use:enhance>
+				<form
+					action="/documents/{id}/permissions?/create"
+					method="POST"
+					use:enhance={formHandler()}
+				>
 					<input name="email" id="email" type="hidden" value={item.email} />
 					<button type="submit" class="flex items-center gap-3 w-full">
-						<Avatar name={item.name} size={42} />
+						<UserAvatar name={item.name} size={42} />
 						<span class="flex flex-col items-start">
 							<span class="text-stone-900 dark:text-white text-sm font-medium">
 								{item.name}
@@ -43,16 +47,11 @@
 			</SearchEndpointInput>
 		</div>
 		<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
-			<DocumentEditorMembersSidecoverItem
-				id={0}
-				name={$page.data.document.user.name}
-				email={$page.data.document.user.email}
-				permissionType={2}
-			/>
+			<DocumentPermissionsItem id={0} name={owner.name} email={owner.email} permissionType={2} />
 		</div>
-		{#each $page.data.document.permissions as permission}
+		{#each permissions as permission}
 			<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
-				<DocumentEditorMembersSidecoverItem
+				<DocumentPermissionsItem
 					id={permission.id}
 					name={permission.user.name}
 					email={permission.user.email}

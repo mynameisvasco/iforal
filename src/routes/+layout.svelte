@@ -15,4 +15,6 @@
 	<meta name="theme-color" content="rgb(41, 37, 36)" media="(prefers-color-scheme: dark)" />
 </svelte:head>
 
-<slot />
+<div data-sveltekit-prefetch>
+	<slot />
+</div>

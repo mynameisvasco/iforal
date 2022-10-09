@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import InputList from '$lib/components/input-list.svelte';
-	import { enhance } from '$lib/forms';
+	import { enhance } from '$app/forms';
 	import type { Tag } from '@prisma/client';
 	import { Icon, Save } from 'svelte-hero-icons';
+	import { formHandler } from '$lib/forms';
 
 	export let tag: Tag;
 
@@ -12,9 +13,9 @@
 
 <form
 	class="mt-12"
-	action="/tags/{$page.data.tag.id}?_method=PUT"
-	method="post"
-	use:enhance={{ redirect: '/tags' }}
+	action="/tags/{$page.data.tag.id}?/update"
+	method="POST"
+	use:enhance={formHandler()}
 >
 	<div class="md:grid md:grid-cols-3 md:gap-6">
 		<div class="md:col-span-1">

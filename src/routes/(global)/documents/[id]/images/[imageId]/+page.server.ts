@@ -1,7 +1,7 @@
 import { getPrismaClient } from '$lib/prisma';
 import { error, type RequestEvent } from '@sveltejs/kit';
 
-export async function DELETE(event: RequestEvent) {
+async function destroy(event: RequestEvent) {
 	const imageId = parseInt(event.params.imageId ?? '');
 
 	if (isNaN(imageId)) {
@@ -21,5 +21,7 @@ export async function DELETE(event: RequestEvent) {
 		data: { position: { decrement: 1 } }
 	});
 
-	return new Response();
+	return {};
 }
+
+export const actions = { destroy };

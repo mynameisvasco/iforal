@@ -3,7 +3,7 @@ import { getPrismaClient } from '$lib/prisma';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
 
-export async function POST(event: RequestEvent) {
+async function create(event: RequestEvent) {
 	const documentId = parseInt(event.params.id ?? '');
 	const { data, errors } = await formDataToJson(
 		await event.request.formData(),
@@ -29,5 +29,7 @@ export async function POST(event: RequestEvent) {
 		}
 	});
 
-	return new Response();
+	return {};
 }
+
+export const actions = { create };

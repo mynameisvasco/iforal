@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { enhance } from '$lib/forms';
+	import { enhance } from '$app/forms';
 	import Table from '$lib/components/table.svelte';
 	import { ChevronDown, Icon, Plus } from 'svelte-hero-icons';
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
-	import type { PageData } from '../../../../.svelte-kit/types/src/routes/(global)/tags/$types';
 	import PageHeader from '$lib/components/page-header.svelte';
 	import PageBody from '$lib/components/page-body.svelte';
+	import { formHandler } from '$lib/forms';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 </script>
@@ -15,7 +16,7 @@
 </svelte:head>
 
 <PageHeader title="Tags de marcação">
-	<a href="/tags/create" class="btn btn-primary" data-sveltekit-prefetch>
+	<a href="/tags/create" class="btn btn-primary">
 		<Icon src={Plus} solid class="w-5 mr-1" />
 		Adicionar
 	</a>
@@ -49,14 +50,12 @@
 						Ações <Icon src={ChevronDown} class="w-5 ml-1" />
 					</MenuButton>
 					<MenuItems class="dropdown-menu">
-						<MenuItem class="dropdown-menu-item" href="/tags/{item.id}" data-sveltekit-prefetch>
-							Editar
-						</MenuItem>
+						<MenuItem class="dropdown-menu-item" href="/tags/{item.id}">Editar</MenuItem>
 						<form
 							class="dropdown-menu-item"
-							action="/tags/{item.id}?_method=delete"
-							method="post"
-							use:enhance
+							action="/tags/{item.id}?/destroy"
+							method="POST"
+							use:enhance={formHandler()}
 						>
 							<button type="submit" class="w-full text-left text-red-700 dark:text-red-300">
 								Apagar

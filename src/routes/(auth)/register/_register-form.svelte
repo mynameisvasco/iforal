@@ -1,13 +1,9 @@
 <script lang="ts">
-	import { enhance } from '$lib/forms';
+	import { enhance } from '$app/forms';
+	import { formHandler } from '$lib/forms';
 </script>
 
-<form
-	class="space-y-6 mt-8"
-	action="/register"
-	method="post"
-	use:enhance={{ redirect: '/documents' }}
->
+<form class="space-y-6 mt-8" action="/register" method="POST" use:enhance={formHandler()}>
 	<div>
 		<label for="name" class="label"> Nome </label>
 		<div class="mt-1">

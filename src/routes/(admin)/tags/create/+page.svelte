@@ -1,7 +1,8 @@
 <script>
-	import { enhance } from '$lib/forms';
+	import { enhance } from '$app/forms';
 	import { Icon, Save } from 'svelte-hero-icons';
 	import TagCreateForm from './_tag-create-form.svelte';
+	import { formHandler } from '$lib/forms';
 </script>
 
 <svelte:head>
@@ -10,7 +11,7 @@
 
 <main>
 	<div class="page-body mt-12">
-		<form action="/tags" method="post" use:enhance={{ redirect: '/tags' }}>
+		<form action="/tags?/create" method="POST" use:enhance={formHandler()}>
 			<TagCreateForm />
 			<div class="py-8">
 				<div class="border-t border-stone-300 dark:border-stone-700" />

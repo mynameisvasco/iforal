@@ -3,13 +3,7 @@ import { getPrismaClient } from '$lib/prisma';
 import * as Yup from 'yup';
 import type { RequestEvent } from '@sveltejs/kit';
 
-export async function load(event: RequestEvent) {
-	const prisma = await getPrismaClient();
-	const tags = await prisma.tag.findMany();
-	return { tags };
-}
-
-export async function POST(event: RequestEvent) {
+async function create(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
 		await event.request.formData(),
 		Yup.object({
@@ -34,5 +28,13 @@ export async function POST(event: RequestEvent) {
 		}
 	});
 
-	return new Response();
+	return {};
 }
+
+export async function load(event: RequestEvent) {
+	const prisma = await getPrismaClient();
+	const tags = await prisma.tag.findMany();
+	return { tags };
+}
+
+export const actions = { create };
