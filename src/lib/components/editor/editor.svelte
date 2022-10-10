@@ -7,21 +7,27 @@
 	import EditorTagsMenu from './editor-tags-menu.svelte';
 	import EditorSettingsMenu from './editor-settings-menu.svelte';
 	import type { DocumentImages, Tag } from '@prisma/client';
+	import { enhance } from '$app/forms';
 
 	export let documentId: number;
 	export let images: DocumentImages[];
 	export let tags: Tag[];
 	export let body: string;
 
+	let updateForm: HTMLFormElement;
 	let editor = writable({} as EditorView);
 	setContext('editor', editor);
 
 	onMount(async () => {
 		const editorElement = document.getElementById('editor') as HTMLElement;
 		const viewerElement = document.getElementById('viewer') as HTMLElement;
-		$editor = createTeiEditor(editorElement, viewerElement, documentId, body, tags);
+		$editor = createTeiEditor(editorElement, viewerElement, updateForm, documentId, body, tags);
 	});
 </script>
+
+<form action="/documents/{documentId}?/update" method="POST" use:enhance bind:this={updateForm}>
+	<input name="changes" id="changes" type="hidden" />
+</form>
 
 <div class="grid grid-cols-12 gap-6">
 	<div
@@ -43,7 +49,6 @@
 		<div id="viewer" class:hidden={!$editorSettings.isViewerMode} />
 		<div id="editor" class:hidden={$editorSettings.isViewerMode} />
 	</div>
-
 	<div
 		class="h-full"
 		class:col-span-4={!$editorSettings.isFullWidth}

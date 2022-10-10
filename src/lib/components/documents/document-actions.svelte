@@ -10,7 +10,7 @@
 	async function handleDelete() {
 		modals.open({
 			id: 'delete-document',
-			title: 'Apagar Documento',
+			title: 'Apagar documento',
 			description:
 				'Após decidir apagar este documento não existe forma de recuperar qualquer tipo de dados, sejam estes metadados, imagens ou o corpo do documento.',
 			actionName: 'Apagar',

@@ -59,7 +59,7 @@ function createEditorSettings() {
 	return { ...store };
 }
 
-function iforalPlugin(documentId: number, viewer: HTMLElement) {
+function iforalPlugin(updateForm: HTMLFormElement, viewer: HTMLElement) {
 	const plugin = ViewPlugin.fromClass(
 		class {
 			private editor: EditorView;
@@ -79,7 +79,9 @@ function iforalPlugin(documentId: number, viewer: HTMLElement) {
 
 			async update(update: ViewUpdate) {
 				if (update.docChanged) {
-					await api.put(fetch, `/documents/${documentId}`, { changes: update.changes });
+					const changesInput = updateForm.elements.namedItem('changes') as HTMLInputElement;
+					changesInput.value = JSON.stringify(update.changes);
+					updateForm.dispatchEvent(new SubmitEvent('submit'));
 					this.reader.makeHTML5(
 						EditorUtils.addTeiBeginTag(this.editor.state.doc.toString()),
 						(data: any) => {
@@ -100,6 +102,7 @@ export const editorSettings = createEditorSettings();
 export function createTeiEditor(
 	editorElement: HTMLElement,
 	viewerElement: HTMLElement,
+	updateForm: HTMLFormElement,
 	documentId: number,
 	body: string,
 	tags: Tag[]
@@ -126,7 +129,7 @@ export function createTeiEditor(
 			autocompletion(),
 			rectangularSelection(),
 			lintGutter(),
-			iforalPlugin(documentId, viewerElement),
+			iforalPlugin(updateForm, viewerElement),
 			highlightSelectionMatches(),
 			search(),
 			xmlTagLinter,

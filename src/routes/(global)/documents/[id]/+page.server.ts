@@ -1,15 +1,34 @@
+import { formDataToJson } from '$lib/forms';
 import { getPrismaClient } from '$lib/prisma';
 import { ChangeSet, Text } from '@codemirror/state';
 import { error, type RequestEvent } from '@sveltejs/kit';
+import * as Yup from 'yup';
 
-async function update(event: RequestEvent) {
+async function destroy(event: RequestEvent) {
+	const id = parseInt(event.params.id ?? '');
+	if (isNaN(id)) {
+		throw error(404);
+	}
+
+	const prisma = await getPrismaClient(event.locals.user.id);
+	await prisma.document.delete({ where: { id } });
+	return {};
+}
+
+export async function update(event: RequestEvent) {
 	const id = parseInt(event.params.id ?? '');
 	if (isNaN(id)) {
 		return error(404);
 	}
 
-	const body = await event.request.json();
-	const changes = body.changes as ChangeSet;
+	const body = await formDataToJson(
+		await event.request.formData(),
+		Yup.object({
+			changes: Yup.string().required()
+		})
+	);
+
+	const changes = JSON.parse(body.data.changes);
 	const prisma = await getPrismaClient(event.locals.user.id);
 	const document = await prisma.document.findUnique({ select: { body: true }, where: { id } });
 	if (!document) {
@@ -21,17 +40,6 @@ async function update(event: RequestEvent) {
 		.toString();
 
 	await prisma.document.update({ data: { body: document.body }, where: { id } });
-	return {};
-}
-
-async function destroy(event: RequestEvent) {
-	const id = parseInt(event.params.id ?? '');
-	if (isNaN(id)) {
-		throw error(404);
-	}
-
-	const prisma = await getPrismaClient(event.locals.user.id);
-	await prisma.document.delete({ where: { id } });
 	return {};
 }
 

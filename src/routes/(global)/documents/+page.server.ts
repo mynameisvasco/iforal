@@ -68,3 +68,5 @@ export async function load(event: RequestEvent) {
 
 	return { documents };
 }
+
+export const actions = { create };

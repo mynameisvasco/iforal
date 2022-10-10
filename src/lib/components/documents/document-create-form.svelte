@@ -15,7 +15,7 @@
 	const draftTitle = browser ? localStorage.getItem('document-create-title') : undefined;
 	const draftModal: Modal = {
 		id: 'document-draft',
-		title: 'Rascunho guardado',
+		title: 'Recuperar rascunho',
 		description: `Existe um rascunho da última sessão com o título "${draftTitle}", deseja continuar o trabalho?`,
 		actionName: 'Continuar',
 		type: 'info'

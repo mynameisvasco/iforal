@@ -24,26 +24,28 @@
 		<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
 			<SearchEndpointInput
 				placeholder="Adicionar membro pelo nome ou email"
-				endpoint="/users/search"
+				endpoint="/documents/{id}/permissions/search"
 				searchParams={['name', 'email']}
 				let:item
 			>
-				<form
-					action="/documents/{id}/permissions?/create"
-					method="POST"
-					use:enhance={formHandler()}
-				>
-					<input name="email" id="email" type="hidden" value={item.email} />
-					<button type="submit" class="flex items-center gap-3 w-full">
-						<UserAvatar name={item.name} size={42} />
-						<span class="flex flex-col items-start">
-							<span class="text-stone-900 dark:text-white text-sm font-medium">
-								{item.name}
+				{#if item.id !== owner.id}
+					<form
+						action="/documents/{id}/permissions?/create"
+						method="POST"
+						use:enhance={formHandler()}
+					>
+						<input name="email" id="email" type="hidden" value={item.email} />
+						<button type="submit" class="flex items-center gap-3 w-full">
+							<UserAvatar name={item.name} size={42} />
+							<span class="flex flex-col items-start">
+								<span class="text-stone-900 dark:text-white text-sm font-medium">
+									{item.name}
+								</span>
+								<span class="label">{item.email}</span>
 							</span>
-							<span class="label">{item.email}</span>
-						</span>
-					</button>
-				</form>
+						</button>
+					</form>
+				{/if}
 			</SearchEndpointInput>
 		</div>
 		<div class="border-b border-stone-200 dark:border-stone-700 pb-6">

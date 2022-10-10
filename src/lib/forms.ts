@@ -22,7 +22,7 @@ export async function formDataToJson(
 		}
 	}
 
-	return { data, errors, status: errors && Object.keys(errors).length !== 0 ? 400 : 200 };
+	return { data, errors };
 }
 
 export const formHandler = (notification?: Notification) => {
