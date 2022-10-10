@@ -8,6 +8,7 @@
 	import EditorSettingsMenu from './editor-settings-menu.svelte';
 	import type { DocumentImages, Tag } from '@prisma/client';
 	import { enhance } from '$app/forms';
+	import { formHandler } from '$lib/forms';
 
 	export let documentId: number;
 	export let images: DocumentImages[];
@@ -25,7 +26,12 @@
 	});
 </script>
 
-<form action="/documents/{documentId}?/update" method="POST" use:enhance bind:this={updateForm}>
+<form
+	action="/documents/{documentId}?/update"
+	method="POST"
+	use:enhance={formHandler()}
+	bind:this={updateForm}
+>
 	<input name="changes" id="changes" type="hidden" />
 </form>
 

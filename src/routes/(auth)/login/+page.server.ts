@@ -29,7 +29,7 @@ async function login(event: RequestEvent) {
 		!(await Bcrypt.compare(password, user.password)) ||
 		user.status === UserStatus.Invited
 	) {
-		return invalid(403, { password: 'A password fornecida não está correta' });
+		return invalid(403, { errors: { password: 'A password fornecida não está correta' } });
 	}
 
 	const { password: _, ...payload } = user;

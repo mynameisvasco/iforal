@@ -1,6 +1,6 @@
 import * as Jwt from 'jsonwebtoken';
 import * as Bcrypt from 'bcrypt';
-import { redirect, type RequestEvent } from '@sveltejs/kit';
+import { invalid, redirect, type RequestEvent } from '@sveltejs/kit';
 import { getPrismaClient } from '$lib/prisma';
 import { formDataToJson } from '$lib/forms';
 import * as Yup from 'yup';
@@ -26,11 +26,11 @@ async function register(event: RequestEvent) {
 	const user = await prisma.user.findUnique({ where: { email } });
 
 	if (user?.status === UserStatus.Active) {
-		return { errors: { email: 'O email fornecido já se encontra em uso' } };
+		return invalid(400, { errors: { email: 'O email fornecido já se encontra em uso' } });
 	}
 
 	if (!user) {
-		return { errors: { email: 'O email fornecido não está convidado' } };
+		return invalid(400, { errors: { email: 'O email fornecido não está convidado' } });
 	}
 
 	const { password: _, ...payload } = user;
