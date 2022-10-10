@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { api } from '$lib/api';
-
 	export let placeholder: string;
 	export let searchParams: string[];
 	export let endpoint: string;
