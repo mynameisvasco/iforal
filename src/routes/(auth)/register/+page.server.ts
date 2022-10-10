@@ -35,9 +35,9 @@ async function register(event: RequestEvent) {
 
 	const { password: _, ...payload } = user;
 	event.cookies.set('accessToken', Jwt.sign({ ...payload }, JWT_SECRET), {
-		httpOnly: true,
 		sameSite: 'lax',
 		maxAge: 60 * 60 * 24 * 7,
+		secure: false,
 		path: '/'
 	});
 

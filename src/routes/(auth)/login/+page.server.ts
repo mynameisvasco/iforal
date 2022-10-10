@@ -33,10 +33,10 @@ async function login(event: RequestEvent) {
 	}
 
 	const { password: _, ...payload } = user;
-	event.cookies.set('accessToken', Jwt.sign({ ...payload }, JWT_SECRET), {
-		httpOnly: true,
+	event.cookies.set('accessToken', Jwt.sign({ ...payload }, JWT_SECRET, {}), {
 		sameSite: 'lax',
 		maxAge: 60 * 60 * 24 * 7,
+		secure: false,
 		path: '/'
 	});
 

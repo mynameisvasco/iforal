@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
+	import { enhance } from '$app/forms';
+	import { formHandler } from '$lib/forms';
 </script>
 
 <div class="flex items-center px-4">
@@ -15,17 +16,8 @@
 	</div>
 </div>
 <div class="mt-3 space-y-1">
-	<a
-		href="/profile"
-		class="block px-4 py-2 text-base font-medium text-stone-500 hover:text-stone-800 hover:bg-stone-100"
-	>
-		Perfil
-	</a>
-
-	<a
-		href="/logout"
-		class="block px-4 py-2 text-base font-medium text-stone-500 hover:text-stone-800 hover:bg-stone-100"
-	>
-		Sair
-	</a>
+	<a href="/profile" class="dropdown-item"> Perfil </a>
+	<form action="/logout" method="POST" use:enhance={formHandler()}>
+		<button type="submit" class="dropdown-item"> Sair </button>
+	</form>
 </div>

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { formHandler } from '$lib/forms';
+	import authImage1 from '$lib/assets/auth-image-1.png';
+	import authImage2 from '$lib/assets/auth-image-2.png';
 </script>
 
 <svelte:head>
@@ -47,10 +49,6 @@
 		</div>
 	</div>
 	<div class="hidden lg:block relative w-0 flex-1">
-		<img
-			class="absolute inset-0 h-full w-full object-cover"
-			src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-			alt="test"
-		/>
+		<img class="absolute inset-0 h-full w-full object-cover" src={authImage2} alt="auth-1" />
 	</div>
 </div>
