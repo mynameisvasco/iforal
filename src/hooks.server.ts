@@ -1,7 +1,7 @@
 import { JWT_SECRET } from '$env/static/private';
 import type { RequestEvent, ResolveOptions } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
-import Jwt from 'jsonwebtoken';
+import { verify as verifyJwt } from 'jsonwebtoken';
 
 interface HandleInput {
 	event: RequestEvent;
@@ -17,7 +17,7 @@ export async function authentication(input: HandleInput) {
 
 	if (accessToken && !isLoginRoute && !isRegisterRoute) {
 		try {
-			event.locals.user = Jwt.verify(accessToken, JWT_SECRET) as any;
+			event.locals.user = verifyJwt(accessToken, JWT_SECRET) as any;
 		} catch (e) {
 			return Response.redirect(`${event.url.origin}/login`);
 		}

@@ -1,5 +1,5 @@
 import * as Bcrypt from 'bcrypt';
-import * as Jwt from 'jsonwebtoken';
+import { sign as signJwt } from 'jsonwebtoken';
 import { invalid, type RequestEvent, type Actions, redirect } from '@sveltejs/kit';
 import { getPrismaClient } from '$lib/prisma';
 import { formDataToJson } from '$lib/forms';
@@ -33,7 +33,7 @@ async function login(event: RequestEvent) {
 	}
 
 	const { password: _, ...payload } = user;
-	event.cookies.set('accessToken', Jwt.sign({ ...payload }, JWT_SECRET), {
+	event.cookies.set('accessToken', signJwt({ ...payload }, JWT_SECRET), {
 		httpOnly: true,
 		sameSite: 'lax',
 		maxAge: 60 * 60 * 24 * 7,
