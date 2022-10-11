@@ -25,7 +25,7 @@ export async function formDataToJson(
 	return { data, errors };
 }
 
-export const formHandler = (notification?: Notification) => {
+export const formHandler = (notification?: Notification, cleanForm: boolean = false) => {
 	return ({ data, form }: { data: any; form: HTMLFormElement }) =>
 		async ({ result }: { result: ActionResult }) => {
 			if (result.type === 'invalid') {
@@ -51,6 +51,10 @@ export const formHandler = (notification?: Notification) => {
 
 			if (result.type === 'redirect') {
 				return await goto(result.location);
+			}
+
+			if (cleanForm) {
+				form.reset();
 			}
 
 			await invalidateAll();
