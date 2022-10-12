@@ -10,7 +10,6 @@ export default {
 		}
 	},
 	fs: {
-		// Allow serving files from one level up to the project root
 		allow: [path.resolve('./storage/')]
 	},
 	ssr: { noExternal: ['vanilla-js-wheel-zoom', 'CETEIcean'] }

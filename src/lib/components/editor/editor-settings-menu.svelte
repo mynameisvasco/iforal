@@ -38,7 +38,11 @@
 	function handleFormat() {
 		const text = $editor.state.sliceDoc(0, $editor.state.doc.length);
 		$editor.dispatch({
-			changes: { from: 0, to: $editor.state.doc.length, insert: xmlFormat(text) }
+			changes: {
+				from: 0,
+				to: $editor.state.doc.length,
+				insert: xmlFormat(text, { collapseContent: true, indentation: ' ' })
+			}
 		});
 	}
 </script>

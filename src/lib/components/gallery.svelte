@@ -17,7 +17,7 @@
 
 	onMount(() => {
 		WZoom.create('#foral', {
-			maxScale: 2.5,
+			maxScale: 3,
 			minScale: 1,
 			dragScrollableOptions: {
 				smoothExtinction: 0
