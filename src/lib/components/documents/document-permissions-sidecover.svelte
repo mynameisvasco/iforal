@@ -5,12 +5,8 @@
 	import { enhance } from '$app/forms';
 	import { Icon, Users } from 'svelte-hero-icons';
 	import DocumentPermissionsItem from './document-permissions-item.svelte';
-	import type { DocumentPermissions, User } from '@prisma/client';
 	import { formHandler } from '$lib/forms';
-
-	export let id: number;
-	export let owner: User;
-	export let permissions: (DocumentPermissions & { user: { name: string; email: string } })[];
+	import { page } from '$app/stores';
 
 	let sideCover: any;
 </script>
@@ -22,15 +18,16 @@
 >
 	<div class="flex flex-col gap-6">
 		<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
-			<SearchEndpointInput
-				placeholder="Adicionar membro pelo nome ou email"
-				endpoint="/documents/{id}/permissions/search"
-				searchParams={['name', 'email']}
-				let:item
-			>
-				{#if item.id !== owner.id}
+			{#if $page.data.user.id === $page.data.document.user.id}
+				<SearchEndpointInput
+					placeholder="Adicionar membro pelo nome ou email"
+					endpoint="/documents/{$page.data.document.id}/permissions/search"
+					searchParams={['name', 'email']}
+					let:item
+				>
 					<form
-						action="/documents/{id}/permissions?/create"
+						class="w-full"
+						action="/documents/{$page.data.document.id}/permissions?/create"
 						method="POST"
 						use:enhance={formHandler()}
 					>
@@ -45,13 +42,18 @@
 							</span>
 						</button>
 					</form>
-				{/if}
-			</SearchEndpointInput>
+				</SearchEndpointInput>
+			{/if}
 		</div>
 		<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
-			<DocumentPermissionsItem id={0} name={owner.name} email={owner.email} permissionType={2} />
+			<DocumentPermissionsItem
+				id={0}
+				name={$page.data.document.user.name}
+				email={$page.data.document.user.email}
+				permissionType={2}
+			/>
 		</div>
-		{#each permissions as permission}
+		{#each $page.data.document.permissions as permission}
 			<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
 				<DocumentPermissionsItem
 					id={permission.id}

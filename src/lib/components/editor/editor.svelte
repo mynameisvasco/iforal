@@ -6,28 +6,36 @@
 	import Gallery from '$lib/components/gallery.svelte';
 	import EditorTagsMenu from './editor-tags-menu.svelte';
 	import EditorSettingsMenu from './editor-settings-menu.svelte';
-	import type { DocumentImages, Tag } from '@prisma/client';
 	import { enhance } from '$app/forms';
 	import { formHandler } from '$lib/forms';
-
-	export let documentId: number;
-	export let images: DocumentImages[];
-	export let tags: Tag[];
-	export let body: string;
+	import { page } from '$app/stores';
 
 	let updateForm: HTMLFormElement;
 	let editor = writable({} as EditorView);
+	const isReadOnly =
+		$page.data.document.user.id !== $page.data.user.id &&
+		$page.data.document.permissions.filter(
+			(p: any) => p.type === 0 && p.userId === $page.data.user.id
+		).length !== 0;
+
 	setContext('editor', editor);
 
 	onMount(async () => {
 		const editorElement = document.getElementById('editor') as HTMLElement;
 		const viewerElement = document.getElementById('viewer') as HTMLElement;
-		$editor = createTeiEditor(editorElement, viewerElement, updateForm, documentId, body, tags);
+		$editor = createTeiEditor(
+			editorElement,
+			viewerElement,
+			updateForm,
+			isReadOnly,
+			$page.data.document.body,
+			$page.data.tags
+		);
 	});
 </script>
 
 <form
-	action="/documents/{documentId}?/update"
+	action="/documents/{$page.data.document.id}?/update"
 	method="POST"
 	use:enhance={formHandler()}
 	bind:this={updateForm}
@@ -48,7 +56,7 @@
 			{#if $editorSettings.isViewerMode}
 				<div />
 			{:else}
-				<EditorTagsMenu {tags} />
+				<EditorTagsMenu tags={$page.data.tags} />
 			{/if}
 			<EditorSettingsMenu />
 		</div>
@@ -61,6 +69,6 @@
 		class:hidden={$editorSettings.isFullWidth}
 		style="min-height: 800px;"
 	>
-		<Gallery {images} />
+		<Gallery images={$page.data.document.images} />
 	</div>
 </div>

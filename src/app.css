@@ -106,7 +106,7 @@ html {
 	@apply bg-white dark:bg-stone-800 flex w-full shadow-sm focus:ring-stone-900 ring ring-transparent
 	focus:border-stone-900 dark:focus:ring-orange-300 dark:focus:border-orange-300 sm:text-sm
 	border-stone-300 dark:border-stone-700 rounded-md text-stone-900 dark:text-white 
-	mt-1 placeholder:text-stone-400 dark:placeholder:text-stone-500;
+ placeholder:text-stone-400 dark:placeholder:text-stone-500;
 }
 
 .input:disabled {

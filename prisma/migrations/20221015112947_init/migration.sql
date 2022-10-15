@@ -1,3 +1,9 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('Admin', 'Regular');
+
+-- CreateEnum
+CREATE TYPE "UserStatus" AS ENUM ('Invited', 'Active');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -5,6 +11,8 @@ CREATE TABLE "User" (
     "email" VARCHAR(90) NOT NULL,
     "password" VARCHAR(90) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "role" "Role" NOT NULL DEFAULT 'Regular',
+    "status" "UserStatus" NOT NULL DEFAULT 'Invited',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -15,7 +23,7 @@ CREATE TABLE "Document" (
     "title" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "modifiedAt" TIMESTAMP(3) NOT NULL,
-    "body" XML NOT NULL,
+    "body" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Document_pkey" PRIMARY KEY ("id")
@@ -26,13 +34,13 @@ CREATE TABLE "DocumentHeader" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "editors" JSONB NOT NULL,
-    "funders" VARCHAR(255) NOT NULL,
+    "funders" JSONB NOT NULL,
     "country" VARCHAR(4) NOT NULL,
     "institution" VARCHAR(255) NOT NULL,
     "repository" VARCHAR(255) NOT NULL,
-    "idno" VARCHAR(255) NOT NULL,
+    "idno" VARCHAR(255),
     "authors" JSONB NOT NULL,
-    "altIdentifier" JSONB NOT NULL,
+    "altIdentifier" JSONB,
     "settlement" VARCHAR(255) NOT NULL,
     "publisher" VARCHAR(255) NOT NULL,
     "publisherPlace" VARCHAR(255) NOT NULL,
@@ -69,6 +77,18 @@ CREATE TABLE "DocumentPermissions" (
     "documentId" INTEGER NOT NULL,
 
     CONSTRAINT "DocumentPermissions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Tag" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "friendlyName" VARCHAR(255) NOT NULL,
+    "isChildAllowed" BOOLEAN NOT NULL,
+    "attributes" JSONB NOT NULL,
+    "category" TEXT NOT NULL,
+
+    CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

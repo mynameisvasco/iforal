@@ -103,7 +103,7 @@ export function createTeiEditor(
 	editorElement: HTMLElement,
 	viewerElement: HTMLElement,
 	updateForm: HTMLFormElement,
-	documentId: number,
+	readonly: boolean,
 	body: string,
 	tags: Tag[]
 ) {
@@ -112,6 +112,7 @@ export function createTeiEditor(
 	const state = EditorState.create({
 		doc: body,
 		extensions: [
+			EditorView.editable.of(!readonly),
 			xml({
 				elements: tags.map((t) => ({
 					name: t.name,

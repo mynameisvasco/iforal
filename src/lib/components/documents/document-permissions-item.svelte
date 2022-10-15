@@ -23,16 +23,18 @@
 		<div class="flex flex-col">
 			<div class="flex items-center gap-2 text-stone-900 dark:text-white text-sm font-medium">
 				{name}
-				<form
-					action="/documents/{$page.data.document.id}/permissions/{id}?/destroy"
-					method="POST"
-					class:hidden={permissionType === 2}
-					use:enhance={formHandler()}
-				>
-					<button type="submit">
-						<Icon src={Trash} class="w-4 text-stone-500 dark:text-stone-400" solid />
-					</button>
-				</form>
+				{#if $page.data.document.user.id === $page.data.user.id}
+					<form
+						action="/documents/{$page.data.document.id}/permissions/{id}?/destroy"
+						method="POST"
+						class:hidden={permissionType === 2}
+						use:enhance={formHandler()}
+					>
+						<button type="submit">
+							<Icon src={Trash} class="w-4 text-stone-500 dark:text-stone-400" solid />
+						</button>
+					</form>
+				{/if}
 			</div>
 			<span class="label text-xs">{email}</span>
 		</div>
@@ -48,7 +50,7 @@
 				id="type"
 				name="type"
 				class="input-sm"
-				disabled={permissionType === 2}
+				disabled={permissionType === 2 || $page.data.document.user.id !== $page.data.user.id}
 				bind:value={permissionType}
 				on:change={handlePermissionChange}
 			>

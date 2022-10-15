@@ -14,16 +14,26 @@ export async function GET(event: RequestEvent) {
 	}
 
 	const prisma = await getPrismaClient(event.locals.user.id);
-	const permissionsUserIds = (
-		await prisma.documentPermissions.findMany({
-			select: { userId: true },
-			where: { documentId }
-		})
-	).map((p) => p.userId);
-
-	const users = await prisma.user.findMany({
-		where: { OR: [{ name: { contains: name ?? '' } }, { email: { contains: email ?? '' } }] }
+	const document = await prisma.document.findUnique({
+		select: { userId: true },
+		where: { id: documentId }
 	});
 
-	return json(users.filter((u) => !permissionsUserIds.includes(u.id)));
+	const permissions = await prisma.documentPermissions.findMany({
+		select: { userId: true },
+		where: { documentId }
+	});
+
+	const users = await prisma.user.findMany({
+		where: {
+			AND: [
+				{ id: { notIn: permissions.map((p) => p.userId) } },
+				{ id: { not: document?.userId } },
+				{ id: { not: event.locals.user.id } }
+			],
+			OR: [{ name: { contains: name ?? '' } }, { email: { contains: email ?? '' } }]
+		}
+	});
+
+	return json(users);
 }

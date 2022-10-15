@@ -41,7 +41,10 @@ async function destroy(event: RequestEvent) {
 	}
 
 	const prisma = await getPrismaClient(event.locals.user.id);
-	const permission = await prisma.documentPermissions.findUnique({ where: { id: permissionId } });
+	const permission = await prisma.documentPermissions.findFirst({
+		where: { id: permissionId, AND: { document: { userId: event.locals.user.id } } }
+	});
+
 	if (!permission) {
 		throw error(404, 'Permission not found');
 	}

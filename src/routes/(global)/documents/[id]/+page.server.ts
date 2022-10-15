@@ -30,7 +30,17 @@ export async function update(event: RequestEvent) {
 
 	const changes = JSON.parse(body.data.changes);
 	const prisma = await getPrismaClient(event.locals.user.id);
-	const document = await prisma.document.findUnique({ select: { body: true }, where: { id } });
+	const document = await prisma.document.findFirst({
+		select: { body: true },
+		where: {
+			id,
+			OR: [
+				{ userId: event.locals.user.id },
+				{ permissions: { some: { userId: event.locals.user.id, documentId: id, type: 2 } } }
+			]
+		}
+	});
+
 	if (!document) {
 		throw error(404);
 	}
@@ -51,7 +61,13 @@ export async function load(event: RequestEvent) {
 
 	const prisma = await getPrismaClient(event.locals.user.id);
 	const document = await prisma.document.findFirst({
-		where: { id },
+		where: {
+			id,
+			OR: [
+				{ userId: event.locals.user.id },
+				{ permissions: { some: { userId: event.locals.user.id, documentId: id } } }
+			]
+		},
 		include: {
 			images: { orderBy: { position: 'asc' } },
 			permissions: { include: { user: { select: { name: true, email: true } } } },

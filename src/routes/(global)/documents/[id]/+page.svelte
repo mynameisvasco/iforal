@@ -30,10 +30,5 @@
 	/>
 </PageHeader>
 <PageBody>
-	<Editor
-		documentId={data.document.id}
-		images={data.document.images}
-		body={data.document.body}
-		tags={data.tags}
-	/>
+	<Editor />
 </PageBody>
