@@ -62,6 +62,7 @@ function createEditorSettings() {
 function iforalPlugin(updateForm: HTMLFormElement, viewer: HTMLElement) {
 	const plugin = ViewPlugin.fromClass(
 		class {
+			private timeout: NodeJS.Timeout | undefined;
 			private editor: EditorView;
 			private reader: any;
 
@@ -81,7 +82,11 @@ function iforalPlugin(updateForm: HTMLFormElement, viewer: HTMLElement) {
 				if (update.docChanged) {
 					const changesInput = updateForm.elements.namedItem('changes') as HTMLInputElement;
 					changesInput.value = update.state.doc.toString();
-					updateForm.dispatchEvent(new SubmitEvent('submit'));
+					clearTimeout(this.timeout);
+					this.timeout = setTimeout(() => {
+						updateForm.dispatchEvent(new SubmitEvent('submit'));
+					}, 1500);
+
 					this.reader.makeHTML5(
 						EditorUtils.addTeiBeginTag(update.state.doc.toString()),
 						(data: any) => {
