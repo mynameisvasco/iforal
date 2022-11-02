@@ -80,10 +80,10 @@ function iforalPlugin(updateForm: HTMLFormElement, viewer: HTMLElement) {
 			async update(update: ViewUpdate) {
 				if (update.docChanged) {
 					const changesInput = updateForm.elements.namedItem('changes') as HTMLInputElement;
-					changesInput.value = JSON.stringify(update.changes);
+					changesInput.value = update.state.doc.toString();
 					updateForm.dispatchEvent(new SubmitEvent('submit'));
 					this.reader.makeHTML5(
-						EditorUtils.addTeiBeginTag(this.editor.state.doc.toString()),
+						EditorUtils.addTeiBeginTag(update.state.doc.toString()),
 						(data: any) => {
 							viewer.innerHTML = '';
 							viewer.appendChild(data);

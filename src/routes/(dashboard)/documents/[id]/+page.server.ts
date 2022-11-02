@@ -21,14 +21,13 @@ export async function update(event: RequestEvent) {
 		return error(404);
 	}
 
-	const body = await formDataToJson(
+	const { data } = await formDataToJson(
 		await event.request.formData(),
 		Yup.object({
 			changes: Yup.string().required()
 		})
 	);
 
-	const changes = JSON.parse(body.data.changes);
 	const prisma = await getPrismaClient(event.locals.user.id);
 	const document = await prisma.document.findFirst({
 		select: { body: true },
@@ -45,10 +44,7 @@ export async function update(event: RequestEvent) {
 		throw error(404);
 	}
 
-	document.body = ChangeSet.fromJSON(changes)
-		.apply(Text.of([document.body]))
-		.toString();
-
+	document.body = data.changes;
 	await prisma.document.update({ data: { body: document.body }, where: { id } });
 	return {};
 }

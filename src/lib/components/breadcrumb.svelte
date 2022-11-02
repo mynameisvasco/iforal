@@ -9,6 +9,7 @@
 		'^/documents/[0-9]+$': 'Editor',
 		'^/documents/[0-9]+/images$': 'Imagens',
 		'^/documents/[0-9]+/header$': 'Cabeçalho',
+		'^/glossary$': 'Glossário',
 		'^/tags$': 'Tags',
 		'^/tags/create$': 'Nova',
 		'^/tags/[0-9]+$': 'Editar',

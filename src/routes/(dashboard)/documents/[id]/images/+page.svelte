@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { api } from '$lib/api';
 	import DocumentImagesPositions from './_document-images-positions.svelte';
 	import { page } from '$app/stores';
 	import { Icon, Photograph, Upload } from 'svelte-hero-icons';
@@ -18,10 +17,6 @@
 
 	function handleImageUpload() {
 		form.dispatchEvent(new SubmitEvent('submit'));
-	}
-
-	async function handleImageOrderChange({ detail }: CustomEvent) {
-		await api.put(window.fetch, `/documents/${documentId}/images`, detail);
 	}
 </script>
 
@@ -46,7 +41,7 @@
 			on:change={handleImageUpload}
 			bind:this={fileInput}
 		/>
-		<button class="btn btn-primary" on:click={() => fileInput.click()}>
+		<button type="button" class="btn btn-primary" on:click={() => fileInput.click()}>
 			<Icon src={Upload} class="w-5 mr-1" solid />
 			Imagem
 		</button>
@@ -60,6 +55,6 @@
 			icon={Photograph}
 		/>
 	{:else}
-		<DocumentImagesPositions images={data.images} on:change={handleImageOrderChange} />
+		<DocumentImagesPositions images={data.images} />
 	{/if}
 </PageBody>

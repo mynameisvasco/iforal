@@ -1,7 +1,7 @@
 import { formDataToJson } from '$lib/forms';
 import { getPrismaClient } from '$lib/prisma';
+import { redirect, type RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
-import type { RequestEvent } from '@sveltejs/kit';
 
 async function create(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
@@ -28,13 +28,7 @@ async function create(event: RequestEvent) {
 		}
 	});
 
-	return {};
+	throw redirect(301, '/tags');
 }
 
-export async function load(event: RequestEvent) {
-	const prisma = await getPrismaClient();
-	const tags = await prisma.tag.findMany();
-	return { tags };
-}
-
-export const actions = { create };
+export const actions = { default: create };

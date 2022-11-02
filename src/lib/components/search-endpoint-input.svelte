@@ -30,14 +30,15 @@
 	/>
 	{#if value !== ''}
 		<div class="dropdown-menu !w-full">
-			{#each data as item}
-				<div class="dropdown-menu-item">
+			{#each data ?? [] as item}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<div class="dropdown-menu-item" on:click={() => setTimeout(() => (value = ''))}>
 					<slot {item} />
 				</div>
 			{:else}
 				<div class="dropdown-menu-item">
 					<span class="text-stone-900 dark:text-white text-sm p-3">
-						Não foi encontrado nenhum utilizador
+						Não foi encontrado nenhum registo
 					</span>
 				</div>
 			{/each}

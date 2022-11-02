@@ -53,7 +53,7 @@
 			class="flex items-center justify-between gap-1 w-full bg-stone-50 dark:bg-stone-900 p-1 
 		rounded-t-md border border-stone-300 dark:border-stone-700 h-12"
 		>
-			{#if $editorSettings.isViewerMode}
+			{#if $editorSettings.isViewerMode || isReadOnly}
 				<div />
 			{:else}
 				<EditorTagsMenu tags={$page.data.tags} />

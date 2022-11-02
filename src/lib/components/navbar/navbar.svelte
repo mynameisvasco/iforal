@@ -21,6 +21,7 @@
 				<div class="flex-shrink-0 flex items-center dark:text-white">iForal</div>
 				<div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
 					<NavbarItem path="/documents">Documentos</NavbarItem>
+					<NavbarItem path="/glossary">Glossário</NavbarItem>
 					{#if $page.data.user?.role === Role.Admin}
 						<NavbarItem path="/tags">Tags</NavbarItem>
 						<NavbarItem path="/users">Utilizadores</NavbarItem>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ScrollUtils } from '$lib/util';
 	import type { DocumentImages } from '@prisma/client';
 	import { onMount } from 'svelte';
 	import { ArrowLeft, ArrowRight, Icon } from 'svelte-hero-icons';
@@ -17,10 +18,10 @@
 
 	onMount(() => {
 		WZoom.create('#foral', {
-			maxScale: 3,
+			maxScale: 5,
 			minScale: 1,
 			dragScrollableOptions: {
-				smoothExtinction: 0
+				smoothExtinction: 0.1
 			},
 			smoothExtinction: 0.1,
 			disableWheelZoom: false,
@@ -32,6 +33,8 @@
 <div class="card !bg-black h-full rounded-md bg-cover relative overflow-hidden flex items-center">
 	{#if images[currentImageIndex]}
 		<img
+			on:mouseenter={() => ScrollUtils.disableScrolling()}
+			on:mouseleave={() => ScrollUtils.enableScrolling()}
 			id="foral"
 			alt="foral"
 			class="w-full cursor-zoom-in rounded-md"

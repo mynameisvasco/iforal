@@ -2,14 +2,13 @@
 	import { page } from '$app/stores';
 	import { enhance } from '$app/forms';
 	import type { DocumentImages } from '@prisma/client';
-	import { createEventDispatcher } from 'svelte';
 	import { Icon, X } from 'svelte-hero-icons';
 	import { formHandler } from '$lib/forms';
 
 	export let images: DocumentImages[];
 
 	const documentId = parseInt($page.params.id);
-	const dispatcher = createEventDispatcher();
+	let form: HTMLFormElement;
 	let swapImage1 = { id: 0, name: '' };
 	let swapImage2 = { id: 0, name: '' };
 
@@ -29,7 +28,7 @@
 			})
 		];
 
-		dispatcher('change', { image1: swapImage1.id, image2: swapImage2.id });
+		form.dispatchEvent(new SubmitEvent('submit'));
 	}
 
 	async function handleDragEnter(id: number, name: string) {
@@ -37,10 +36,20 @@
 	}
 </script>
 
+<form
+	action="/documents/{documentId}/images?/update"
+	method="POST"
+	use:enhance={formHandler()}
+	bind:this={form}
+>
+	<input id="image1" name="image1" type="hidden" value={swapImage1.id} />
+	<input id="image2" name="image2" type="hidden" value={swapImage2.id} />
+</form>
+
 <div class="grid grid-cols-12 gap-6 ">
 	{#each images as image}
 		<div class="col-span-6 md:col-span-3 xl:col-span-2 flex flex-col items-center">
-			<a href="/images/{image.name}" target="_blank">
+			<a href="/images/{image.name}" target="_blank" data-sveltekit-prefetch="off">
 				<img
 					class="cursor-pointer border border-stone-300 dark:border-stone-700 shadow rounded-md
 					mb-1"

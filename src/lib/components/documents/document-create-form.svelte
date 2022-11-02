@@ -24,7 +24,7 @@
 
 <form
 	id="document-create"
-	action="/documents?/create"
+	action="/documents/create"
 	method="POST"
 	class="mt-12"
 	use:enhance={formHandler()}

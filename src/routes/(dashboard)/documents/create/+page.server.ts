@@ -1,8 +1,9 @@
-import { getPrismaClient } from '$lib/prisma';
 import { redirect, type RequestEvent } from '@sveltejs/kit';
+
 import { parse as parseDate } from 'date-fns';
 import { formDataToJson } from '$lib/forms';
 import * as Yup from 'yup';
+import { getPrismaClient } from '$lib/prisma';
 
 async function create(event: RequestEvent) {
 	const { data, errors } = await formDataToJson(
@@ -56,23 +57,4 @@ async function create(event: RequestEvent) {
 	throw redirect(301, `/documents/${document.id}`);
 }
 
-export async function load(event: RequestEvent) {
-	const prisma = await getPrismaClient(event.locals.user.id);
-	const documents = await prisma.document.findMany({
-		where: {
-			OR: [
-				{ userId: event.locals.user.id },
-				{ permissions: { some: { userId: event.locals.user.id } } }
-			]
-		},
-		include: {
-			images: {
-				orderBy: { position: 'asc' }
-			}
-		}
-	});
-
-	return { documents };
-}
-
-export const actions = { create };
+export const actions = { default: create };

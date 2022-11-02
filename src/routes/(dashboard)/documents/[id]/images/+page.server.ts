@@ -1,7 +1,9 @@
 import { getPrismaClient } from '$lib/prisma';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { error, type RequestEvent } from '@sveltejs/kit';
+import { error, invalid, type RequestEvent } from '@sveltejs/kit';
+import * as Yup from 'yup';
+import { formDataToJson } from '$lib/forms';
 
 async function create(event: RequestEvent) {
 	const documentId = parseInt(event.params.id ?? '');
@@ -41,13 +43,29 @@ async function create(event: RequestEvent) {
 }
 
 async function update(event: RequestEvent) {
-	const { image1, image2 } = await event.request.json();
+	const { data, errors } = await formDataToJson(
+		await event.request.formData(),
+		Yup.object().shape({
+			image1: Yup.number().min(1).required(),
+			image2: Yup.number().min(1).required()
+		})
+	);
+
+	if (errors) {
+		throw { errors };
+	}
+
 	const prisma = await getPrismaClient(event.locals.user.id);
-	const sourceImage = await prisma.documentImages.findUnique({ where: { id: image1 } });
-	const targetImage = await prisma.documentImages.findUnique({ where: { id: image2 } });
+	const sourceImage = await prisma.documentImages.findUnique({
+		where: { id: parseInt(data.image1) }
+	});
+
+	const targetImage = await prisma.documentImages.findUnique({
+		where: { id: parseInt(data.image2) }
+	});
 
 	if (!sourceImage || !targetImage) {
-		throw error(404, 'Images not found');
+		return invalid(400, { image1: 'Images not found' });
 	}
 
 	await prisma.$transaction([

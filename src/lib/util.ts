@@ -60,8 +60,10 @@ export class EditorUtils {
 		return {
 			tei: {
 				choice: (element: HTMLElement) => {
-					element.classList.add('text-stone-900', 'dark:text-orange-300');
-					element.style.textDecoration = 'underline';
+					if (element.children.namedItem('abbr') && element.children.namedItem('expan')) {
+						element.classList.add('text-stone-900', 'dark:text-orange-300');
+						element.style.textDecoration = 'underline';
+					}
 				},
 				abbr: (element: HTMLElement) => {
 					element.classList.add('hidden');
@@ -75,7 +77,15 @@ export class EditorUtils {
 						tooltip.textContent = abbr;
 						element.appendChild(tooltip);
 					}
-				}
+				},
+				sic: (element: HTMLElement) => {
+					element.classList.add('text-red-800', 'dark:text-red-300');
+					element.style.textDecoration = 'overline';
+				},
+				corr: (element: HTMLElement) => {
+					element.classList.add('text-green-800', 'dark:text-green-300');
+				},
+				pb: (element: HTMLElement) => {}
 			}
 		};
 	}
