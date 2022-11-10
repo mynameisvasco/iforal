@@ -31,10 +31,6 @@
 		editorSettings.update((old) => ({ ...old, isFullWidth: !old.isFullWidth }));
 	}
 
-	function handleToggleViewMode() {
-		editorSettings.update((old) => ({ ...old, isViewerMode: !old.isViewerMode }));
-	}
-
 	function handleFormat() {
 		const text = $editor.state.sliceDoc(0, $editor.state.doc.length);
 		$editor.dispatch({
@@ -53,13 +49,6 @@
 	</button>
 	<button type="button" class="btn-editor" on:click={handleFormat}>
 		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
-	</button>
-	<button type="button" class="btn-editor" on:click={handleToggleViewMode}>
-		<Icon
-			src={$editorSettings.isViewerMode ? Code : Eye}
-			class="w-5 text-stone-500 dark:text-stone-400"
-			solid
-		/>
 	</button>
 	<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>
 		<Icon

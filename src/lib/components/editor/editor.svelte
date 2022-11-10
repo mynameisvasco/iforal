@@ -1,7 +1,3 @@
-<script lang="ts" context="module">
-	export let ssr = false;
-</script>
-
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -23,14 +19,7 @@
 
 	onMount(async () => {
 		const editorElement = document.getElementById('editor') as HTMLElement;
-		const viewerElement = document.getElementById('viewer') as HTMLElement;
-		$editor = createTeiEditor(
-			editorElement,
-			viewerElement,
-			isReadOnly,
-			$page.data.document,
-			$page.data.tags
-		);
+		$editor = createTeiEditor(editorElement, isReadOnly, $page.data.document, $page.data.tags);
 	});
 </script>
 
@@ -44,20 +33,10 @@
 			class="flex items-center justify-between gap-1 w-full bg-stone-50 dark:bg-stone-900 p-1 
 		rounded-t-md border border-stone-300 dark:border-stone-700 h-12"
 		>
-			{#if $editorSettings.isViewerMode || isReadOnly}
-				<div />
-			{:else}
-				<EditorTagsMenu tags={$page.data.tags} />
-			{/if}
+			<EditorTagsMenu tags={$page.data.tags} />
 			<EditorSettingsMenu />
 		</div>
-		<div
-			id="viewer"
-			class:hidden={!$editorSettings.isViewerMode}
-			class="overflow-y-auto"
-			style="line-height: 1.4;"
-		/>
-		<div id="editor" class:hidden={$editorSettings.isViewerMode} />
+		<div id="editor" />
 	</div>
 	<div
 		class="h-full"

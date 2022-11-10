@@ -13,16 +13,12 @@ import { editorDarkTheme, editorLightTheme } from '../lib/components/editor/edit
 import { syntaxTree } from '@codemirror/language';
 import { searchKeymap, highlightSelectionMatches, search } from '@codemirror/search';
 import type { Document, Tag } from '@prisma/client';
-//@ts-ignore
-import CETEIcean from 'CETEIcean';
-import { EditorUtils } from '$lib/util';
 import { api } from '$lib/api';
 import { notifications } from './notifications';
 
 interface EditorSettings {
 	fontSize: number;
 	isFullWidth: boolean;
-	isViewerMode: boolean;
 }
 
 const xmlTagLinter = linter((view) => {
@@ -53,33 +49,18 @@ const xmlTagLinter = linter((view) => {
 function createEditorSettings() {
 	const store = writable('editor', {
 		fontSize: 18,
-		isFullWidth: false,
-		isViewerMode: false
+		isFullWidth: false
 	} as EditorSettings);
 
 	return { ...store };
 }
 
-function iforalPlugin(documentId: number, viewer: HTMLElement) {
+function iforalPlugin(documentId: number) {
 	const plugin = ViewPlugin.fromClass(
 		class {
 			private timeout: NodeJS.Timeout | undefined;
 			private changesBuffer: ChangeSet[] = [];
-			private editor: EditorView;
-			private reader: any;
 			private isBusy: boolean = false;
-
-			constructor(editor: EditorView) {
-				this.editor = editor;
-				this.reader = new CETEIcean();
-				this.reader.addBehaviors(EditorUtils.getTranscriptionTEIBehavior());
-				this.reader.makeHTML5(
-					EditorUtils.addTeiBeginTag(this.editor.state.doc.toString()),
-					(data: any) => {
-						viewer.appendChild(data);
-					}
-				);
-			}
 
 			async update(update: ViewUpdate) {
 				if (update.docChanged) {
@@ -106,14 +87,6 @@ function iforalPlugin(documentId: number, viewer: HTMLElement) {
 						this.changesBuffer = [];
 						this.isBusy = false;
 					}, 1500);
-
-					this.reader.makeHTML5(
-						EditorUtils.addTeiBeginTag(update.state.doc.toString()),
-						(data: any) => {
-							viewer.innerHTML = '';
-							viewer.appendChild(data);
-						}
-					);
 				}
 			}
 		}
@@ -126,7 +99,6 @@ export const editorSettings = createEditorSettings();
 
 export function createTeiEditor(
 	editorElement: HTMLElement,
-	viewerElement: HTMLElement,
 	readonly: boolean,
 	document: Document,
 	tags: Tag[]
@@ -154,7 +126,7 @@ export function createTeiEditor(
 			autocompletion(),
 			rectangularSelection(),
 			lintGutter(),
-			iforalPlugin(document.id, viewerElement),
+			iforalPlugin(document.id),
 			highlightSelectionMatches(),
 			search(),
 			xmlTagLinter,
@@ -180,11 +152,9 @@ export function createTeiEditor(
 
 	editorSettings.subscribe((s) => {
 		const editorElement = window.document.getElementsByClassName('cm-editor');
-		const viewerElement = window.document.getElementById('viewer');
 
 		if (editorElement.length === 1) {
 			(editorElement[0] as HTMLElement).style.fontSize = `${s.fontSize}px`;
-			viewerElement!.style.fontSize = `${s.fontSize}px`;
 		}
 	});
 
