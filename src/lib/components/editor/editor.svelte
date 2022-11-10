@@ -1,3 +1,7 @@
+<script lang="ts" context="module">
+	export let ssr = false;
+</script>
+
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';

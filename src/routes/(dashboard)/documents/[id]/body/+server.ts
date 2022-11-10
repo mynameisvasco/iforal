@@ -27,7 +27,13 @@ export async function PUT(event: RequestEvent) {
 	}
 
 	for (const change of changes) {
-		document.body = change.apply(Text.of([document.body])).toString();
+		try {
+			document.body = change.apply(Text.of([document.body])).toString();
+		} catch (e) {
+			console.error(
+				`Error updating document body change length:${change.length}, original length:${document.body.length}`
+			);
+		}
 	}
 
 	await prisma.document.update({ data: { body: document.body }, where: { id } });
