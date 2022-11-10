@@ -33,6 +33,8 @@ export async function PUT(event: RequestEvent) {
 			console.error(
 				`Error updating document body change length:${change.length}, original length:${document.body.length}`
 			);
+
+			return json({ error: true });
 		}
 	}
 

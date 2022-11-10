@@ -17,6 +17,7 @@ import type { Document, Tag } from '@prisma/client';
 import CETEIcean from 'CETEIcean';
 import { EditorUtils } from '$lib/util';
 import { api } from '$lib/api';
+import { notifications } from './notifications';
 
 interface EditorSettings {
 	fontSize: number;
@@ -90,9 +91,17 @@ function iforalPlugin(documentId: number, viewer: HTMLElement) {
 						}
 
 						this.isBusy = true;
-						await api.put(window.fetch, `/documents/${documentId}/body`, {
+						const response = await api.put<any>(window.fetch, `/documents/${documentId}/body`, {
 							changes: this.changesBuffer
 						});
+
+						if (response.error) {
+							notifications.show({
+								title: 'Erro',
+								message: 'Houve um erro a guardar automaticamente',
+								type: 'error'
+							});
+						}
 
 						this.changesBuffer = [];
 						this.isBusy = false;
