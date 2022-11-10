@@ -90,7 +90,7 @@ function iforalPlugin(documentId: number, viewer: HTMLElement) {
 						}
 
 						this.isBusy = true;
-						await api.put(window.fetch, `/documents/${documentId}`, {
+						await api.put(window.fetch, `/documents/${documentId}/body`, {
 							changes: this.changesBuffer
 						});
 
