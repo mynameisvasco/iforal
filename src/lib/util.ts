@@ -56,34 +56,32 @@ export class EditorUtils {
 		return `<TEI version="3.3.0" xmlns="http://www.tei-c.org/ns/1.0">\n${inner}\n</TEI>`;
 	}
 
-	public static getTEIBehavior() {
+	public static getEditionTEIBEhaviour() {
 		return {
 			tei: {
-				choice: (element: HTMLElement) => {
-					if (element.children.namedItem('abbr') && element.children.namedItem('expan')) {
-						element.classList.add('text-stone-900', 'dark:text-orange-300');
-						element.style.textDecoration = 'underline';
-					}
-				},
-				abbr: (element: HTMLElement) => {
-					element.classList.add('hidden');
-				},
 				expan: (element: HTMLElement) => {
-					element.classList.add('has-tooltip');
-					const abbr = (element.previousElementSibling as HTMLElement)?.innerText;
-					if (abbr?.trim()) {
-						const tooltip = document.createElement('span');
-						tooltip.classList.add('tooltip');
-						tooltip.textContent = abbr;
-						element.appendChild(tooltip);
-					}
+					element.classList.add('hidden');
 				},
 				sic: (element: HTMLElement) => {
 					element.classList.add('text-red-800', 'dark:text-red-300');
-					element.style.textDecoration = 'overline';
+					element.style.textDecoration = 'line-through';
 				},
 				corr: (element: HTMLElement) => {
 					element.classList.add('text-green-800', 'dark:text-green-300');
+				},
+				pb: (element: HTMLElement) => {}
+			}
+		};
+	}
+
+	public static getTranscriptionTEIBehavior() {
+		return {
+			tei: {
+				expan: (element: HTMLElement) => {
+					element.classList.add('hidden');
+				},
+				corr: (element: HTMLElement) => {
+					element.classList.add('hidden');
 				},
 				pb: (element: HTMLElement) => {}
 			}

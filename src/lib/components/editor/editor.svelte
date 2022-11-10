@@ -10,7 +10,6 @@
 	import { formHandler } from '$lib/forms';
 	import { page } from '$app/stores';
 
-	let updateForm: HTMLFormElement;
 	let editor = writable({} as EditorView);
 	const isReadOnly =
 		$page.data.document.user.id !== $page.data.user.id &&
@@ -26,22 +25,12 @@
 		$editor = createTeiEditor(
 			editorElement,
 			viewerElement,
-			updateForm,
 			isReadOnly,
-			$page.data.document.body,
+			$page.data.document,
 			$page.data.tags
 		);
 	});
 </script>
-
-<form
-	action="/documents/{$page.data.document.id}?/update"
-	method="POST"
-	use:enhance={formHandler()}
-	bind:this={updateForm}
->
-	<input name="changes" id="changes" type="hidden" />
-</form>
 
 <div class="grid grid-cols-12 gap-6">
 	<div
@@ -60,7 +49,12 @@
 			{/if}
 			<EditorSettingsMenu />
 		</div>
-		<div id="viewer" class:hidden={!$editorSettings.isViewerMode} />
+		<div
+			id="viewer"
+			class:hidden={!$editorSettings.isViewerMode}
+			class="overflow-y-auto"
+			style="line-height: 1.4;"
+		/>
 		<div id="editor" class:hidden={$editorSettings.isViewerMode} />
 	</div>
 	<div

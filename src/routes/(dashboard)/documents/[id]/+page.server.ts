@@ -1,8 +1,5 @@
-import { formDataToJson } from '$lib/forms';
 import { getPrismaClient } from '$lib/prisma';
-import { ChangeSet, Text } from '@codemirror/state';
 import { error, type RequestEvent } from '@sveltejs/kit';
-import * as Yup from 'yup';
 
 async function destroy(event: RequestEvent) {
 	const id = parseInt(event.params.id ?? '');
@@ -12,40 +9,6 @@ async function destroy(event: RequestEvent) {
 
 	const prisma = await getPrismaClient(event.locals.user.id);
 	await prisma.document.delete({ where: { id } });
-	return {};
-}
-
-export async function update(event: RequestEvent) {
-	const id = parseInt(event.params.id ?? '');
-	if (isNaN(id)) {
-		return error(404);
-	}
-
-	const { data } = await formDataToJson(
-		await event.request.formData(),
-		Yup.object({
-			changes: Yup.string().required()
-		})
-	);
-
-	const prisma = await getPrismaClient(event.locals.user.id);
-	const document = await prisma.document.findFirst({
-		select: { body: true },
-		where: {
-			id,
-			OR: [
-				{ userId: event.locals.user.id },
-				{ permissions: { some: { userId: event.locals.user.id, documentId: id, type: 2 } } }
-			]
-		}
-	});
-
-	if (!document) {
-		throw error(404);
-	}
-
-	document.body = data.changes;
-	await prisma.document.update({ data: { body: document.body }, where: { id } });
 	return {};
 }
 
@@ -79,4 +42,4 @@ export async function load(event: RequestEvent) {
 	return { document, tags };
 }
 
-export const actions = { update, destroy };
+export const actions = { destroy };

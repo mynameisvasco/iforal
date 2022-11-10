@@ -1,22 +1,22 @@
 import { xml } from '@codemirror/lang-xml';
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { keymap, rectangularSelection, lineNumbers } from '@codemirror/view';
-import { Compartment, EditorState } from '@codemirror/state';
+import { ChangeSet, Compartment, EditorState } from '@codemirror/state';
 import { indentOnInput, bracketMatching, foldGutter, foldKeymap } from '@codemirror/language';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { autocompletion, completionKeymap } from '@codemirror/autocomplete';
 import { lintKeymap, lintGutter, linter, type Diagnostic } from '@codemirror/lint';
-import { get, type Writable } from 'svelte/store';
+import { get } from 'svelte/store';
 import { theme } from '$stores/theme';
 import { writable } from 'svelte-local-storage-store';
 import { editorDarkTheme, editorLightTheme } from '../lib/components/editor/editor-theme';
-import { api } from '../lib/api';
 import { syntaxTree } from '@codemirror/language';
 import { searchKeymap, highlightSelectionMatches, search } from '@codemirror/search';
-import type { Tag } from '@prisma/client';
+import type { Document, Tag } from '@prisma/client';
 //@ts-ignore
 import CETEIcean from 'CETEIcean';
 import { EditorUtils } from '$lib/util';
+import { api } from '$lib/api';
 
 interface EditorSettings {
 	fontSize: number;
@@ -59,17 +59,19 @@ function createEditorSettings() {
 	return { ...store };
 }
 
-function iforalPlugin(updateForm: HTMLFormElement, viewer: HTMLElement) {
+function iforalPlugin(documentId: number, viewer: HTMLElement) {
 	const plugin = ViewPlugin.fromClass(
 		class {
 			private timeout: NodeJS.Timeout | undefined;
+			private changesBuffer: ChangeSet[] = [];
 			private editor: EditorView;
 			private reader: any;
+			private isBusy: boolean = false;
 
 			constructor(editor: EditorView) {
 				this.editor = editor;
 				this.reader = new CETEIcean();
-				this.reader.addBehaviors(EditorUtils.getTEIBehavior());
+				this.reader.addBehaviors(EditorUtils.getTranscriptionTEIBehavior());
 				this.reader.makeHTML5(
 					EditorUtils.addTeiBeginTag(this.editor.state.doc.toString()),
 					(data: any) => {
@@ -80,11 +82,19 @@ function iforalPlugin(updateForm: HTMLFormElement, viewer: HTMLElement) {
 
 			async update(update: ViewUpdate) {
 				if (update.docChanged) {
-					const changesInput = updateForm.elements.namedItem('changes') as HTMLInputElement;
-					changesInput.value = update.state.doc.toString();
+					this.changesBuffer.push(update.changes);
 					clearTimeout(this.timeout);
-					this.timeout = setTimeout(() => {
-						updateForm.dispatchEvent(new SubmitEvent('submit'));
+					this.timeout = setTimeout(async () => {
+						while (this.isBusy) {
+							await new Promise((resolve) => setTimeout(() => resolve(null), 500));
+						}
+
+						this.isBusy = true;
+						await api.put(window.fetch, `/documents/${documentId}`, {
+							changes: this.changesBuffer
+						});
+						this.changesBuffer = [];
+						this.isBusy = false;
 					}, 1500);
 
 					this.reader.makeHTML5(
@@ -107,15 +117,14 @@ export const editorSettings = createEditorSettings();
 export function createTeiEditor(
 	editorElement: HTMLElement,
 	viewerElement: HTMLElement,
-	updateForm: HTMLFormElement,
 	readonly: boolean,
-	body: string,
+	document: Document,
 	tags: Tag[]
 ) {
 	const editorTheme = new Compartment();
 
 	const state = EditorState.create({
-		doc: body,
+		doc: document.body,
 		extensions: [
 			EditorView.editable.of(!readonly),
 			xml({
@@ -135,7 +144,7 @@ export function createTeiEditor(
 			autocompletion(),
 			rectangularSelection(),
 			lintGutter(),
-			iforalPlugin(updateForm, viewerElement),
+			iforalPlugin(document.id, viewerElement),
 			highlightSelectionMatches(),
 			search(),
 			xmlTagLinter,
@@ -160,8 +169,8 @@ export function createTeiEditor(
 	});
 
 	editorSettings.subscribe((s) => {
-		const editorElement = document.getElementsByClassName('cm-editor');
-		const viewerElement = document.getElementById('viewer');
+		const editorElement = window.document.getElementsByClassName('cm-editor');
+		const viewerElement = window.document.getElementById('viewer');
 
 		if (editorElement.length === 1) {
 			(editorElement[0] as HTMLElement).style.fontSize = `${s.fontSize}px`;

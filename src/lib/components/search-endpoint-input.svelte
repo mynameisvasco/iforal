@@ -17,7 +17,7 @@
 	}
 </script>
 
-<div class="relative">
+<div class="relative w-full">
 	<input
 		type="text"
 		class="input"
