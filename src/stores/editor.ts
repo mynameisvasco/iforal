@@ -93,6 +93,7 @@ function iforalPlugin(documentId: number, viewer: HTMLElement) {
 						await api.put(window.fetch, `/documents/${documentId}`, {
 							changes: this.changesBuffer
 						});
+
 						this.changesBuffer = [];
 						this.isBusy = false;
 					}, 1500);

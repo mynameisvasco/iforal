@@ -6,8 +6,6 @@
 	import Gallery from '$lib/components/gallery.svelte';
 	import EditorTagsMenu from './editor-tags-menu.svelte';
 	import EditorSettingsMenu from './editor-settings-menu.svelte';
-	import { enhance } from '$app/forms';
-	import { formHandler } from '$lib/forms';
 	import { page } from '$app/stores';
 
 	let editor = writable({} as EditorView);
