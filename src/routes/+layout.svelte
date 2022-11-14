@@ -1,4 +1,5 @@
 <script lang="ts">
+	import NotificationsContainer from '$lib/components/notifications/notifications-container.svelte';
 	import '../app.css';
 </script>
 
@@ -16,5 +17,6 @@
 </svelte:head>
 
 <div data-sveltekit-prefetch>
+	<NotificationsContainer />
 	<slot />
 </div>

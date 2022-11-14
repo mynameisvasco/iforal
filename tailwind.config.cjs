@@ -4,6 +4,7 @@ module.exports = {
 	darkMode: 'class',
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	safelist: [
+		{ pattern: /col-span-(.+)/, variants: ['lg'] },
 		{ pattern: /col-span-(.+)/ },
 		{ pattern: /bg-(.+)-(.+)/ },
 		{ pattern: /text-(.+)-(.+)/ },

@@ -42,7 +42,7 @@
 		{#if searchText}
 			{#each searchedDocuments as document}
 				<div class="col-span-5 md:col-span-4 lg:col-span-3 2xl:col-span-2">
-					<DocumentCard {document} />
+					<DocumentCard {document} href="/documents/{document.id}" />
 				</div>
 			{:else}
 				<div class="col-span-12">
@@ -56,7 +56,7 @@
 		{:else}
 			{#each data.documents as document}
 				<div class="col-span-5 md:col-span-4 lg:col-span-3 2xl:col-span-2">
-					<DocumentCard {document} />
+					<DocumentCard {document} href="/documents/{document.id}" />
 				</div>
 			{:else}
 				<div class="col-span-12">

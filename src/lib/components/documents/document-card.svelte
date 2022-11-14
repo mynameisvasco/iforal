@@ -4,11 +4,21 @@
 	import type { Document, DocumentImages } from '@prisma/client';
 	import pt from 'date-fns/locale/pt/index.js';
 	import DocumentActions from './document-actions.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let document: Document & { images: DocumentImages[] };
+	export let href: string | undefined = undefined;
+	export let showActions: boolean = true;
+
+	const dispatcher = createEventDispatcher();
+
+	function handleClick(event: Event) {
+		if (!href) event.preventDefault();
+		dispatcher('open');
+	}
 </script>
 
-<a href="/documents/{document.id}">
+<a {href} on:click={handleClick}>
 	<div class="flex flex-col card hover:border-stone-900 dark:hover:border-orange-300">
 		{#if document.images.at(0)}
 			<img
@@ -32,13 +42,15 @@
 						{formatDate(new Date(document.createdAt), 'dd MMMM, HH:mm', { locale: pt })}
 					</span>
 				</div>
-				<DocumentActions id={document.id}>
-					<Icon
-						src={DotsVertical}
-						class="w-8 p-1 text-stone-900 dark:text-white 
+				{#if showActions}
+					<DocumentActions id={document.id}>
+						<Icon
+							src={DotsVertical}
+							class="w-8 p-1 text-stone-900 dark:text-white 
 						hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full"
-					/>
-				</DocumentActions>
+						/>
+					</DocumentActions>
+				{/if}
 			</div>
 		</div>
 	</div>

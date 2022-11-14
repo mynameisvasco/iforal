@@ -1,4 +1,4 @@
-import { redirect, type RequestEvent } from '@sveltejs/kit';
+import { invalid, redirect, type RequestEvent } from '@sveltejs/kit';
 
 import { parse as parseDate } from 'date-fns';
 import { formDataToJson } from '$lib/forms';
@@ -31,7 +31,7 @@ async function create(event: RequestEvent) {
 	);
 
 	if (errors) {
-		return { errors };
+		return invalid(400, { errors });
 	}
 
 	const prisma = await getPrismaClient(event.locals.user.id);

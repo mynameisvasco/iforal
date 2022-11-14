@@ -3,6 +3,7 @@ import { goto, invalidateAll } from '$app/navigation';
 import { modals, type Modal } from '$stores/modals';
 import type { ActionResult } from '@sveltejs/kit';
 import { notifications, type Notification } from '$stores/notifications';
+import { applyAction } from '$app/forms';
 
 export async function formDataToJson(
 	formData: FormData,
@@ -28,25 +29,36 @@ export async function formDataToJson(
 export const formHandler = (notification?: Notification, cleanForm: boolean = false) => {
 	return ({ data, form }: { data: any; form: HTMLFormElement }) =>
 		async ({ result }: { result: ActionResult }) => {
+			let errors = {} as any;
+
 			if (result.type === 'invalid') {
-				const { errors } = result.data as any;
-				for (const input of Array.from(form!.elements)) {
-					if (errors[input.id]) {
-						const labelId = `${input.id}-error-label`;
-						const label = document.getElementById(labelId) ?? document.createElement('div');
-						label.remove();
-						label.id = `${input.id}-error-label`;
-						label.classList.add('error-label', 'mt-2');
-						label.innerText = errors[input.id];
-						input.parentNode?.append(label);
-						input.classList.add('input-error');
-					}
+				errors = result.data!.errors;
+			}
+
+			for (const input of Array.from(form!.elements)) {
+				if (result.type === 'invalid' && errors[input.id]) {
+					const labelId = `${input.id}-error-label`;
+					const label = document.getElementById(labelId) ?? document.createElement('div');
+					label.remove();
+					label.id = `${input.id}-error-label`;
+					label.classList.add('error-label', 'mt-2');
+					label.innerText = errors[input.id];
+					input.parentNode?.append(label);
+					input.classList.add('input-error');
+				} else {
+					const labelId = `${input.id}-error-label`;
+					const label = document.getElementById(labelId);
+					label?.remove();
+					input.classList.remove('input-error');
 				}
-				return;
 			}
 
 			if (notification) {
 				notifications.show(notification);
+			}
+
+			if (result.type === 'invalid') {
+				return;
 			}
 
 			if (result.type === 'redirect') {
@@ -58,6 +70,7 @@ export const formHandler = (notification?: Notification, cleanForm: boolean = fa
 			}
 
 			await invalidateAll();
+			await applyAction(result);
 		};
 };
 

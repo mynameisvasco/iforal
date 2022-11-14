@@ -59,12 +59,10 @@ function iforalPlugin(documentId: number) {
 	const plugin = ViewPlugin.fromClass(
 		class {
 			private timeout: NodeJS.Timeout | undefined;
-			private changesBuffer: ChangeSet[] = [];
 			private isBusy: boolean = false;
 
 			async update(update: ViewUpdate) {
 				if (update.docChanged) {
-					this.changesBuffer.push(update.changes);
 					clearTimeout(this.timeout);
 					this.timeout = setTimeout(async () => {
 						while (this.isBusy) {
@@ -73,7 +71,7 @@ function iforalPlugin(documentId: number) {
 
 						this.isBusy = true;
 						const response = await api.put<any>(window.fetch, `/documents/${documentId}/body`, {
-							changes: this.changesBuffer
+							body: update.state.doc.toString()
 						});
 
 						if (response.error) {
@@ -84,7 +82,6 @@ function iforalPlugin(documentId: number) {
 							});
 						}
 
-						this.changesBuffer = [];
 						this.isBusy = false;
 					}, 1500);
 				}
