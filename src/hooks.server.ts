@@ -1,5 +1,5 @@
 import { JWT_SECRET } from '$env/static/private';
-import type { RequestEvent, ResolveOptions } from '@sveltejs/kit';
+import type { RequestEvent, ResolveOptions, HttpError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import Jwt from 'jsonwebtoken';
 

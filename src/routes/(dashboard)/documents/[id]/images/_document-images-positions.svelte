@@ -49,7 +49,7 @@
 <div class="grid grid-cols-12 gap-6 ">
 	{#each images as image}
 		<div class="col-span-6 md:col-span-3 xl:col-span-2 flex flex-col items-center">
-			<a href="/images/{image.name}" target="_blank" data-sveltekit-prefetch="off">
+			<a href="/images/{image.name}" target="_blank" rel="noreferrer">
 				<img
 					class="cursor-pointer border border-stone-300 dark:border-stone-700 shadow rounded-md
 					mb-1"

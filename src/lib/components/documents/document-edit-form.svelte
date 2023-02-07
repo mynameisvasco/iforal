@@ -477,8 +477,8 @@
 				<div class="col-span-12">
 					<label for="title" class="label">Estado de conservação</label>
 					<textarea
-						id="decoDesc"
-						name="decoDesc"
+						id="condition"
+						name="condition"
 						class="input mt-1"
 						rows="9"
 						value={$page.data.documentHeader.condition ?? ''}
@@ -487,8 +487,8 @@
 				<div class="col-span-12">
 					<label for="title" class="label">Marginalia</label>
 					<textarea
-						id="decoDesc"
-						name="decoDesc"
+						id="additions"
+						name="additions"
 						class="input mt-1"
 						rows="9"
 						value={$page.data.documentHeader.additions ?? ''}

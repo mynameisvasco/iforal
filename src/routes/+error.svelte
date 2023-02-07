@@ -13,7 +13,7 @@
 					Mas não se preocupe, pode regressar à página principal
 				</p>
 				<div class="flex items-center justify-center">
-					<a href="/documents" class="btn btn-primary" data-sveltekit-prefecth>
+					<a href="/documents" class="btn btn-primary">
 						<Icon src={Home} class="w-4 mr-1" solid />Homepage
 					</a>
 				</div>

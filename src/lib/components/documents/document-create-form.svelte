@@ -214,8 +214,8 @@
 						/>
 						<span class="text-stone-900 dark:text-stone-300 font-semibold text-lg">-</span>
 						<input
-							id="originDateStartEnd"
-							name="originDateStartEnd"
+							id="originDateEnd"
+							name="originDateEnd"
 							type="date"
 							class="input"
 							placeholder="26/01/2000"
@@ -411,11 +411,11 @@
 				</div>
 				<div class="col-span-12">
 					<label for="title" class="label">Estado de conservação</label>
-					<textarea id="decoDesc" name="decoDesc" class="input mt-1" rows="9" />
+					<textarea id="condition" name="condition" class="input mt-1" rows="9" />
 				</div>
 				<div class="col-span-12">
 					<label for="title" class="label">Marginalia</label>
-					<textarea id="decoDesc" name="decoDesc" class="input mt-1" rows="9" />
+					<textarea id="additions" name="additions" class="input mt-1" rows="9" />
 				</div>
 			</div>
 		</div>
