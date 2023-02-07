@@ -2,33 +2,27 @@
 	import InputList from '$lib/components/input-list.svelte';
 	import countries from '$lib/assets/countries.json';
 	import { Icon, Save } from 'svelte-hero-icons';
-	import { browser } from '$app/environment';
-	import type { Modal } from '$stores/modals';
-	import { draft } from '$lib/forms';
 	import { enhance } from '$app/forms';
 	import { formHandler } from '$lib/forms';
+	import type { Notification } from '$stores/notifications';
+	import { page } from '$app/stores';
+	import { format } from 'date-fns';
 
 	let addingEditor = { name: '', role: '' };
 	let addingFunder = { name: '' };
 	let addingAuthor = { name: '', role: '' };
 	let addingAltIdentifier = { type: '', value: '' };
-	const draftTitle = browser ? localStorage.getItem('document-create-title') : undefined;
-	const draftModal: Modal = {
-		id: 'document-draft',
-		title: 'Recuperar rascunho',
-		description: `Existe um rascunho da última sessão com o título "${draftTitle}", deseja continuar o trabalho?`,
-		actionName: 'Continuar',
-		type: 'info'
+	const updateSuccessNotification: Notification = {
+		title: 'Alterações efetuadas',
+		message: 'O cabeçalho foi atualizado',
+		type: 'success'
 	};
 </script>
 
 <form
-	id="document-create"
-	action="/documents/create"
+	action="/documents/{$page.data.document.id}/header?/update"
 	method="POST"
-	class="mt-12"
-	use:enhance={formHandler()}
-	use:draft={draftModal}
+	use:enhance={formHandler(updateSuccessNotification)}
 >
 	<div class="md:grid md:grid-cols-3 md:gap-6">
 		<div class="md:col-span-1">
@@ -46,12 +40,16 @@
 						name="title"
 						class="input mt-1"
 						type="text"
-						placeholder="O Foral Manuelino da Feira e Terra de Santa Maria"
+						value={$page.data.documentHeader.title}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="editors" class="label">Editores</label>
-					<InputList id="editors" bind:addingValues={addingEditor}>
+					<InputList
+						id="editors"
+						bind:addingValues={addingEditor}
+						value={$page.data.documentHeader.editors}
+					>
 						<span slot="list" let:value>
 							<div class="flex flex-col">
 								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
@@ -79,7 +77,11 @@
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="funders" class="label">Financiadores</label>
-					<InputList id="funders" bind:addingValues={addingFunder}>
+					<InputList
+						id="funders"
+						bind:addingValues={addingFunder}
+						value={$page.data.documentHeader.funders}
+					>
 						<span slot="list" let:value>
 							<div class="flex flex-col">
 								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
@@ -116,7 +118,7 @@
 						name="publisher"
 						class="input mt-1"
 						type="text"
-						placeholder="Universidade de Aveiro"
+						value={$page.data.documentHeader.publisher}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
@@ -126,7 +128,7 @@
 						name="publisherPlace"
 						class="input mt-1"
 						type="text"
-						placeholder="Aveiro"
+						value={$page.data.documentHeader.publisherPlace}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
@@ -136,7 +138,7 @@
 						name="publisherDate"
 						class="input mt-1"
 						type="date"
-						placeholder="Aveiro"
+						value={format($page.data.documentHeader.publisherDate, 'yyyy-MM-dd')}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
@@ -147,7 +149,7 @@
 						class="input mt-1"
 						type="text"
 						readonly
-						value="Creative Commons Attribution-ShareAlike (CC BY-SA)"
+						value={$page.data.documentHeader.license}
 					/>
 				</div>
 			</div>
@@ -167,7 +169,12 @@
 			<div class="grid grid-cols-12 gap-6 card p-6">
 				<div class="col-span-12 lg:col-span-6">
 					<label for="country" class="label">País</label>
-					<select id="country" name="country" class="input">
+					<select
+						id="country"
+						name="country"
+						class="input"
+						value={$page.data.documentHeader.country}
+					>
 						{#each countries as country}
 							<option value={country.code}>{country.name}</option>
 						{/each}
@@ -180,12 +187,18 @@
 						name="institution"
 						type="text"
 						class="input"
-						placeholder="Universidade de Aveiro"
+						value={$page.data.documentHeader.institution}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="settlement" class="label">Local</label>
-					<input id="settlement" name="settlement" type="text" class="input" placeholder="Aveiro" />
+					<input
+						id="settlement"
+						name="settlement"
+						type="text"
+						class="input"
+						value={$page.data.documentHeader.settlement}
+					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="repository" class="label">Repositório</label>
@@ -194,12 +207,18 @@
 						name="repository"
 						type="text"
 						class="input"
-						placeholder="Biblioteca"
+						value={$page.data.documentHeader.repository}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="idno" class="label">IdNo</label>
-					<input id="idno" name="idno" type="text" class="input" placeholder="XXXX" />
+					<input
+						id="idno"
+						name="idno"
+						type="text"
+						class="input"
+						value={$page.data.documentHeader.idno}
+					/>
 				</div>
 
 				<div class="col-span-12 lg:col-span-6">
@@ -210,15 +229,18 @@
 							name="originDate"
 							type="date"
 							class="input"
-							placeholder="26/01/2000"
+							value={format($page.data.documentHeader.originDate, 'yyyy-MM-dd')}
 						/>
 						<span class="text-stone-900 dark:text-stone-300 font-semibold text-lg">-</span>
 						<input
-							id="originDateStartEnd"
-							name="originDateStartEnd"
+							id="originDateEnd"
+							name="originDateEnd"
 							type="date"
 							class="input"
 							placeholder="26/01/2000"
+							value={$page.data.documentHeader.originDateEnd
+								? format($page.data.documentHeader.originDateEnd, 'yyyy-MM-dd')
+								: ''}
 						/>
 					</div>
 				</div>
@@ -229,12 +251,12 @@
 						name="originPlace"
 						type="text"
 						class="input"
-						placeholder="Aveiro"
+						value={$page.data.documentHeader.originPlace}
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="lang" class="label">Linguagem</label>
-					<select id="lang" name="lang" class="input">
+					<select id="lang" name="lang" class="input" value={$page.data.documentHeader.lang}>
 						<option value="pt">Português</option>
 						<option value="pt-lt">Português / Latim</option>
 						<option value="lt-pt">Latim / Português</option>
@@ -243,7 +265,11 @@
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="authors" class="label">Autores</label>
-					<InputList id="authors" bind:addingValues={addingAuthor}>
+					<InputList
+						id="authors"
+						bind:addingValues={addingAuthor}
+						value={$page.data.documentHeader.authors}
+					>
 						<span slot="list" let:value>
 							<div class="flex flex-col">
 								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.name}</p>
@@ -269,7 +295,11 @@
 				</div>
 				<div class="col-span-12 lg:col-span-6">
 					<label for="editors" class="label">Identificadores Alternativos</label>
-					<InputList id="altIdentifier" bind:addingValues={addingAltIdentifier}>
+					<InputList
+						id="altIdentifier"
+						bind:addingValues={addingAltIdentifier}
+						value={$page.data.documentHeader.altIdentifier}
+					>
 						<span slot="list" let:value>
 							<div class="flex flex-col">
 								<p class="text-sm font-medium text-stone-900 dark:text-white">{value.type}</p>
@@ -299,7 +329,7 @@
 						id="filiation"
 						name="filiation"
 						class="input"
-						placeholder="Este foral..."
+						value={$page.data.documentHeader.filiation}
 						rows="6"
 					/>
 				</div>
@@ -309,7 +339,7 @@
 						id="summary"
 						name="summary"
 						class="input"
-						placeholder="Cópia de foral concedido por D. Afonso I à vila de ..."
+						value={$page.data.documentHeader.summary ?? ''}
 						rows="6"
 					/>
 				</div>
@@ -332,7 +362,7 @@
 						id="encoding"
 						name="encoding"
 						class="input mt-1"
-						placeholder="Neste foral..."
+						value={$page.data.documentHeader.encoding ?? ''}
 						rows="9"
 					/>
 				</div>
@@ -351,33 +381,68 @@
 			<div class="grid grid-cols-12 gap-6 card p-6">
 				<div class="col-span-6">
 					<label for="objectDesc" class="label">Forma</label>
-					<select id="objectDesc" name="objectDesc" class="input">
-						<option value="composto">Composto</option>
-						<option value="simples">Simples</option>
+					<select
+						id="objectDesc"
+						name="objectDesc"
+						class="input"
+						value={$page.data.documentHeader.objectDesc}
+					>
+						<option value="codex">Codex</option>
 					</select>
 				</div>
 				<div class="col-span-6">
 					<label for="supportDesc" class="label">Material do suporte</label>
-					<select id="supportDesc" name="supportDesc" class="input">
+					<select
+						id="supportDesc"
+						name="supportDesc"
+						class="input"
+						value={$page.data.documentHeader.supportDesc}
+					>
 						<option value="perg">Pergaminho</option>
-						<option value="paper">Papel</option>
 					</select>
 				</div>
 				<div class="col-span-6">
 					<label for="support" class="label">Tipo de suporte</label>
-					<input id="support" name="support" type="text" class="input" placeholder="Parchment" />
+					<input
+						id="support"
+						name="support"
+						type="text"
+						class="input"
+						value={$page.data.documentHeader.support ?? ''}
+					/>
 				</div>
 				<div class="col-span-6">
 					<label for="extent" class="label">Número de fólios</label>
-					<input id="extent" name="extent" type="text" class="input" placeholder="i + 55 leaves" />
+					<input
+						id="extent"
+						name="extent"
+						type="text"
+						class="input"
+						placeholder="i + 55 leaves"
+						value={$page.data.documentHeader.extent ?? ''}
+					/>
 				</div>
 				<div class="col-span-6">
 					<label for="height" class="label">Altura (cm)</label>
-					<input id="height" name="height" type="number" class="input" placeholder="10" min={0} />
+					<input
+						id="height"
+						name="height"
+						type="number"
+						class="input"
+						min={0}
+						value={$page.data.documentHeader.height ?? 0}
+					/>
 				</div>
 				<div class="col-span-6">
 					<label for="width" class="label">Comprimento (cm)</label>
-					<input id="width" name="width" type="number" class="input" placeholder="10" min={0} />
+					<input
+						id="width"
+						name="width"
+						type="number"
+						class="input"
+						min={0}
+						value={$page.data.documentHeader.width ?? 0}
+					/>
 				</div>
 				<div class="col-span-6">
 					<label for="layout" class="label">Disposição</label>
@@ -386,7 +451,7 @@
 						name="layout"
 						type="text"
 						class="input"
-						placeholder="Em duas colunas"
+						value={$page.data.documentHeader.layout ?? ''}
 					/>
 				</div>
 				<div class="col-span-12">
@@ -395,8 +460,8 @@
 						id="handDesc"
 						name="handDesc"
 						class="input mt-1"
-						placeholder="Escrito com mais de uma mão"
 						rows="9"
+						value={$page.data.documentHeader.handDesc ?? ''}
 					/>
 				</div>
 				<div class="col-span-12">
@@ -405,17 +470,29 @@
 						id="decoDesc"
 						name="decoDesc"
 						class="input mt-1"
-						placeholder="Com algumas capitalizações coloridas"
 						rows="9"
+						value={$page.data.documentHeader.decoDesc ?? ''}
 					/>
 				</div>
 				<div class="col-span-12">
 					<label for="title" class="label">Estado de conservação</label>
-					<textarea id="decoDesc" name="decoDesc" class="input mt-1" rows="9" />
+					<textarea
+						id="decoDesc"
+						name="decoDesc"
+						class="input mt-1"
+						rows="9"
+						value={$page.data.documentHeader.condition ?? ''}
+					/>
 				</div>
 				<div class="col-span-12">
 					<label for="title" class="label">Marginalia</label>
-					<textarea id="decoDesc" name="decoDesc" class="input mt-1" rows="9" />
+					<textarea
+						id="decoDesc"
+						name="decoDesc"
+						class="input mt-1"
+						rows="9"
+						value={$page.data.documentHeader.additions ?? ''}
+					/>
 				</div>
 			</div>
 		</div>

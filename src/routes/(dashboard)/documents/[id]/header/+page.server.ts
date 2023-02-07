@@ -1,6 +1,6 @@
 import { formDataToJson } from '$lib/forms';
 import { getPrismaClient } from '$lib/prisma';
-import { error, invalid, type RequestEvent } from '@sveltejs/kit';
+import { error, fail, type RequestEvent } from '@sveltejs/kit';
 import { parse } from 'date-fns';
 import * as Yup from 'yup';
 
@@ -21,6 +21,7 @@ async function update(event: RequestEvent) {
 			repository: Yup.string().required('O repositório é obrigatórios'),
 			authors: Yup.array().min(1, 'Os autores são obrigatórios'),
 			originDate: Yup.string().required('A data de origem é obrigatória'),
+			originDateEnd: Yup.string().optional().nullable(),
 			originPlace: Yup.string().required('O local de origem é obrigatório'),
 			settlement: Yup.string().required('O local é obrigatório'),
 			lang: Yup.string().required('A linguagem é obrigatória'),
@@ -30,21 +31,38 @@ async function update(event: RequestEvent) {
 			publisherPlace: Yup.string().required('O local de publicação é obrigatório'),
 			publisherDate: Yup.string().required('A data de publicação é obrigatória'),
 			license: Yup.string().required('A licença é obrigatória'),
-			altIdentifier: Yup.array()
+			altIdentifier: Yup.array(),
+			objectDesc: Yup.string().optional(),
+			supportDesc: Yup.string().optional(),
+			support: Yup.string().optional(),
+			extent: Yup.string().optional(),
+			height: Yup.number().optional().max(10000),
+			width: Yup.number().optional().max(10000),
+			layout: Yup.string().optional(),
+			handDesc: Yup.string().optional(),
+			decoDesc: Yup.string().optional()
 		})
 	);
 
 	if (errors) {
-		return invalid(400, { errors });
+		return fail(400, { errors });
 	}
 
 	const prisma = await getPrismaClient(event.locals.user.id);
+
+	if (data.title) {
+		await prisma.document.update({ where: { id }, data: { title: data.title } });
+	}
+
 	await prisma.documentHeader.update({
 		where: { documentId: id },
 		data: {
 			...data,
 			originDate: parse(data.originDate, 'yyyy-MM-dd', new Date()),
-			publisherDate: parse(data.originDate, 'yyyy-MM-dd', new Date()),
+			originDateEnd: data.originDateEnd
+				? parse(data.originDateEnd, 'yyyy-MM-dd', new Date())
+				: null,
+			publisherDate: parse(data.publisherDate, 'yyyy-MM-dd', new Date()),
 			editors: JSON.parse(data.editors),
 			funders: JSON.parse(data.funders),
 			authors: JSON.parse(data.authors),

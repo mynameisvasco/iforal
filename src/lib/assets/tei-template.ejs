@@ -44,6 +44,38 @@
 				</msDesc>
 			</sourceDesc>
 		</fileDesc>
+		<physDesc>
+			<objectDesc form="<%= header.objectDesc %>">
+				<supportDesc material="<%= header.supportDesc %>">
+					<support><%= header.support %></support>
+					<extent>
+						<%= header.extent %>
+						<dimensions scope="all" type="leaf" Dimensões unit="cm">
+							<height><%= header.height %></height>
+							<width><%= header.width %></width>
+						</dimensions>
+					</extent>
+					<condition>
+						<p><%= header.condition %></p>
+					</condition>
+				</supportDesc>
+				<layoutDesc>
+					<layout columns="2"><%= header.layout %></layout>
+				</layoutDesc>
+			</objectDesc>
+			<handDesc>
+				<p><%= header.handDesc %></p>
+			</handDesc>
+			<decoDesc>
+				<p><%= header.decoDesc %></p>
+			</decoDesc>
+			<additions>
+				<p><%= header.additions %></p>
+			</additions>
+			<additions>
+				<p><%= header.additions %></p>
+			</additions>
+		</physDesc>
 	</teiHeader>
 	<%- body %>
 </TEI>

@@ -4,7 +4,7 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 export async function GET(event: RequestEvent) {
 	const documentId = parseInt(event.params.id ?? '');
 	if (isNaN(documentId)) {
-		return { errors: 'Invalid document id' };
+		return { errors: 'fail document id' };
 	}
 
 	const email = event.url.searchParams.get('email')?.toLowerCase();

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { format as formatDate } from 'date-fns';
 	import { DotsVertical, Icon, Photograph } from 'svelte-hero-icons';
-	import type { Document, DocumentImages } from '@prisma/client';
+	import type { Document, DocumentHeader, DocumentImages } from '@prisma/client';
 	import pt from 'date-fns/locale/pt/index.js';
 	import DocumentActions from './document-actions.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	export let document: Document & { images: DocumentImages[] };
+	export let document: Document & { images: DocumentImages[]; header: DocumentHeader };
 	export let href: string | undefined = undefined;
 	export let showActions: boolean = true;
 
@@ -39,7 +39,7 @@
 				<div class="flex flex-col">
 					<h2 class="text-stone-900 dark:text-white font-medium text-md">{document.title}</h2>
 					<span class="text-stone-500 dark:text-stone-400 text-sm">
-						{formatDate(new Date(document.createdAt), 'dd MMMM, HH:mm', { locale: pt })}
+						{formatDate(new Date(document.header.originDate), 'MMMM yyyy', { locale: pt })}
 					</span>
 				</div>
 				{#if showActions}

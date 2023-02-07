@@ -15,7 +15,7 @@ export async function PUT(event: RequestEvent) {
 			id,
 			OR: [
 				{ userId: event.locals.user.id },
-				{ permissions: { some: { userId: event.locals.user.id, documentId: id, type: 2 } } }
+				{ permissions: { some: { userId: event.locals.user.id, documentId: id, type: 1 } } }
 			]
 		}
 	});

@@ -183,3 +183,21 @@ html {
 ::-webkit-scrollbar-thumb:hover {
 	@apply bg-stone-400 dark:bg-stone-600;
 }
+
+.svelte-keyboard {
+	@apply max-w-lg;
+}
+
+.svelte-keyboard > .page {
+	@apply !flex !flex-row !flex-wrap gap-2 !border-stone-900 items-center justify-center;
+}
+
+.svelte-keyboard > .page > .row {
+	@apply !border  !border-stone-300 dark:!border-stone-700 rounded-md;
+}
+
+.svelte-keyboard > .page > .row > .key {
+	@apply !col-span-1 !text-lg !h-12 !w-12 !bg-stone-100/75 dark:!bg-stone-800/75 text-stone-900
+	 dark:text-white !border-0  filter backdrop-blur-sm hover:!bg-stone-200 hover:dark:!bg-stone-700 
+	 transition-all;
+}

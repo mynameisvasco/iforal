@@ -1,6 +1,6 @@
 import * as Bcrypt from 'bcrypt';
 import Jwt from 'jsonwebtoken';
-import { invalid, type RequestEvent, type Actions, redirect } from '@sveltejs/kit';
+import { fail, type RequestEvent, type Actions, redirect } from '@sveltejs/kit';
 import { getPrismaClient } from '$lib/prisma';
 import { formDataToJson } from '$lib/forms';
 import * as Yup from 'yup';
@@ -17,7 +17,7 @@ async function login(event: RequestEvent) {
 	);
 
 	if (errors) {
-		return invalid(400, { errors });
+		return fail(400, { errors });
 	}
 
 	const { email, password } = data;
@@ -29,7 +29,7 @@ async function login(event: RequestEvent) {
 		!(await Bcrypt.compare(password, user.password)) ||
 		user.status === UserStatus.Invited
 	) {
-		return invalid(403, { errors: { password: 'A password fornecida não está correta' } });
+		return fail(403, { errors: { password: 'A password fornecida não está correta' } });
 	}
 
 	const { password: _, ...payload } = user;

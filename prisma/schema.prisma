@@ -43,29 +43,41 @@ model Document {
 }
 
 model DocumentHeader {
-  id             Int      @id @default(autoincrement())
-  title          String   @db.VarChar(255)
+  id             Int       @id @default(autoincrement())
+  title          String    @db.VarChar(255)
   editors        Json
   funders        Json
-  country        String   @db.VarChar(4)
-  institution    String   @db.VarChar(255)
-  repository     String   @db.VarChar(255)
-  idno           String?  @db.VarChar(255)
+  country        String    @db.VarChar(4)
+  institution    String    @db.VarChar(255)
+  repository     String    @db.VarChar(255)
+  idno           String?   @db.VarChar(255)
   authors        Json
   altIdentifier  Json?
-  settlement     String   @db.VarChar(255)
-  publisher      String   @db.VarChar(255)
-  publisherPlace String   @db.VarChar(255)
+  settlement     String    @db.VarChar(255)
+  publisher      String    @db.VarChar(255)
+  publisherPlace String    @db.VarChar(255)
   publisherDate  DateTime
-  license        String   @db.VarChar(255)
+  license        String    @db.VarChar(255)
   originDate     DateTime
-  originPlace    String   @db.VarChar(255)
+  originDateEnd  DateTime?
+  originPlace    String    @db.VarChar(255)
   lang           String
-  filiation      String
-  summary        String
-  encoding       String
-  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  documentId     Int      @unique
+  filiation      String    @default("")
+  summary        String    @default("")
+  encoding       String    @default("")
+  objectDesc     String    @default("") @db.VarChar(255)
+  supportDesc    String    @default("") @db.VarChar(255)
+  support        String    @default("") @db.VarChar(255)
+  condition      String    @default("")
+  extent         String    @default("") @db.VarChar(255)
+  height         Int       @default(0)
+  width          Int       @default(0)
+  layout         String    @default("") @db.VarChar(255)
+  handDesc       String    @default("")
+  decoDesc       String    @default("")
+  additions      String    @default("")
+  document       Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId     Int       @unique
 }
 
 model DocumentImages {

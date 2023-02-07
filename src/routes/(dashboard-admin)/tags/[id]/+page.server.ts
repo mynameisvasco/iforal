@@ -1,6 +1,6 @@
 import { formDataToJson } from '$lib/forms';
 import { getPrismaClient } from '$lib/prisma';
-import { error, invalid, type RequestEvent } from '@sveltejs/kit';
+import { error, fail, type RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
 
 async function update(event: RequestEvent) {
@@ -21,7 +21,7 @@ async function update(event: RequestEvent) {
 	);
 
 	if (errors) {
-		return invalid(400, { errors });
+		return fail(400, { errors });
 	}
 
 	const prisma = await getPrismaClient();

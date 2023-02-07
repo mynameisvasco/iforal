@@ -1,6 +1,6 @@
 import { formDataToJson } from '$lib/forms';
 import { getPrismaClient } from '$lib/prisma';
-import { invalid, type RequestEvent } from '@sveltejs/kit';
+import { fail, type RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
 import { randomBytes } from 'crypto';
 import { UserStatus } from '@prisma/client';
@@ -16,7 +16,7 @@ async function create(event: RequestEvent) {
 	);
 
 	if (errors) {
-		return invalid(400, { errors });
+		return fail(400, { errors });
 	}
 
 	const prisma = await getPrismaClient(event.locals.user.id);

@@ -1,7 +1,7 @@
 import { getPrismaClient } from '$lib/prisma';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { error, invalid, type RequestEvent } from '@sveltejs/kit';
+import { error, fail, type RequestEvent } from '@sveltejs/kit';
 import * as Yup from 'yup';
 import { formDataToJson } from '$lib/forms';
 
@@ -65,7 +65,7 @@ async function update(event: RequestEvent) {
 	});
 
 	if (!sourceImage || !targetImage) {
-		return invalid(400, { image1: 'Images not found' });
+		return fail(400, { image1: 'Images not found' });
 	}
 
 	await prisma.$transaction([

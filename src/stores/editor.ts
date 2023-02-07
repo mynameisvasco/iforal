@@ -1,7 +1,7 @@
 import { xml } from '@codemirror/lang-xml';
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { keymap, rectangularSelection, lineNumbers } from '@codemirror/view';
-import { ChangeSet, Compartment, EditorState } from '@codemirror/state';
+import { Compartment, EditorState } from '@codemirror/state';
 import { indentOnInput, bracketMatching, foldGutter, foldKeymap } from '@codemirror/language';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { autocompletion, completionKeymap } from '@codemirror/autocomplete';
@@ -19,6 +19,7 @@ import { notifications } from './notifications';
 interface EditorSettings {
 	fontSize: number;
 	isFullWidth: boolean;
+	isVirtualKeyboardVisible: boolean;
 }
 
 const xmlTagLinter = linter((view) => {
@@ -49,7 +50,8 @@ const xmlTagLinter = linter((view) => {
 function createEditorSettings() {
 	const store = writable('editor', {
 		fontSize: 18,
-		isFullWidth: false
+		isFullWidth: false,
+		isVirtualKeyboardVisible: false
 	} as EditorSettings);
 
 	return { ...store };
@@ -106,6 +108,7 @@ export function createTeiEditor(
 		doc: document.body,
 		extensions: [
 			EditorView.editable.of(!readonly),
+			EditorView.lineWrapping,
 			xml({
 				elements: tags.map((t) => ({
 					name: t.name,

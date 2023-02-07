@@ -10,10 +10,14 @@ export async function load(event: RequestEvent) {
 				{ permissions: { some: { userId: event.locals.user.id } } }
 			]
 		},
-		include: {
+		select: {
+			id: true,
+			title: true,
+			header: true,
 			images: {
 				orderBy: { position: 'asc' }
-			}
+			},
+			body: false
 		}
 	});
 

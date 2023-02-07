@@ -9,7 +9,8 @@
 		MenuAlt2,
 		Minus,
 		Plus,
-		Search
+		Search,
+		Translate
 	} from 'svelte-hero-icons';
 	import xmlFormat from 'xml-formatter';
 	import type { Writable } from 'svelte/store';
@@ -31,6 +32,13 @@
 		editorSettings.update((old) => ({ ...old, isFullWidth: !old.isFullWidth }));
 	}
 
+	function handleVirtualKeyboard() {
+		editorSettings.update((old) => ({
+			...old,
+			isVirtualKeyboardVisible: !old.isVirtualKeyboardVisible
+		}));
+	}
+
 	function handleFormat() {
 		const text = $editor.state.sliceDoc(0, $editor.state.doc.length);
 		$editor.dispatch({
@@ -49,6 +57,9 @@
 	</button>
 	<button type="button" class="btn-editor" on:click={handleFormat}>
 		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
+	</button>
+	<button type="button" class="btn-editor" on:click={handleVirtualKeyboard}>
+		<Icon src={Translate} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
 	<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>
 		<Icon

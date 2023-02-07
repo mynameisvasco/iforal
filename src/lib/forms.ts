@@ -11,7 +11,13 @@ export async function formDataToJson(
 ): Promise<any> {
 	const data = {} as any;
 	let errors = undefined;
-	formData.forEach((value, key) => (data[key] = value));
+	formData.forEach((value, key) => {
+		if (/^\d+$/.test(value as string)) {
+			data[key] = Number.parseInt(value as string);
+		} else {
+			data[key] = value;
+		}
+	});
 
 	try {
 		await validationSchema.validate(data, { abortEarly: false });
@@ -31,12 +37,12 @@ export const formHandler = (notification?: Notification, cleanForm: boolean = fa
 		async ({ result }: { result: ActionResult }) => {
 			let errors = {} as any;
 
-			if (result.type === 'invalid') {
+			if (result.type === 'failure') {
 				errors = result.data!.errors;
 			}
 
 			for (const input of Array.from(form!.elements)) {
-				if (result.type === 'invalid' && errors[input.id]) {
+				if (result.type === 'failure' && errors[input.id]) {
 					const labelId = `${input.id}-error-label`;
 					const label = document.getElementById(labelId) ?? document.createElement('div');
 					label.remove();
@@ -53,16 +59,16 @@ export const formHandler = (notification?: Notification, cleanForm: boolean = fa
 				}
 			}
 
-			if (notification) {
-				notifications.show(notification);
-			}
-
-			if (result.type === 'invalid') {
+			if (result.type === 'failure') {
 				return;
 			}
 
 			if (result.type === 'redirect') {
 				return await goto(result.location);
+			}
+
+			if (notification) {
+				notifications.show(notification);
 			}
 
 			if (cleanForm) {
