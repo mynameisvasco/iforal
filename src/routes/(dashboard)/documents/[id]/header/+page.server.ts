@@ -66,7 +66,8 @@ async function update(event: RequestEvent) {
 			editors: JSON.parse(data.editors),
 			funders: JSON.parse(data.funders),
 			authors: JSON.parse(data.authors),
-			altIdentifier: JSON.parse(data.altIdentifier)
+			altIdentifier: JSON.parse(data.altIdentifier),
+			extent: data.extent.toString()
 		}
 	});
 	return {};

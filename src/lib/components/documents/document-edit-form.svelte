@@ -387,7 +387,8 @@
 						class="input"
 						value={$page.data.documentHeader.objectDesc}
 					>
-						<option value="codex">Codex</option>
+						<option value="composto">Composto</option>
+						<option value="simples">Simples</option>
 					</select>
 				</div>
 				<div class="col-span-6">
@@ -399,6 +400,7 @@
 						value={$page.data.documentHeader.supportDesc}
 					>
 						<option value="perg">Pergaminho</option>
+						<option value="paper">Papel</option>
 					</select>
 				</div>
 				<div class="col-span-6">
