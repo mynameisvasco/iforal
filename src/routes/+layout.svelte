@@ -1,6 +1,13 @@
 <script lang="ts">
-	import NotificationsContainer from '$lib/components/notifications/notifications-container.svelte';
 	import '../app.css';
+	import NotificationsContainer from '$lib/components/notifications/notifications-container.svelte';
+	import { updated } from '$app/stores';
+
+	updated.subscribe(async (value) => {
+		if (value) {
+			window.location.reload();
+		}
+	});
 </script>
 
 <svelte:head>
@@ -16,7 +23,7 @@
 	<meta name="theme-color" content="rgb(41, 37, 36)" media="(prefers-color-scheme: dark)" />
 </svelte:head>
 
-<div data-sveltekit-prefetch>
+<div data-sveltekit-preload-data="hover">
 	<NotificationsContainer />
 	<slot />
 </div>

@@ -72,11 +72,20 @@ function iforalPlugin(documentId: number) {
 						}
 
 						this.isBusy = true;
-						const response = await api.put<any>(window.fetch, `/documents/${documentId}/body`, {
-							body: update.state.doc.toString()
-						});
 
-						if (response.error) {
+						try {
+							const response = await api.put<any>(window.fetch, `/documents/${documentId}/body`, {
+								body: update.state.doc.toString()
+							});
+
+							if (response.error) {
+								notifications.show({
+									title: 'Erro',
+									message: 'Houve um erro a guardar automaticamente',
+									type: 'error'
+								});
+							}
+						} catch (e) {
 							notifications.show({
 								title: 'Erro',
 								message: 'Houve um erro a guardar automaticamente',

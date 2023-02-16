@@ -25,8 +25,7 @@ export async function PUT(event: RequestEvent) {
 	}
 
 	try {
-		document.body = data.body;
-		await prisma.document.update({ data: { body: document.body }, where: { id } });
+		await prisma.document.update({ data: { body: data.body }, where: { id } });
 		return json({});
 	} catch (e) {
 		return json({ error: true });
