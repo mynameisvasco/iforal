@@ -17,7 +17,7 @@ html {
 }
 
 .dropdown-menu {
-	@apply origin-top-right absolute left-0 mt-2 w-48 rounded-md bg-white/75 filter backdrop-blur-md 
+	@apply origin-top-right absolute right-5 bottom-5 mt-2 w-48 rounded-md bg-white/75 filter backdrop-blur-md 
 	dark:bg-stone-800/50 border border-stone-300 dark:border-stone-700 
 	shadow-lg z-10 outline-none;
 }
