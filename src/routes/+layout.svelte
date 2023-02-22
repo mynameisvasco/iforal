@@ -5,7 +5,7 @@
 
 	updated.subscribe(async (value) => {
 		if (value) {
-			window.location.reload();
+			window?.location.reload();
 		}
 	});
 </script>

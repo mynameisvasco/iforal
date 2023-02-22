@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Navbar from '$lib/components/navbar/navbar.svelte';
 	import Breadcrumb from '$lib/components/breadcrumb.svelte';
-	import NotificationsContainer from '$lib/components/notifications/notifications-container.svelte';
 	import ModalContainer from '$lib/components/modal-container.svelte';
 </script>
 
