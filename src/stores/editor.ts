@@ -20,6 +20,7 @@ interface EditorSettings {
 	fontSize: number;
 	isFullWidth: boolean;
 	isVirtualKeyboardVisible: boolean;
+	isPreviewMode: boolean;
 }
 
 const xmlTagLinter = linter((view) => {
@@ -51,7 +52,8 @@ function createEditorSettings() {
 	const store = writable('editor', {
 		fontSize: 18,
 		isFullWidth: false,
-		isVirtualKeyboardVisible: false
+		isVirtualKeyboardVisible: false,
+		isPreviewMode: false
 	} as EditorSettings);
 
 	return { ...store };

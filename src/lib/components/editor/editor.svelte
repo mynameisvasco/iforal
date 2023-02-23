@@ -9,6 +9,7 @@
 	import { page } from '$app/stores';
 	import Keyboard from 'svelte-keyboard';
 	import Dragabble from '../dragabble.svelte';
+	import { createTeiViewer } from '$stores/viewer';
 
 	const keys = [
 		{ row: 1, value: '⁊' },
@@ -52,6 +53,10 @@
 			selection: { anchor: $editor.state.selection.main.from + 1 }
 		});
 	};
+
+	$: if ($editorSettings.isPreviewMode) {
+		createTeiViewer($page.data.document, window.document.getElementById(`preview`)!);
+	}
 </script>
 
 <div class="grid grid-cols-12 gap-6">
@@ -69,7 +74,14 @@
 				<EditorSettingsMenu />
 			</div>
 		</div>
-		<div id="editor" />
+
+		<div id="editor" class:hidden={$editorSettings.isPreviewMode} />
+		<div
+			id="preview"
+			class="text-stone-900 dark:text-stone-300 bg-white dark:bg-stone-800 p-8 border-b border-l border-r 
+			border-stone-300 dark:border-stone-700 overflow-y-scroll max-h-[800px]"
+			class:hidden={!$editorSettings.isPreviewMode}
+		/>
 	</div>
 	<div
 		class="h-full"

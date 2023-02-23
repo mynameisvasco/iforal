@@ -39,6 +39,13 @@
 		}));
 	}
 
+	function handlePreviewMode() {
+		editorSettings.update((old) => ({
+			...old,
+			isPreviewMode: !old.isPreviewMode
+		}));
+	}
+
 	function handleFormat() {
 		const text = $editor.state.sliceDoc(0, $editor.state.doc.length);
 		$editor.dispatch({
@@ -60,6 +67,13 @@
 	</button>
 	<button type="button" class="btn-editor" on:click={handleVirtualKeyboard}>
 		<Icon src={Translate} class="w-5 text-stone-500 dark:text-stone-400" solid />
+	</button>
+	<button type="button" class="btn-editor" on:click={handlePreviewMode}>
+		<Icon
+			src={$editorSettings.isPreviewMode ? Code : Eye}
+			class="w-5 text-stone-500 dark:text-stone-400"
+			solid
+		/>
 	</button>
 	<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>
 		<Icon

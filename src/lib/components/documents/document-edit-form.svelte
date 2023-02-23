@@ -255,7 +255,7 @@
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="lang" class="label">Linguagem</label>
+					<label for="lang" class="label">Língua</label>
 					<select id="lang" name="lang" class="input" value={$page.data.documentHeader.lang}>
 						<option value="pt">Português</option>
 						<option value="pt-lt">Português / Latim</option>

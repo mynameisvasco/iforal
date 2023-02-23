@@ -46,7 +46,7 @@
 						name="title"
 						class="input mt-1"
 						type="text"
-						placeholder="O Foral Manuelino da Feira e Terra de Santa Maria"
+						placeholder="O Foral de Localidade"
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
@@ -233,7 +233,7 @@
 					/>
 				</div>
 				<div class="col-span-12 lg:col-span-6">
-					<label for="lang" class="label">Linguagem</label>
+					<label for="lang" class="label">Língua</label>
 					<select id="lang" name="lang" class="input">
 						<option value="pt">Português</option>
 						<option value="pt-lt">Português / Latim</option>
