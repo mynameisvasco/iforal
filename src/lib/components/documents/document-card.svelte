@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { format as formatDate } from 'date-fns';
 	import { DotsVertical, Icon, Photograph } from 'svelte-hero-icons';
-	import type { Document, DocumentHeader, DocumentImages } from '@prisma/client';
 	import pt from 'date-fns/locale/pt/index.js';
 	import DocumentActions from './document-actions.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	export let document: Document & { images: DocumentImages[]; header: DocumentHeader };
+	export let document: any;
 	export let href: string | undefined = undefined;
 	export let showActions: boolean = true;
 

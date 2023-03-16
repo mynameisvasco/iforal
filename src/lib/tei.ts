@@ -10,4 +10,13 @@ export async function exportTei(document: Document) {
 	return compiled;
 }
 
+export function stripTeiTags(str: string) {
+	return str
+		.replace(/<sic>.*<\/sic>/g, '')
+		.replace(/<abbr>.*<\/abbr>/g, '')
+		.replace(/<note .*>.*<\/note>/g, '')
+		.replace(/<[^>]*>/g, '')
+		.replace(/\s\s+/g, ' ');
+}
+
 export async function importTei() {}

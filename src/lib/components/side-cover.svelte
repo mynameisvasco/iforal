@@ -48,7 +48,7 @@
 								</div>
 							</div>
 							<div class="flex flex-shrink-0 justify-end px-4 py-4">
-								<button type="button" class="btn btn-secondary" on:click={toggle}>Cancel</button>
+								<button type="button" class="btn btn-secondary" on:click={toggle}>Fechar</button>
 							</div>
 						</form>
 					</div>

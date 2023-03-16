@@ -1,4 +1,3 @@
-import { EditorUtils } from '$lib/util';
 import type { Document } from '@prisma/client';
 import { writable } from 'svelte-local-storage-store';
 //@ts-ignore
@@ -12,24 +11,6 @@ export interface ViewerIndividualSettings {
 export interface ViewerSettings {
 	viewingDocumentIds: (number | null)[];
 	individualSettings: ViewerIndividualSettings[];
-}
-
-function getEditionTEIBEhaviour() {
-	return {
-		tei: {
-			expan: (element: HTMLElement) => {
-				element.classList.add('hidden');
-			},
-			sic: (element: HTMLElement) => {
-				element.classList.add('text-red-800', 'dark:text-red-300');
-				element.style.textDecoration = 'line-through';
-			},
-			corr: (element: HTMLElement) => {
-				element.classList.add('text-green-800', 'dark:text-green-300');
-			},
-			pb: (element: HTMLElement) => {}
-		}
-	};
 }
 
 function getTranscriptionTEIBehavior() {
@@ -113,9 +94,13 @@ function createViewerSettings() {
 
 export const viewerSettings = createViewerSettings();
 
-export function createTeiViewer(document: Document, viewerElement: HTMLElement) {
+export function createTeiViewer(
+	document: Document,
+	viewerElement: HTMLElement,
+	behaviour: any = getTranscriptionTEIBehavior()
+) {
 	var reader = new CETEIcean();
-	reader.addBehaviors(getTranscriptionTEIBehavior());
+	reader.addBehaviors(behaviour);
 	reader.makeHTML5(
 		`<TEI version="3.3.0" xmlns="http://www.tei-c.org/ns/1.0">\n${document.body}\n</TEI>`,
 		(data: any) => {

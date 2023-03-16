@@ -19,7 +19,11 @@
 
 <main>
 	<div class="page-body mt-12">
-		<form action="/tags" method="POST" use:enhance={formHandler(createdSuccessNotification, true)}>
+		<form
+			action="/tags/create"
+			method="POST"
+			use:enhance={formHandler(createdSuccessNotification, true)}
+		>
 			<div class="md:grid md:grid-cols-3 md:gap-6">
 				<div class="md:col-span-1">
 					<h3 class="title-2">Detalhes</h3>
