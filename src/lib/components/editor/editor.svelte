@@ -27,7 +27,18 @@
 		{ row: 13, value: 'Ĩ' },
 		{ row: 14, value: 'Õ' },
 		{ row: 15, value: 'Ũ' },
-		{ row: 16, value: 'Ꝯ' }
+		{ row: 16, value: 'Ꝯ' },
+		{ row: 17, value: 'ᵃ' },
+		{ row: 18, value: 'ᵉ' },
+		{ row: 19, value: 'ⁱ' },
+		{ row: 20, value: 'ᵒ' },
+		{ row: 21, value: 'ᵘ' },
+		{ row: 22, value: 'ᶜ' },
+		{ row: 23, value: 'ʳ' },
+		{ row: 24, value: 'ˡ' },
+		{ row: 25, value: 'ᵐ' },
+		{ row: 26, value: 'ˢ' },
+		{ row: 27, value: 'ˣ' }
 	];
 	let editor = writable({} as EditorView);
 	const isReadOnly =
