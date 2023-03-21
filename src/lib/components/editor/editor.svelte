@@ -51,7 +51,9 @@
 
 	onMount(async () => {
 		const editorElement = document.getElementById('editor') as HTMLElement;
+		const previewElement = window.document.getElementById(`preview`);
 		$editor = createTeiEditor(editorElement, isReadOnly, $page.data.document, $page.data.tags);
+		createTeiViewer($page.data.document, previewElement!);
 	});
 
 	const onKeydown = (event: CustomEvent) => {
@@ -64,10 +66,6 @@
 			selection: { anchor: $editor.state.selection.main.from + 1 }
 		});
 	};
-
-	$: if ($editorSettings.isPreviewMode) {
-		createTeiViewer($page.data.document, window.document.getElementById(`preview`)!);
-	}
 </script>
 
 <div class="grid grid-cols-12 gap-6">
