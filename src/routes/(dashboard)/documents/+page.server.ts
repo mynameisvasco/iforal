@@ -49,6 +49,11 @@ export async function load(event: RequestEvent) {
 				{ permissions: { some: { userId: event.locals.user.id } } }
 			]
 		},
+		orderBy: {
+			header: {
+				originDate: 'asc'
+			}
+		},
 		select: {
 			id: true,
 			title: true,
@@ -98,10 +103,13 @@ export async function load(event: RequestEvent) {
 				highlights[document.id] = [
 					...highlights[document.id],
 					match
-						.replaceAll(` ${word} `, ` <span class='text-orange-300'>${word}</span> `)
+						.replaceAll(
+							` ${word} `,
+							` <span class='font-bold text-stone-900 dark:text-orange-300'>${word}</span> `
+						)
 						.replaceAll(
 							`${capitalizedWord} `,
-							`<span class='text-orange-300'>${capitalizedWord}</span> `
+							`<span class='font-bold text-stone-900 dark:text-orange-300'>${capitalizedWord}</span> `
 						)
 				];
 			}

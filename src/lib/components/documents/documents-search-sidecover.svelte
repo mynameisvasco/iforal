@@ -24,7 +24,7 @@
 	description="Pesquise por determinados documentos, especificando o título e o interval de datas."
 	bind:this={sideCover}
 >
-	<div class="grid grid-cols-12 gap-3 pb-6 border-b border-stone-300 dark:border-stone-700">
+	<div class="grid grid-cols-12 gap-3 pb-12">
 		<div class="col-span-12 flex flex-col gap-1">
 			<label for="title" class="label">Título da Obra</label>
 			<input
@@ -58,28 +58,39 @@
 				on:change={handleSearch}
 			/>
 		</div>
-	</div>
-	<div class="mt-6 col-span-12 lg:col-span-6 flex flex-col gap-1">
-		<label for="query" class="label">Query</label>
-		<input
-			type="text"
-			class="input"
-			placeholder="test"
-			name="query"
-			value={$page.url.searchParams.get('query')}
-			on:change={handleSearch}
-		/>
-	</div>
-	<div class="mt-6 col-span-12 lg:col-span-6 flex flex-col gap-1">
-		<label for="contextSize" class="label">Tamanho do Contexto</label>
-		<input
-			type="number"
-			class="input"
-			placeholder="10"
-			min={1}
-			name="contextSize"
-			value={$page.url.searchParams.get('contextSize') ?? 10}
-			on:change={handleSearch}
-		/>
+		<div class="col-span-12 mt-6 mb-3 border-b border-stone-300 dark:border-stone-700" />
+		<div class="col-span-12 flex flex-col gap-1">
+			<label for="query" class="label">Query</label>
+			<input
+				type="text"
+				class="input"
+				placeholder="test"
+				name="query"
+				value={$page.url.searchParams.get('query')}
+				on:change={handleSearch}
+			/>
+		</div>
+		<div class="col-span-12 flex flex-col gap-1">
+			<label for="query" class="label">Capitalização sensível</label>
+			<input
+				type="checkbox"
+				name="isCaseSensitive"
+				class="bg-white dark:bg-stone-800 rounded-md p-2 border-stone-300 dark:border-stone-700"
+				value={$page.url.searchParams.get('query')}
+				on:change={handleSearch}
+			/>
+		</div>
+		<div class="col-span-12 flex flex-col gap-1">
+			<label for="contextSize" class="label">Tamanho do Contexto</label>
+			<input
+				type="number"
+				class="input"
+				placeholder="10"
+				min={1}
+				name="contextSize"
+				value={$page.url.searchParams.get('contextSize') ?? 10}
+				on:change={handleSearch}
+			/>
+		</div>
 	</div>
 </SideCover>

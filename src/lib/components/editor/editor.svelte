@@ -38,7 +38,9 @@
 		{ row: 24, value: 'ˡ' },
 		{ row: 25, value: 'ᵐ' },
 		{ row: 26, value: 'ˢ' },
-		{ row: 27, value: 'ˣ' }
+		{ row: 27, value: 'ˣ' },
+		{ row: 28, value: 'ᵗ' },
+		{ row: 29, value: 'ꟹ' }
 	];
 	let editor = writable({} as EditorView);
 	const isReadOnly =
