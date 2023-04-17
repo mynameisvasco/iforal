@@ -4,7 +4,6 @@
 	import SideCover from '$lib/components/side-cover.svelte';
 	import type { Document } from '@prisma/client';
 	import { format as formatDate } from 'date-fns';
-	import { pt } from 'date-fns/locale';
 	import { createEventDispatcher } from 'svelte';
 	import { Icon, DocumentSearch, Plus } from 'svelte-hero-icons';
 
@@ -75,7 +74,7 @@
 					{document.title}
 				</span>
 				<span class="text-stone-500 dark:text-stone-400 text-sm">
-					{formatDate(new Date(document.header.originDate), 'MMMM yyyy', { locale: pt })}
+					{formatDate(new Date(document.header.originDate), 'MMMM yyyy')}
 				</span>
 				<button
 					class="text-stone-500 dark:text-stone-400 text-sm"
