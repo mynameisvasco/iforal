@@ -4,7 +4,7 @@
 	import SideCover from '$lib/components/side-cover.svelte';
 	import type { Document } from '@prisma/client';
 	import { format as formatDate } from 'date-fns';
-	import pt from 'date-fns/locale/pt';
+	import { pt } from 'date-fns/locale';
 	import { createEventDispatcher } from 'svelte';
 	import { Icon, DocumentSearch, Plus } from 'svelte-hero-icons';
 
