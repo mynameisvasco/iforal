@@ -2,8 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import SideCover from '$lib/components/side-cover.svelte';
+	import type { Document } from '@prisma/client';
+	import { format as formatDate } from 'date-fns';
+	import pt from 'date-fns/locale/pt';
+	import { createEventDispatcher } from 'svelte';
+	import { Icon, DocumentSearch, Plus } from 'svelte-hero-icons';
 
-	export let sideCover: any;
+	let sideCover: any;
+	const dispatcher = createEventDispatcher();
 
 	async function handleSearch(event: any) {
 		const value = event.target.value;
@@ -16,6 +22,10 @@
 		}
 
 		await goto(url.href);
+	}
+
+	function handleSelectDocument(document: Document) {
+		dispatcher('select', { documentId: document.id });
 	}
 </script>
 
@@ -59,38 +69,25 @@
 			/>
 		</div>
 		<div class="col-span-12 mt-6 mb-3 border-b border-stone-300 dark:border-stone-700" />
-		<div class="col-span-12 flex flex-col gap-1">
-			<label for="query" class="label">Query</label>
-			<input
-				type="text"
-				class="input"
-				placeholder="test"
-				name="query"
-				value={$page.url.searchParams.get('query')}
-				on:change={handleSearch}
-			/>
-		</div>
-		<div class="col-span-12 flex flex-col gap-1">
-			<label for="query" class="label">Maiúsculas/Minúsculas</label>
-			<input
-				type="checkbox"
-				name="isCaseSensitive"
-				class="bg-white dark:bg-stone-800 rounded-md p-2 border-stone-300 dark:border-stone-700"
-				value={$page.url.searchParams.get('query')}
-				on:change={handleSearch}
-			/>
-		</div>
-		<div class="col-span-12 flex flex-col gap-1">
-			<label for="contextSize" class="label">Número de palavras</label>
-			<input
-				type="number"
-				class="input"
-				placeholder="10"
-				min={1}
-				name="contextSize"
-				value={$page.url.searchParams.get('contextSize') ?? 10}
-				on:change={handleSearch}
-			/>
-		</div>
+		{#each $page.data.documentsToCompare as document}
+			<div class="col-span-12 flex items-center justify-between">
+				<span class="text-stone-900 dark:text-stone-300">
+					{document.title}
+				</span>
+				<span class="text-stone-500 dark:text-stone-400 text-sm">
+					{formatDate(new Date(document.header.originDate), 'MMMM yyyy', { locale: pt })}
+				</span>
+				<button
+					class="text-stone-500 dark:text-stone-400 text-sm"
+					on:click={() => handleSelectDocument(document)}
+				>
+					<Icon src={Plus} class="w-5" />
+				</button>
+			</div>
+		{/each}
 	</div>
 </SideCover>
+<button type="button" class="btn btn-secondary" on:click={sideCover.toggle}>
+	<Icon src={DocumentSearch} solid class="w-5 mr-1" />
+	Comparar
+</button>

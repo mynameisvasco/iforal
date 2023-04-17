@@ -50,8 +50,8 @@
 				id="type"
 				name="type"
 				class="input-sm"
-				disabled={permissionType === 2 || $page.data.document.user.id !== $page.data.user.id}
-				bind:value={permissionType}
+				disabled={permissionType < 1}
+				value={permissionType}
 				on:change={handlePermissionChange}
 			>
 				<option value={0}>Leitor</option>

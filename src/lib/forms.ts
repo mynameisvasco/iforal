@@ -11,6 +11,7 @@ export async function formDataToJson(
 ): Promise<any> {
 	const data = {} as any;
 	let errors = undefined;
+
 	formData.forEach((value, key) => {
 		if (/^\d+$/.test(value as string)) {
 			data[key] = Number.parseInt(value as string);

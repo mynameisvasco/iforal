@@ -30,40 +30,46 @@ export async function load(event: RequestEvent) {
 		: [];
 
 	const prisma = await getPrismaClient(event.locals.user.id);
-	const documents = await prisma.document.findMany({
-		where: {
-			title: {
-				contains: searchTitle ?? undefined
+	let documents = [];
+
+	try {
+		documents = await prisma.document.findMany({
+			where: {
+				title: {
+					contains: searchTitle ?? undefined
+				},
+				body: {
+					search: query ? convertQuerySyntax(query) : undefined
+				},
+				header: {
+					originDate: {
+						gte: searchFrom ? new Date(searchFrom) : undefined,
+						lte: searchTo ? new Date(searchTo) : undefined
+					}
+				},
+				OR: [
+					{ userId: event.locals.user.id },
+					{ permissions: { some: { userId: event.locals.user.id } } }
+				]
 			},
-			body: {
-				search: query ? convertQuerySyntax(query) : undefined
-			},
-			header: {
-				originDate: {
-					gte: searchFrom ? new Date(searchFrom) : undefined,
-					lte: searchTo ? new Date(searchTo) : undefined
+			orderBy: {
+				header: {
+					originDate: 'asc'
 				}
 			},
-			OR: [
-				{ userId: event.locals.user.id },
-				{ permissions: { some: { userId: event.locals.user.id } } }
-			]
-		},
-		orderBy: {
-			header: {
-				originDate: 'asc'
+			select: {
+				id: true,
+				title: true,
+				header: true,
+				images: {
+					orderBy: { position: 'asc' }
+				},
+				body: !!query
 			}
-		},
-		select: {
-			id: true,
-			title: true,
-			header: true,
-			images: {
-				orderBy: { position: 'asc' }
-			},
-			body: !!query
-		}
-	});
+		});
+	} catch {
+		return { documents: [] };
+	}
 
 	const highlights: any = {};
 
@@ -104,11 +110,19 @@ export async function load(event: RequestEvent) {
 					...highlights[document.id],
 					match
 						.replaceAll(
-							` ${word} `,
+							`${word} `,
+							` <span class='font-bold text-stone-900 dark:text-orange-300'>${word}</span> `
+						)
+						.replaceAll(
+							`${word}`,
 							` <span class='font-bold text-stone-900 dark:text-orange-300'>${word}</span> `
 						)
 						.replaceAll(
 							`${capitalizedWord} `,
+							`<span class='font-bold text-stone-900 dark:text-orange-300'>${capitalizedWord}</span> `
+						)
+						.replaceAll(
+							`${capitalizedWord}`,
 							`<span class='font-bold text-stone-900 dark:text-orange-300'>${capitalizedWord}</span> `
 						)
 				];

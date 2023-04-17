@@ -9,7 +9,6 @@
 	import { page } from '$app/stores';
 	import Keyboard from 'svelte-keyboard';
 	import Dragabble from '../dragabble.svelte';
-	import { createTeiViewer } from '$stores/viewer';
 
 	const keys = [
 		{ row: 1, value: '⁊' },
@@ -53,9 +52,7 @@
 
 	onMount(async () => {
 		const editorElement = document.getElementById('editor') as HTMLElement;
-		const previewElement = window.document.getElementById(`preview`);
 		$editor = createTeiEditor(editorElement, isReadOnly, $page.data.document, $page.data.tags);
-		createTeiViewer($page.data.document, previewElement!);
 	});
 
 	const onKeydown = (event: CustomEvent) => {
@@ -70,42 +67,22 @@
 	};
 </script>
 
-<div class="grid grid-cols-12 gap-6">
+<div class="h-full">
 	<div
-		class="h-full"
-		class:col-span-12={$editorSettings.isFullWidth}
-		class:col-span-8={!$editorSettings.isFullWidth}
-	>
-		<div
-			class="flex flex-col w-full bg-stone-50 dark:bg-stone-900 p-1 
+		class="flex flex-col w-full bg-stone-50 dark:bg-stone-900 p-1 
 		rounded-t-md border border-stone-300 dark:border-stone-700 "
-		>
-			<div class="flex items-center justify-between gap-1 h-10">
-				<EditorTagsMenu tags={$page.data.tags} />
-				<EditorSettingsMenu />
-			</div>
-		</div>
-
-		<div id="editor" class:hidden={$editorSettings.isPreviewMode} />
-		<div
-			id="preview"
-			class="text-stone-900 dark:text-stone-300 bg-white dark:bg-stone-800 p-8 border-b border-l border-r 
-			border-stone-300 dark:border-stone-700 overflow-y-scroll max-h-[800px]"
-			class:hidden={!$editorSettings.isPreviewMode}
-		/>
-	</div>
-	<div
-		class="h-full"
-		class:col-span-4={!$editorSettings.isFullWidth}
-		class:hidden={$editorSettings.isFullWidth}
-		style="min-height: 800px;"
 	>
-		<Gallery images={$page.data.document.images} />
+		<div class="flex items-center justify-between gap-1 h-10">
+			<EditorTagsMenu tags={$page.data.tags} />
+			<EditorSettingsMenu />
+		</div>
 	</div>
 
-	{#if $editorSettings.isVirtualKeyboardVisible}
-		<Dragabble title="Teclado virtual">
-			<Keyboard custom={keys} on:keydown={onKeydown} --stroke-width="0px" />
-		</Dragabble>
-	{/if}
+	<div id="editor" class:hidden={$editorSettings.isPreviewMode} />
 </div>
+
+{#if $editorSettings.isVirtualKeyboardVisible}
+	<Dragabble title="Teclado virtual">
+		<Keyboard custom={keys} on:keydown={onKeydown} --stroke-width="0px" />
+	</Dragabble>
+{/if}

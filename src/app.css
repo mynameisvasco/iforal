@@ -159,9 +159,9 @@ html {
 }
 
 .tooltip {
-	@apply invisible absolute top-6 left-0 right-0 text-center bg-white dark:bg-stone-900 border
+	@apply invisible absolute top-6  left-0 text-center bg-white dark:bg-stone-900 border
 	border-stone-300 	dark:border-stone-700 px-2 py-1 rounded-md transition-all duration-200
-	ease-in-out;
+	ease-in-out w-48 font-normal text-stone-900 dark:text-stone-300 text-sm;
 }
 
 .has-tooltip:hover .tooltip {
