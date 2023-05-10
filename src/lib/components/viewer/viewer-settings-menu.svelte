@@ -9,7 +9,6 @@
 	export let documentId: number;
 	export let mode: Writable<ViewMode>;
 	export let currentPage: Writable<number>;
-	console.log(images);
 	const dispatcher = createEventDispatcher();
 
 	function handleFontSizeIncrease() {

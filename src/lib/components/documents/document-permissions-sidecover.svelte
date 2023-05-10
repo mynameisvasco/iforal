@@ -18,7 +18,7 @@
 >
 	<div class="flex flex-col gap-6">
 		<div class="border-b border-stone-200 dark:border-stone-700 pb-6">
-			{#if $page.data.document.permissions.find((p) => p.userId === $page.data.user.id && p.type >= 1)}
+			{#if $page.data.document.userId == $page.data.user.id || $page.data.document.permissions.find((p) => p.userId === $page.data.user.id && p.type >= 1)}
 				<SearchEndpointInput
 					placeholder="Adicionar membro pelo nome ou email"
 					endpoint="/documents/{$page.data.document.id}/permissions/search"

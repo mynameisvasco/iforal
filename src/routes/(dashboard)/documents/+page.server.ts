@@ -99,9 +99,10 @@ export async function load(event: RequestEvent) {
 
 		for (const word of words) {
 			const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
-			const matches = stripTeiTags(document.body).match(
-				new RegExp(`(\\S+\\s+){0,${contextSize}}${word}(\\s+\\S+){0,${contextSize}}`, 'gi')
-			);
+			const matches =
+				stripTeiTags(document.body).match(
+					new RegExp(`(\\S+\\s+){0,${contextSize}}${word}(\\s+\\S+){0,${contextSize}}`, 'gi')
+				) ?? [];
 
 			for (const match of matches!) {
 				if (match === word) continue;
