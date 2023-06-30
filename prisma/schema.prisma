@@ -108,3 +108,17 @@ model Tag {
   attributes     Json
   category       String
 }
+
+model GlossaryEntry {
+  id           Int    @id @default(autoincrement())
+  lemma        String @db.VarChar(255)
+  actualLema   String @db.VarChar(255)
+  actual       String @db.VarChar(255)
+  definition   String @db.VarChar(255)
+  tags         String @db.VarChar(255)
+  category     String @db.VarChar(255)
+  context      String @default("") @db.VarChar(255)
+  translations Json?
+
+  @@index([lemma])
+}

@@ -1,5 +1,16 @@
 <script lang="ts">
-	import { Code, Eye, Icon, Minus, Photograph, Plus, X } from 'svelte-hero-icons';
+	import {
+		Code,
+		Eye,
+		Icon,
+		Minus,
+		Photograph,
+		Plus,
+		X,
+		Pencil,
+		Translate,
+		BookOpen
+	} from 'svelte-hero-icons';
 	import { editorSettings } from '$stores/editor';
 	import { createEventDispatcher } from 'svelte';
 	import type { Writable } from 'svelte/store';
@@ -10,6 +21,7 @@
 	export let mode: Writable<ViewMode>;
 	export let currentPage: Writable<number>;
 	const dispatcher = createEventDispatcher();
+	export let glossaryAddSideCover: any;
 
 	function handleFontSizeIncrease() {
 		viewerSettings.update((old) => ({ ...old, fontSize: old.fontSize + 1 }));
@@ -48,7 +60,10 @@
 		/>
 	</button>
 	<button type="button" class="btn-editor" on:click={handleImagePopup}>
-		<Icon src={Photograph} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<Icon src={BookOpen} class="w-5 text-stone-500 dark:text-stone-400" solid />
+	</button>
+	<button type="button" class="mr-3" on:click={() => glossaryAddSideCover.toggle()}>
+		<Icon src={Translate} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
 	<select name="mode" class="input !py-1" on:change={handleModeChange}>
 		<option value="transcription">Ed. Paleográfica</option>

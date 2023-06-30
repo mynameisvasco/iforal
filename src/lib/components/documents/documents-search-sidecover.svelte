@@ -60,7 +60,7 @@
 		</div>
 		<div class="col-span-12 mt-6 mb-3 border-b border-stone-300 dark:border-stone-700" />
 		<div class="col-span-12 flex flex-col gap-1">
-			<label for="query" class="label">Query</label>
+			<label for="query" class="label">Pesquisa</label>
 			<input
 				type="text"
 				class="input"

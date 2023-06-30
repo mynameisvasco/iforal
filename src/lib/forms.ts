@@ -33,7 +33,11 @@ export async function formDataToJson(
 	return { data, errors };
 }
 
-export const formHandler = (notification?: Notification, cleanForm: boolean = false) => {
+export const formHandler = (
+	notification?: Notification,
+	cleanForm: boolean = false,
+	after?: () => void
+) => {
 	return ({ data, form }: { data: any; form: HTMLFormElement }) =>
 		async ({ result }: { result: ActionResult }) => {
 			let errors = {} as any;
@@ -78,6 +82,7 @@ export const formHandler = (notification?: Notification, cleanForm: boolean = fa
 
 			await invalidateAll();
 			await applyAction(result);
+			after && after();
 		};
 };
 

@@ -3,6 +3,7 @@
 	import {
 		ArrowLeft,
 		ArrowRight,
+		AtSymbol,
 		Code,
 		Eye,
 		Icon,
@@ -66,7 +67,7 @@
 		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
 	<button type="button" class="btn-editor" on:click={handleVirtualKeyboard}>
-		<Icon src={Translate} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<Icon src={AtSymbol} class="w-5 text-stone-500 dark:text-stone-400" solid />
 	</button>
 	<button type="button" class="btn-editor" on:click={handlePreviewMode}>
 		<Icon

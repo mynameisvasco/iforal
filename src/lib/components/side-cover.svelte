@@ -3,8 +3,7 @@
 
 	export let title: string;
 	export let description: string;
-
-	let isOpen = false;
+	export let isOpen = false;
 
 	export function toggle() {
 		isOpen = !isOpen;
@@ -47,8 +46,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="flex flex-shrink-0 justify-end px-4 py-4">
+							<div class="flex flex-shrink-0 justify-end px-4 py-4 gap-3">
 								<button type="button" class="btn btn-secondary" on:click={toggle}>Fechar</button>
+								<slot name="action" />
 							</div>
 						</form>
 					</div>

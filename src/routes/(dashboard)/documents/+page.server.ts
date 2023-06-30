@@ -36,7 +36,8 @@ export async function load(event: RequestEvent) {
 		documents = await prisma.document.findMany({
 			where: {
 				title: {
-					contains: searchTitle ?? undefined
+					contains: searchTitle ?? undefined,
+					mode: 'insensitive'
 				},
 				body: {
 					search: query ? convertQuerySyntax(query) : undefined
@@ -53,9 +54,7 @@ export async function load(event: RequestEvent) {
 				]
 			},
 			orderBy: {
-				header: {
-					originDate: 'asc'
-				}
+				title: 'asc'
 			},
 			select: {
 				id: true,

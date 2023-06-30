@@ -7,11 +7,13 @@
 	import ViewerSettingsMenu from './viewer-settings-menu.svelte';
 	//@ts-ignore
 	import CETEIcean from 'CETEIcean';
+	import DocumentGlossaryAddSidecover from '../documents/document-glossary-add-sidecover.svelte';
 
 	export let images: any;
 	export let documentId: number;
 	export let body: any;
 
+	let glossaryAddSideCover: any;
 	const viewerId = `viewer-${Math.random()}`;
 	const dispatcher = createEventDispatcher();
 	const mode = writable<ViewMode>('transcription');
@@ -22,6 +24,23 @@
 	onMount(() => {
 		$viewerElement = document.getElementById(viewerId) as HTMLElement;
 	});
+
+	function textNodesToSpan(elements: any, recursive: boolean) {
+		recursive = recursive || true;
+		if (!('length' in elements)) {
+			elements = [elements];
+		}
+		for (let node of elements) {
+			if (node.nodeType === 3) {
+				let span = document.createElement('span');
+				span.textContent = node.textContent;
+				node.parentElement?.insertBefore(span, node);
+				node.remove();
+			} else if (recursive) {
+				textNodesToSpan(node.childNodes, false);
+			}
+		}
+	}
 
 	$: {
 		if ($viewerElement) {
@@ -35,11 +54,11 @@
 				}
 			);
 
+			textNodesToSpan($viewerElement, true);
 			maxPages = $viewerElement.getElementsByTagName('TEI-PB').length;
-			const textNodes = $viewerElement.getElementsByTagName('TEI-BODY').item(0)!.childNodes;
-			let shouldHideNode = false;
+			let shouldHideNode = true;
 
-			for (const node of Array.from(textNodes)) {
+			for (const node of $viewerElement.querySelectorAll('*')) {
 				const element = node as HTMLElement;
 
 				if (element.tagName === 'TEI-PB') {
@@ -48,16 +67,13 @@
 						$currentPage - 1;
 				}
 
-				if (shouldHideNode) {
-					if (node.nodeType === Node.TEXT_NODE) {
-						if (node.textContent?.trim() === '') node.remove();
-						const span = document.createElement('span');
-						span.textContent = node.textContent?.trim() ?? '';
-						span.classList.add('hidden');
-						node.replaceWith(span);
-					} else {
-						element.classList?.add('hidden');
-					}
+				if (
+					shouldHideNode &&
+					(element.tagName === 'SPAN' ||
+						element.tagName === 'TEI-CHOICE' ||
+						element.tagName === 'TEI-LB')
+				) {
+					element.classList?.add('hidden');
 				}
 			}
 
@@ -66,7 +82,7 @@
 				const lineLabel = document.createElement('span');
 				const space = document.createElement('div');
 				lineLabel.innerHTML = `${lineNumber}.`;
-				lineLabel.classList.add('font-semibold', 'mr-2');
+				lineLabel.classList.add('font-semibold', 'mr-2', 'select-none');
 				space.classList.add('mb-2');
 				lb.appendChild(lineLabel);
 				if (i !== 0) lb.before(space);
@@ -86,6 +102,54 @@
 
 			for (const sic of Array.from($viewerElement.getElementsByTagName('TEI-SIC'))) {
 				if ($mode === 'edited') sic.classList.add('hidden');
+			}
+
+			for (const add of Array.from($viewerElement.getElementsByTagName('TEI-ADD'))) {
+				const tooltip = document.createElement('span');
+				tooltip.classList.add('tooltip');
+				tooltip.innerText = `Adicionado ${add.getAttribute('place')}: ${(add as any).innerText}`;
+				add.appendChild(tooltip);
+				add.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
+			}
+
+			for (const del of Array.from($viewerElement.getElementsByTagName('TEI-DEL'))) {
+				const tooltip = document.createElement('span');
+				tooltip.classList.add('tooltip');
+				tooltip.innerText = `Cancelado ${del.getAttribute('rend')}: ${(del as any).innerText}`;
+				del.appendChild(tooltip);
+				del.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
+			}
+
+			for (const unclear of Array.from($viewerElement.getElementsByTagName('TEI-UNCLEAR'))) {
+				const tooltip = document.createElement('span');
+				tooltip.classList.add('tooltip');
+				tooltip.innerText = `Leitura duvidosa`;
+				unclear.appendChild(tooltip);
+				unclear.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
+			}
+
+			for (const gap of Array.from($viewerElement.getElementsByTagName('TEI-GAP'))) {
+				const tooltip = document.createElement('span');
+				tooltip.classList.add('tooltip');
+				tooltip.innerText = `Lacuna do suporte ${gap.getAttribute('type')}`;
+				gap.appendChild(tooltip);
+				gap.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
+			}
+
+			for (const gap of Array.from($viewerElement.getElementsByTagName('TEI-GAP'))) {
+				const tooltip = document.createElement('span');
+				tooltip.classList.add('tooltip');
+				tooltip.innerText = `Lacuna do suporte ${gap.getAttribute('type')}`;
+				gap.appendChild(tooltip);
+				gap.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
+			}
+
+			for (const damage of Array.from($viewerElement.getElementsByTagName('TEI-DAMAGE'))) {
+				const tooltip = document.createElement('span');
+				tooltip.classList.add('tooltip');
+				tooltip.innerText = `Mancha`;
+				damage.appendChild(tooltip);
+				damage.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
 			}
 
 			for (const note of Array.from($viewerElement.getElementsByTagName('TEI-NOTE'))) {
@@ -112,6 +176,8 @@
 	}
 </script>
 
+<DocumentGlossaryAddSidecover bind:sideCover={glossaryAddSideCover} />
+
 <div>
 	<div
 		class="flex flex-col w-full bg-stone-50 dark:bg-stone-900 p-1 
@@ -120,6 +186,7 @@
 		<div class="flex items-center justify-between gap-1 h-10">
 			<ViewerPagination {currentPage} {maxPages} />
 			<ViewerSettingsMenu
+				{glossaryAddSideCover}
 				{currentPage}
 				{images}
 				{documentId}

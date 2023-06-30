@@ -12,6 +12,7 @@
 	import Viewer from '$lib/components/viewer/viewer.svelte';
 	import DocumentsViewSearchSidecover from '$lib/components/documents/documents-view-search-sidecover.svelte';
 	import Gallery from '$lib/components/gallery.svelte';
+	import DocumentWordsSidecover from '$lib/components/documents/document-words-sidecover.svelte';
 
 	export let data: PageData;
 
@@ -41,6 +42,7 @@
 		</button>
 	</DocumentActions>
 	<DocumentsViewSearchSidecover on:select={handleCompareDocument} />
+	<DocumentWordsSidecover />
 	<DocumentPermissionsSidecover />
 </PageHeader>
 <PageBody>

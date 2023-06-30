@@ -19,10 +19,10 @@
 
 <a {href} on:click={handleClick}>
 	<div class="flex flex-col card hover:border-stone-900 dark:hover:border-orange-300">
-		{#if document.images.at(0)}
+		{#if document.images[0]}
 			<img
-				src="/images/{document.images.at(0)?.name}"
-				alt="Imagem ilustrativa do foral"
+				src="/images/{document.images[0].name}"
+				alt="Imagem ilustrativa {document.title}"
 				class="h-72 object-cover rounded-t-lg w-full"
 			/>
 		{:else}
@@ -38,7 +38,7 @@
 				<div class="flex flex-col">
 					<h2 class="text-stone-900 dark:text-white font-medium text-md">{document.title}</h2>
 					<span class="text-stone-500 dark:text-stone-400 text-sm">
-						{formatDate(new Date(document.header.originDate), 'MMMM yyyy', { locale: pt })}
+						{formatDate(new Date(document.header.originDate), 'yyyy', { locale: pt })}
 					</span>
 				</div>
 				{#if showActions}

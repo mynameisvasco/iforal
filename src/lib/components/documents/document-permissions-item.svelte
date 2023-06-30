@@ -50,7 +50,7 @@
 				id="type"
 				name="type"
 				class="input-sm"
-				disabled={permissionType < 1}
+				disabled={permissionType == 2}
 				value={permissionType}
 				on:change={handlePermissionChange}
 			>
