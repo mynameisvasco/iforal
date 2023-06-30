@@ -53,7 +53,6 @@
 		definition = entry.definition;
 		tags = entry.tags;
 		actualLema = entry.actualLema;
-
 		translations = entry.translations;
 	}
 </script>

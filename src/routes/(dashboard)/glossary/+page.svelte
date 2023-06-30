@@ -19,7 +19,7 @@
 			{@const glossaryEntry = data.glossaryEntries.find((e) => e.lemma === lemma)}
 			{#if glossaryEntry}
 				<div class="grid grid-cols-12 justify-between card p-6 gap-4">
-					<div class="col-span-12 lg:col-span-4 flex flex-col gap-3">
+					<div class="col-span-12 lg:col-span-6 flex flex-col gap-3">
 						<div class="flex flex-col">
 							<span class="label">Lema</span>
 							<span class="text-stone-900 dark:text-white font-semibold text-xl">
@@ -29,6 +29,21 @@
 								({glossaryEntry.category})
 							</span>
 						</div>
+					</div>
+					<div class="col-span-12 lg:col-span-6 flex flex-col">
+						<div class="label">Traduções</div>
+						{#each JSON.parse(glossaryEntry.translations) as translation}
+							<div class="flex flex-col mb-2">
+								<span class="text-stone-900 dark:text-white text-sm font-semibold">
+									{translation.value}
+								</span>
+								<span class="text-stone-500 dark:text-stone-300 text-sm">
+									{translation.language}
+								</span>
+							</div>
+						{/each}
+					</div>
+					<div class="col-span-12 lg:col-span-6 flex flex-col">
 						<div class="flex flex-col">
 							<span class="label">Definição</span>
 							<span class="text-stone-900 dark:text-white text-sm">
@@ -36,7 +51,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="col-span-12 lg:col-span-8 flex flex-col">
+					<div class="col-span-12 lg:col-span-6 flex flex-col">
 						<div class="label">Formas e Contextos</div>
 						{#each data.glossaryEntries.filter((e) => e.lemma === lemma) as otherGlossaryEntries}
 							<div class="flex flex-col mb-2">
