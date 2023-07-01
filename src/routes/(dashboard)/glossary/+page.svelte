@@ -65,9 +65,7 @@
 								<span class="text-stone-500 dark:text-stone-300 text-sm">
 									{otherGlossaryEntry.context}
 									[{otherGlossaryEntry.document.header.title}
-									{formatDate(new Date(otherGlossaryEntry.document.header.originDate), 'yyyy', {
-										locale: pt
-									})}]
+									{formatDate(new Date(otherGlossaryEntry.document.header.originDate), 'yyyy')}]
 								</span>
 							</div>
 						{/each}
