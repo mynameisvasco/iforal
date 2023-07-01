@@ -31,16 +31,17 @@ model User {
 }
 
 model Document {
-  id          Int                   @id @default(autoincrement())
-  title       String                @db.VarChar(255)
-  createdAt   DateTime              @default(now())
-  modifiedAt  DateTime              @updatedAt
-  body        String                @db.Text
-  user        User                  @relation(fields: [userId], references: [id])
-  images      DocumentImages[]
-  header      DocumentHeader?
-  userId      Int
-  permissions DocumentPermissions[]
+  id            Int                   @id @default(autoincrement())
+  title         String                @db.VarChar(255)
+  createdAt     DateTime              @default(now())
+  modifiedAt    DateTime              @updatedAt
+  body          String                @db.Text
+  user          User                  @relation(fields: [userId], references: [id])
+  images        DocumentImages[]
+  header        DocumentHeader?
+  userId        Int
+  permissions   DocumentPermissions[]
+  GlossaryEntry GlossaryEntry[]
 }
 
 model DocumentHeader {
@@ -110,15 +111,17 @@ model Tag {
 }
 
 model GlossaryEntry {
-  id           Int    @id @default(autoincrement())
-  lemma        String @db.VarChar(255)
-  actualLema   String @db.VarChar(255)
-  actual       String @db.VarChar(255)
-  definition   String @db.VarChar(255)
-  tags         String @db.VarChar(255)
-  category     String @db.VarChar(255)
-  context      String @default("") @db.VarChar(255)
+  id           Int      @id @default(autoincrement())
+  lemma        String   @db.VarChar(255)
+  actualLema   String   @db.VarChar(255)
+  actual       String   @db.VarChar(255)
+  definition   String   @db.VarChar(255)
+  tags         String   @db.VarChar(255)
+  category     String   @db.VarChar(255)
+  context      String   @default("") @db.VarChar(255)
   translations Json?
+  document     Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId   Int
 
   @@index([lemma])
 }

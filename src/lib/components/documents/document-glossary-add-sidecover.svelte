@@ -123,6 +123,13 @@
 						</div>
 					</span>
 					<span slot="inputs" let:handleAdd class="flex gap-6 flex-1">
+						<input
+							type="text"
+							class="input"
+							placeholder=""
+							bind:value={addingTranslations.value}
+							on:blur={handleAdd}
+						/>
 						<select class="input" bind:value={addingTranslations.language} on:blur={handleAdd}>
 							<option disabled value="">Selecionar língua</option>
 							<option value="mediaval-latim">Latim medieval</option>
@@ -131,17 +138,11 @@
 							<option value="french">Francês</option>
 							<option value="spanish">Castelhano</option>
 						</select>
-						<input
-							type="text"
-							class="input"
-							placeholder="FCT"
-							bind:value={addingTranslations.value}
-							on:blur={handleAdd}
-						/>
 					</span>
 				</InputList>
 			</div>
 		</div>
+		<input type="hidden" name="documentId" value={$page.params.id} />
 	</form>
 	<div class="flex flex-col gap-3">
 		{#if entries.length !== 0}
