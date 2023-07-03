@@ -79,7 +79,6 @@
 					lemma: '',
 					category: ''
 				}}
-				<div class="border-b border-stone-200 dark:border-stone-700 my-1" />
 				<div class="flex justify-between">
 					<div class="flex flex-col">
 						<h2 class="text-stone-900 dark:text-white font-medium text-md">
@@ -93,6 +92,7 @@
 								.join(',')}
 						</span>
 					</div>
+					<div class="border-b border-stone-200 dark:border-stone-700 my-1" />
 					<div>
 						<button on:click={() => handleSelectGlossaryEntry(entry)}>
 							<Icon src={ClipboardCopy} solid class="w-5 text-stone-700 dark:text-stone-300" />
