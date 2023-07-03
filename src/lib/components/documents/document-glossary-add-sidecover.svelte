@@ -158,11 +158,11 @@
 						/>
 						<select class="input" bind:value={addingTranslations.language} on:blur={handleAdd}>
 							<option disabled value="">Selecionar língua</option>
-							<option value="mediaval-latim">Latim medieval</option>
-							<option value="latin">Latim clássico</option>
-							<option value="english">Inglês</option>
-							<option value="french">Francês</option>
-							<option value="spanish">Castelhano</option>
+							<option value="Latim medieval">Latim medieval</option>
+							<option value="Latim classico">Latim clássico</option>
+							<option value="Ingles">Inglês</option>
+							<option value="Frances">Francês</option>
+							<option value="Castelhano">Castelhano</option>
 						</select>
 					</span>
 				</InputList>
