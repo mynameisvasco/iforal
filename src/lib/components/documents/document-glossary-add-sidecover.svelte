@@ -97,13 +97,39 @@
 					<option value="Verbo">Verbo</option>
 					<option value="Advérbio">Advérbio</option>
 					<option value="Numeral">Numeral</option>
+					<option value="Locução">Locução</option>
 					<option value="Locução Verbal">Locução Verbal</option>
 					<option value="Locução Adverbial">Locução Adverbial</option>
+					<option value="Antropónimo">Antropónimo</option>
+					<option value="Topónimo">Topónimo</option>
 				</select>
 			</div>
 			<div class="col-span-12 flex flex-col gap-1">
 				<label for="title" class="label">Etiquetas</label>
-				<input type="text" class="input" placeholder="" name="tags" bind:value={tags} />
+				<select class="input" name="tags" bind:value={tags}>
+					<option value="Agressões e ofensas">Agressões e ofensas</option>
+					<option value="Atividades e agentes económicos">Atividades e agentes económicos</option>
+					<option value="Autoridades e funções municipais">Autoridades e funções municipais</option>
+					<option value="Documentação e afins">Documentação e afins</option>
+					<option value="Edifícios e estruturas">Edifícios e estruturas</option>
+					<option value="Foro municipal">Foro municipal</option>
+					<option value="Guerra">Guerra</option>
+					<option value="Igreja e clero">Igreja e clero</option>
+					<option value="Impostos">Impostos</option>
+					<option value="Justiça">Justiça</option>
+					<option value="Meios de produção">Meios de produção</option>
+					<option value="Medidas e pesos">Medidas e pesos</option>
+					<option value="Moedas">Moedas</option>
+					<option value="Oficiais régios e órgãos da corte">
+						Oficiais régios e órgãos da corte
+					</option>
+					<option value="Paisagem rural">Paisagem rural</option>
+					<option value="Penas e coimas">Penas e coimas</option>
+					<option value="Perturbação da ordem">Perturbação da ordem</option>
+					<option value="Produtos e Recursos">Produtos e Recursos</option>
+					<option value="Sociedade">Sociedade</option>
+					<option value="Território">Território</option>
+				</select>
 			</div>
 			<div class="col-span-12 flex flex-col gap-1">
 				<label for="title" class="label">Definição</label>

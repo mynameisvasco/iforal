@@ -13,7 +13,11 @@
 				<publisher><%= header.publisher %></publisher>
 				<pubPlace><%= header.publisherPlace %></pubPlace>
 				<date><%= header.publisherDate %></date>
-				<licence><%= header.license %></licence>
+				<availability>
+					<licence target="http://creativecommons.org/licenses/by-sa/3.0/">
+						<%= header.license %>
+					</licence>
+				</availability>
 			</publicationStmt>
 			<sourceDesc>
 				<msDesc>
@@ -29,8 +33,12 @@
 							</person>
 							<% }) %>
 						</author>
-						<origDate><%= header.originDate %></origDate>
-						<origPlace><%= header.originPlace %></origPlace>
+						<history>
+							<origin>
+								<origDate><%= header.originDate %></origDate>
+								<origPlace><%= header.originPlace %></origPlace>
+							</origin>
+						</history>
 						<% header.altIdentifier.forEach(({value, type}) => { %>
 						<altIdentifier type="<%= type %>">
 							<idno><%= value %></idno>
