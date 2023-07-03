@@ -92,7 +92,6 @@
 								.join(',')}
 						</span>
 					</div>
-					<div class="border-b border-stone-200 dark:border-stone-700 my-1" />
 					<div>
 						<button on:click={() => handleSelectGlossaryEntry(entry)}>
 							<Icon src={ClipboardCopy} solid class="w-5 text-stone-700 dark:text-stone-300" />
@@ -100,6 +99,7 @@
 					</div>
 				</div>
 			{/each}
+			<div class="border-b border-stone-200 dark:border-stone-700 my-1" />
 		</div>
 		<div class="grid grid-cols-12 gap-3 mb-6">
 			<div class="col-span-12 flex flex-col gap-1">
