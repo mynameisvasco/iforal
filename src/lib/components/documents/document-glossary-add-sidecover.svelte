@@ -69,6 +69,38 @@
 		action="/glossary/create"
 		use:enhance={formHandler(createdSuccessNotification, false, () => handleLemmaChange())}
 	>
+		<div class="flex flex-col gap-3">
+			{#if entries.length !== 0}
+				<div class="label">Entradas existentes</div>
+			{/if}
+			{#each Array.from(new Set(entries.map((e) => e.definition))) as definition}
+				{@const entry = entries.find((e) => e.definition === definition) ?? {
+					definition: '',
+					lemma: '',
+					category: ''
+				}}
+				<div class="border-b border-stone-200 dark:border-stone-700 my-1" />
+				<div class="flex justify-between">
+					<div class="flex flex-col">
+						<h2 class="text-stone-900 dark:text-white font-medium text-md">
+							{entry.lemma}
+							<span class="text-xs text-stone-500 dark:text-stone-300"> ({entry.category})</span>
+						</h2>
+						<span class="text-stone-500 dark:text-stone-400 text-sm">
+							{entries
+								.filter((e) => e.definition === entry.definition)
+								.map((e) => e.actual)
+								.join(',')}
+						</span>
+					</div>
+					<div>
+						<button on:click={() => handleSelectGlossaryEntry(entry)}>
+							<Icon src={ClipboardCopy} solid class="w-5 text-stone-700 dark:text-stone-300" />
+						</button>
+					</div>
+				</div>
+			{/each}
+		</div>
 		<div class="grid grid-cols-12 gap-3 mb-6">
 			<div class="col-span-12 flex flex-col gap-1">
 				<label for="title" class="label">Forma</label>
@@ -170,38 +202,7 @@
 		</div>
 		<input type="hidden" name="documentId" value={$page.params.id} />
 	</form>
-	<div class="flex flex-col gap-3">
-		{#if entries.length !== 0}
-			<div class="label">Entradas existentes</div>
-		{/if}
-		{#each Array.from(new Set(entries.map((e) => e.definition))) as definition}
-			{@const entry = entries.find((e) => e.definition === definition) ?? {
-				definition: '',
-				lemma: '',
-				category: ''
-			}}
-			<div class="border-b border-stone-200 dark:border-stone-700 my-1" />
-			<div class="flex justify-between">
-				<div class="flex flex-col">
-					<h2 class="text-stone-900 dark:text-white font-medium text-md">
-						{entry.lemma}
-						<span class="text-xs text-stone-500 dark:text-stone-300"> ({entry.category})</span>
-					</h2>
-					<span class="text-stone-500 dark:text-stone-400 text-sm">
-						{entries
-							.filter((e) => e.definition === entry.definition)
-							.map((e) => e.actual)
-							.join(',')}
-					</span>
-				</div>
-				<div>
-					<button on:click={() => handleSelectGlossaryEntry(entry)}>
-						<Icon src={ClipboardCopy} solid class="w-5 text-stone-700 dark:text-stone-300" />
-					</button>
-				</div>
-			</div>
-		{/each}
-	</div>
+
 	<svelte:fragment slot="action">
 		<button type="submit" form="glossaryEntryAdd" class="btn btn-primary">Adicionar</button>
 	</svelte:fragment>
