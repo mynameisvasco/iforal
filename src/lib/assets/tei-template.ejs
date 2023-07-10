@@ -28,12 +28,12 @@
 						<idno><%= header.idno %></idno>
 					</msIdentifier>
 					<msContents>
+						<summary><%= header.summary %></summary>
 						<msItem>
 							<% header.authors.forEach(({name, role}) => { %>
 							<author role="<%= role %>"> <%= name %> </author>
 							<% }) %>
 							<filiation><%= header.filiation %></filiation>
-							<summary><%= header.summary %></summary>
 						</msItem>
 						<% header.altIdentifier.forEach(({value, type}) => { %>
 						<altIdentifier type="<%= type %>">
