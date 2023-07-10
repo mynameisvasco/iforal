@@ -26,64 +26,59 @@
 						<institution><%= header.institution %></institution>
 						<repository><%= header.repository %></repository>
 						<idno><%= header.idno %></idno>
-						<author>
+					</msIdentifier>
+					<msContents>
+						<msItem>
 							<% header.authors.forEach(({name, role}) => { %>
-							<person role="<%= role %>">
-								<persName><%= name %></persName>
-							</person>
+							<author role="<%= role %>"> <%= name %> </author>
 							<% }) %>
-						</author>
-						<history>
-							<origin>
-								<origDate><%= header.originDate %></origDate>
-								<origPlace><%= header.originPlace %></origPlace>
-							</origin>
-						</history>
+							<filiation><%= header.filiation %></filiation>
+							<summary><%= header.summary %></summary>
+						</msItem>
 						<% header.altIdentifier.forEach(({value, type}) => { %>
 						<altIdentifier type="<%= type %>">
 							<idno><%= value %></idno>
 						</altIdentifier>
 						<% }) %>
-					</msIdentifier>
-					<msContents>
-						<filiation><%= header.filiation %></filiation>
-						<summary><%= header.summary %></summary>
 					</msContents>
+					<physDesc>
+						<objectDesc form="<%= header.objectDesc %>">
+							<supportDesc material="<%= header.supportDesc %>">
+								<support><%= header.support %></support>
+								<extent>
+									<%= header.extent %>
+									<dimensions scope="all" type="leaf" unit="cm">
+										<height><%= header.height %></height>
+										<width><%= header.width %></width>
+									</dimensions>
+								</extent>
+								<condition>
+									<p><%= header.condition %></p>
+								</condition>
+							</supportDesc>
+							<layoutDesc>
+								<layout columns="2"><%= header.layout %></layout>
+							</layoutDesc>
+						</objectDesc>
+						<handDesc>
+							<p><%= header.handDesc %></p>
+						</handDesc>
+						<decoDesc>
+							<p><%= header.decoDesc %></p>
+						</decoDesc>
+						<additions>
+							<p><%= header.additions %></p>
+						</additions>
+					</physDesc>
+					<history>
+						<origin>
+							<origDate><%= header.originDate %></origDate>
+							<origPlace><%= header.originPlace %></origPlace>
+						</origin>
+					</history>
 				</msDesc>
 			</sourceDesc>
 		</fileDesc>
-		<physDesc>
-			<objectDesc form="<%= header.objectDesc %>">
-				<supportDesc material="<%= header.supportDesc %>">
-					<support><%= header.support %></support>
-					<extent>
-						<%= header.extent %>
-						<dimensions scope="all" type="leaf" Dimensões unit="cm">
-							<height><%= header.height %></height>
-							<width><%= header.width %></width>
-						</dimensions>
-					</extent>
-					<condition>
-						<p><%= header.condition %></p>
-					</condition>
-				</supportDesc>
-				<layoutDesc>
-					<layout columns="2"><%= header.layout %></layout>
-				</layoutDesc>
-			</objectDesc>
-			<handDesc>
-				<p><%= header.handDesc %></p>
-			</handDesc>
-			<decoDesc>
-				<p><%= header.decoDesc %></p>
-			</decoDesc>
-			<additions>
-				<p><%= header.additions %></p>
-			</additions>
-			<additions>
-				<p><%= header.additions %></p>
-			</additions>
-		</physDesc>
 	</teiHeader>
 	<%- body %>
 </TEI>
