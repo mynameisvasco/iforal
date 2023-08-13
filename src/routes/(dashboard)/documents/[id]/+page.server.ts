@@ -42,7 +42,8 @@ export async function load(event: RequestEvent) {
 		? await prisma.document.findMany({
 				where: {
 					title: {
-						contains: searchTitle ?? undefined
+						contains: searchTitle ?? undefined,
+						mode: 'insensitive'
 					},
 					header: {
 						originDate: {
@@ -52,7 +53,7 @@ export async function load(event: RequestEvent) {
 					},
 					OR: [
 						{ userId: event.locals.user.id },
-						{ permissions: { some: { userId: event.locals.user.id, documentId: id } } }
+						{ permissions: { some: { userId: event.locals.user.id } } }
 					]
 				},
 				include: {
