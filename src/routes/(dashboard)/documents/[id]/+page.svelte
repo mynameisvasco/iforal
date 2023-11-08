@@ -13,9 +13,12 @@
 	import DocumentsViewSearchSidecover from '$lib/components/documents/documents-view-search-sidecover.svelte';
 	import Gallery from '$lib/components/gallery.svelte';
 	import DocumentWordsSidecover from '$lib/components/documents/document-words-sidecover.svelte';
+	import Toggle from '$lib/components/toggle.svelte';
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 
+	let toggleVisibleForm: HTMLFormElement | null;
 	let documentsToCompare: any[] = [];
 	setContext('body', writable(data.document.body));
 
@@ -35,6 +38,13 @@
 	<title>iForal - Editor</title>
 </svelte:head>
 
+<form
+	method="POST"
+	action="/documents/{data.document.id}?/toggleVisible"
+	use:enhance
+	bind:this={toggleVisibleForm}
+/>
+
 <PageHeader title={data.document.title}>
 	<DocumentActions id={data.document.id}>
 		<button type="button" class="btn btn-secondary flex items-center">
@@ -43,7 +53,16 @@
 	</DocumentActions>
 	<DocumentsViewSearchSidecover on:select={handleCompareDocument} />
 	<DocumentWordsSidecover />
-	<DocumentPermissionsSidecover />
+	{#if data.user.id !== 0}
+		<div class="flex items-center gap-3 card p-2">
+			<Toggle
+				on:toggle={() => toggleVisibleForm?.dispatchEvent(new SubmitEvent('submit'))}
+				initalState={data.document.isPublic}
+			/>
+			<span class="text-sm text-stone-900 dark:text-white">Visível</span>
+		</div>
+		<DocumentPermissionsSidecover />
+	{/if}
 </PageHeader>
 <PageBody>
 	<div class="grid grid-cols-12 gap-6">

@@ -12,15 +12,14 @@
 
 	async function handleSearch(event: any) {
 		const value = event.target.value;
-		const url = new URL($page.url);
 
 		if (value.length === 0) {
-			url.searchParams.delete(event.target.name);
+			$page.url.searchParams.delete(event.target.name);
 		} else {
-			url.searchParams.set(event.target.name, value);
+			$page.url.searchParams.set(event.target.name, value);
 		}
 
-		await goto(url.href);
+		await goto($page.url.href);
 	}
 
 	function handleSelectDocument(document: Document) {
@@ -42,7 +41,7 @@
 				placeholder="Foral de ..."
 				name="title"
 				value={$page.url.searchParams.get('title')}
-				on:change={handleSearch}
+				on:blur={handleSearch}
 			/>
 		</div>
 		<div class="col-span-12 lg:col-span-6 flex flex-col gap-1">
@@ -53,7 +52,7 @@
 				placeholder="1700"
 				name="from"
 				value={$page.url.searchParams.get('from')}
-				on:change={handleSearch}
+				on:blur={handleSearch}
 			/>
 		</div>
 		<div class="col-span-12 lg:col-span-6 flex flex-col gap-1">
@@ -64,7 +63,7 @@
 				placeholder="1720"
 				name="to"
 				value={$page.url.searchParams.get('to')}
-				on:change={handleSearch}
+				on:blur={handleSearch}
 			/>
 		</div>
 		<div class="col-span-12 mt-6 mb-3 border-b border-stone-300 dark:border-stone-700" />

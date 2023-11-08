@@ -49,6 +49,7 @@ export async function load(event: RequestEvent) {
 					}
 				},
 				OR: [
+					{ isPublic: true },
 					{ userId: event.locals.user.id },
 					{ permissions: { some: { userId: event.locals.user.id } } }
 				]

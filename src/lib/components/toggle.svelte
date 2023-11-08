@@ -20,7 +20,7 @@
 		class="toggle"
 		class:bg-stone-200={!isToggled}
 		class:bg-orange-500={isToggled}
-		class:dark:bg-stone-700={!isToggled}
+		class:dark:bg-stone-400={!isToggled}
 		class:dark:bg-orange-300={isToggled}
 		on:click={handleToggled}
 	>

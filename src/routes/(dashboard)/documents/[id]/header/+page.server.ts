@@ -1,5 +1,6 @@
 import { formDataToJson } from '$lib/forms';
 import { getPrismaClient } from '$lib/prisma';
+import { Role } from '@prisma/client';
 import { error, fail, type RequestEvent } from '@sveltejs/kit';
 import { parse } from 'date-fns';
 import * as Yup from 'yup';
@@ -80,7 +81,21 @@ export async function load(event: RequestEvent) {
 	}
 
 	const prisma = await getPrismaClient(event.locals.user.id);
-	const documentHeader = await prisma.documentHeader.findFirst({ where: { documentId: id } });
+	const documentHeader = await prisma.documentHeader.findFirst({
+		where: {
+			documentId: id,
+			document: {
+				OR: [
+					{ isPublic: true },
+					event.locals.user.role !== Role.Admin
+						? { userId: event.locals.user.id }
+						: { userId: { gt: 0 } },
+					{ permissions: { some: { userId: event.locals.user.id } } }
+				]
+			}
+		}
+	});
+
 	if (!documentHeader) {
 		throw error(404);
 	}

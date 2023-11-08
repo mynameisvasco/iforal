@@ -1,5 +1,6 @@
 import { getPrismaClient } from '$lib/prisma';
 import { exportTei } from '$lib/tei';
+import { Role } from '@prisma/client';
 import { error, type RequestEvent } from '@sveltejs/kit';
 
 export async function GET(event: RequestEvent) {
@@ -10,7 +11,16 @@ export async function GET(event: RequestEvent) {
 
 	const prisma = await getPrismaClient(event.locals.user.id);
 	const document = await prisma.document.findFirst({
-		where: { id },
+		where: {
+			id,
+			OR: [
+				{ isPublic: true },
+				event.locals.user.role !== Role.Admin
+					? { userId: event.locals.user.id }
+					: { userId: { gt: 0 } },
+				{ permissions: { some: { userId: event.locals.user.id } } }
+			]
+		},
 		include: { header: true }
 	});
 

@@ -10,11 +10,8 @@ export async function GET(event: RequestEvent) {
 		throw error(404, 'Image not found');
 	}
 
-	const prisma = await getPrismaClient(event.locals.user.id);
-
 	try {
 		const file = await Fs.readFile(Path.join('storage', name));
-
 		return new Response(file, {
 			headers: { 'Content-Type': `image/${name.split('.')[1]}` }
 		});

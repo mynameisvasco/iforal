@@ -25,10 +25,12 @@
 		<Icon class="w-5 mr-1" src={Search} solid />
 		Pesquisar
 	</button>
-	<a class="btn btn-primary" href="/documents/create">
-		<Icon class="w-5 mr-1" src={Plus} solid />
-		Documento
-	</a>
+	{#if data.user.id !== 0}
+		<a class="btn btn-primary" href="/documents/create">
+			<Icon class="w-5 mr-1" src={Plus} solid />
+			Documento
+		</a>
+	{/if}
 </PageHeader>
 <PageBody>
 	<div class="grid grid-cols-12 gap-6">

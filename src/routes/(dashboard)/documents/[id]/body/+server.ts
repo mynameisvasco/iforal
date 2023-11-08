@@ -1,4 +1,5 @@
 import { getPrismaClient } from '$lib/prisma';
+import { Role } from '@prisma/client';
 import { error, json, type RequestEvent } from '@sveltejs/kit';
 
 export async function PUT(event: RequestEvent) {
@@ -13,9 +14,13 @@ export async function PUT(event: RequestEvent) {
 		select: { body: true },
 		where: {
 			id,
+
 			OR: [
-				{ userId: event.locals.user.id },
-				{ permissions: { some: { userId: event.locals.user.id, documentId: id, type: 1 } } }
+				{ isPublic: true },
+				event.locals.user.role !== Role.Admin
+					? { userId: event.locals.user.id }
+					: { userId: { gt: 0 } },
+				{ permissions: { some: { userId: event.locals.user.id } } }
 			]
 		}
 	});

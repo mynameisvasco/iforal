@@ -40,6 +40,7 @@ model Document {
   images        DocumentImages[]
   header        DocumentHeader?
   userId        Int
+  isPublic      Boolean               @default(false)
   permissions   DocumentPermissions[]
   GlossaryEntry GlossaryEntry[]
 }

@@ -2,6 +2,7 @@ import { JWT_SECRET } from '$env/static/private';
 import type { RequestEvent, ResolveOptions, HttpError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import Jwt from 'jsonwebtoken';
+import type { IUser } from './app';
 
 interface HandleInput {
 	event: RequestEvent;
@@ -14,6 +15,12 @@ export async function authentication(input: HandleInput) {
 	const isLoginRoute = event.url.pathname.includes('login');
 	const isRegisterRoute = event.url.pathname.includes('register');
 	const isLogoutRoute = event.url.pathname.includes('logout');
+	const isImageRoute = event.url.pathname.startsWith('/images');
+	const isGlossary = event.url.pathname === '/glossary';
+	const isDocumentsRoute = event.url.pathname === '/documents';
+	const isDocumentReadRoute = event.url.pathname.match(/\/documents\/\d*$/g)?.at(0) ?? false;
+
+	event.locals.user = { id: 0 } as IUser;
 
 	if (accessToken && !isLoginRoute && !isRegisterRoute) {
 		try {
@@ -23,13 +30,23 @@ export async function authentication(input: HandleInput) {
 		}
 	}
 
-	const isAuthed = !!event.locals.user;
+	const isAuthed = event.locals.user.id !== 0;
 
 	if ((isLoginRoute || isRegisterRoute) && !isLogoutRoute && isAuthed) {
 		return Response.redirect(`${event.url.origin}/documents`);
 	}
 
-	if (!(isLoginRoute || isRegisterRoute) && !isAuthed) {
+	if (
+		!(
+			isLoginRoute ||
+			isRegisterRoute ||
+			isDocumentsRoute ||
+			isDocumentReadRoute ||
+			isImageRoute ||
+			isGlossary
+		) &&
+		!isAuthed
+	) {
 		return Response.redirect(`${event.url.origin}/login`);
 	}
 

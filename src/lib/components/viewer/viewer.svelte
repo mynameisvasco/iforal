@@ -198,7 +198,7 @@
 	<div
 		id={viewerId}
 		class="text-stone-900 dark:text-stone-300 bg-white dark:bg-stone-800 p-8 border-b border-l border-r 
-		border-stone-300 dark:border-stone-700 overflow-y-scroll max-h-[800px]"
+		border-stone-300 dark:border-stone-700 overflow-y-scroll max-h-[800px] printable"
 		class:hidden={!$editorSettings.isPreviewMode}
 		style="font-size: {$viewerSettings.fontSize}px;"
 	/>

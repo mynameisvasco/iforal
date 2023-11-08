@@ -3,6 +3,7 @@
 	import { modals } from '$stores/modals';
 	import { Menu, MenuButton, MenuItem, MenuItems } from '@rgossiaux/svelte-headlessui';
 	import { formHandler } from '$lib/forms';
+	import { page } from '$app/stores';
 
 	export let id: number;
 
@@ -32,11 +33,13 @@
 		<slot />
 	</MenuButton>
 	<MenuItems class="dropdown-menu">
-		<MenuItem class="dropdown-menu-item" href="/documents/{id}/header">Editar Cabeçalho</MenuItem>
-		<MenuItem class="dropdown-menu-item" href="/documents/{id}/images">Editar Imagens</MenuItem>
 		<MenuItem class="dropdown-menu-item" href="/documents/{id}/download">Download</MenuItem>
-		<MenuItem class="dropdown-menu-item !text-red-600 dark:!text-red-300" on:click={handleDelete}>
-			Apagar
-		</MenuItem>
+		{#if $page.data.user.id !== 0}
+			<MenuItem class="dropdown-menu-item" href="/documents/{id}/header">Editar Cabeçalho</MenuItem>
+			<MenuItem class="dropdown-menu-item" href="/documents/{id}/images">Editar Imagens</MenuItem>
+			<MenuItem class="dropdown-menu-item !text-red-600 dark:!text-red-300" on:click={handleDelete}>
+				Apagar
+			</MenuItem>
+		{/if}
 	</MenuItems>
 </Menu>

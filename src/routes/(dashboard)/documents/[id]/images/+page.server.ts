@@ -84,6 +84,7 @@ async function update(event: RequestEvent) {
 
 export async function load(event: RequestEvent) {
 	const documentId = parseInt(event.params.id ?? '');
+
 	if (isNaN(documentId)) {
 		throw error(404, 'Document not found');
 	}
