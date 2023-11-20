@@ -43,10 +43,11 @@
 	];
 	let editor = writable({} as EditorView);
 	const isReadOnly =
-		$page.data.document.user.id !== $page.data.user.id &&
-		$page.data.document.permissions.filter(
-			(p: any) => p.type === 0 && p.userId === $page.data.user.id
-		).length !== 0;
+		!$page.data.user.id ||
+		($page.data.document.user.id !== $page.data.user.id &&
+			$page.data.document.permissions.filter(
+				(p: any) => p.type === 0 && p.userId === $page.data.user.id
+			).length !== 0);
 
 	setContext('editor', editor);
 

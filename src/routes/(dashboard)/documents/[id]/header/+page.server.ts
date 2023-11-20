@@ -51,6 +51,23 @@ async function update(event: RequestEvent) {
 
 	const prisma = await getPrismaClient(event.locals.user.id);
 
+	const document = await prisma.document.findFirst({
+		select: { body: true },
+		where: {
+			id,
+			OR: [
+				event.locals.user.role !== Role.Admin
+					? { userId: event.locals.user.id }
+					: { userId: { gt: 0 } },
+				{ permissions: { some: { userId: event.locals.user.id } } }
+			]
+		}
+	});
+
+	if (!document) {
+		throw error(404);
+	}
+
 	if (data.title) {
 		await prisma.document.update({ where: { id }, data: { title: data.title } });
 	}

@@ -502,9 +502,11 @@
 	<div class="py-8">
 		<div class="border-t border-stone-300 dark:border-stone-700" />
 	</div>
-	<div class="flex justify-end gap-6">
-		<button class="btn btn-primary" type="submit">
-			<Icon src={Save} solid class="w-5 mr-1" />Guardar
-		</button>
-	</div>
+	{#if $page.data.user?.id}
+		<div class="flex justify-end gap-6">
+			<button class="btn btn-primary" type="submit">
+				<Icon src={Save} solid class="w-5 mr-1" />Guardar
+			</button>
+		</div>
+	{/if}
 </form>

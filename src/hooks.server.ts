@@ -19,6 +19,8 @@ export async function authentication(input: HandleInput) {
 	const isGlossary = event.url.pathname === '/glossary';
 	const isDocumentsRoute = event.url.pathname === '/documents';
 	const isDocumentReadRoute = event.url.pathname.match(/\/documents\/\d*$/g)?.at(0) ?? false;
+	const isDocumentHeaderRoute =
+		event.url.pathname.match(/\/documents\/\d*\/header$/g)?.at(0) ?? false;
 
 	event.locals.user = { id: 0 } as IUser;
 
@@ -43,7 +45,8 @@ export async function authentication(input: HandleInput) {
 			isDocumentsRoute ||
 			isDocumentReadRoute ||
 			isImageRoute ||
-			isGlossary
+			isGlossary ||
+			isDocumentHeaderRoute
 		) &&
 		!isAuthed
 	) {

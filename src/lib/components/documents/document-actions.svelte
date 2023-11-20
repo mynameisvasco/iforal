@@ -34,8 +34,8 @@
 	</MenuButton>
 	<MenuItems class="dropdown-menu">
 		<MenuItem class="dropdown-menu-item" href="/documents/{id}/download">Download</MenuItem>
+		<MenuItem class="dropdown-menu-item" href="/documents/{id}/header">Editar Cabeçalho</MenuItem>
 		{#if $page.data.user.id !== 0}
-			<MenuItem class="dropdown-menu-item" href="/documents/{id}/header">Editar Cabeçalho</MenuItem>
 			<MenuItem class="dropdown-menu-item" href="/documents/{id}/images">Editar Imagens</MenuItem>
 			<MenuItem class="dropdown-menu-item !text-red-600 dark:!text-red-300" on:click={handleDelete}>
 				Apagar
