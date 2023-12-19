@@ -53,7 +53,7 @@
 			changes: {
 				from: 0,
 				to: $editor.state.doc.length,
-				insert: xmlFormat(text, { collapseContent: true, indentation: ' ' })
+				insert: xmlFormat(text, { collapseContent: true, indentation: ' ', lineSeparator: '\n' })
 			}
 		});
 	}

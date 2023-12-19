@@ -39,7 +39,10 @@
 		{ row: 26, value: 'ˢ' },
 		{ row: 27, value: 'ˣ' },
 		{ row: 28, value: 'ᵗ' },
-		{ row: 29, value: 'ꟹ' }
+		{ row: 29, value: 'ꟹ' },
+		{ row: 30, value: '¶' },
+		{ row: 31, value: 'ỹ' },
+		{ row: 32, value: 'Ỹ' }
 	];
 	let editor = writable({} as EditorView);
 	const isReadOnly =

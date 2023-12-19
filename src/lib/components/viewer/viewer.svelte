@@ -76,6 +76,11 @@
 					element.classList?.add('hidden');
 				}
 			}
+			for (const [i, head] of Array.from(
+				$viewerElement.getElementsByTagName('TEI-HEAD')
+			).entries()) {
+				head.classList.add('block', 'mb-2', 'font-semibold');
+			}
 
 			for (const [i, lb] of Array.from($viewerElement.getElementsByTagName('TEI-LB')).entries()) {
 				const lineNumber = lb.getAttribute('n') ?? '0';
@@ -86,6 +91,12 @@
 				space.classList.add('mb-2');
 				lb.appendChild(lineLabel);
 				if (i !== 0) lb.before(space);
+			}
+
+			for (const [i, cb] of Array.from($viewerElement.getElementsByTagName('TEI-CB')).entries()) {
+				const lineNumber = cb.getAttribute('n') ?? '0';
+				cb.innerHTML = `Coluna ${lineNumber}`;
+				cb.classList.add('flex', 'my-2', 'font-semibold');
 			}
 
 			for (const expan of Array.from($viewerElement.getElementsByTagName('TEI-EXPAN'))) {
@@ -105,41 +116,67 @@
 			}
 
 			for (const add of Array.from($viewerElement.getElementsByTagName('TEI-ADD'))) {
+				const placeTranslation = {
+					above: 'em-cima',
+					bellow: 'em-baixo',
+					margin: 'margem',
+					inline: 'na-linha',
+					opposite: 'em-oposição'
+				} as any;
+
 				const tooltip = document.createElement('span');
 				tooltip.classList.add('tooltip');
-				tooltip.innerText = `Adicionado ${add.getAttribute('place')}: ${(add as any).innerText}`;
+				tooltip.innerText = `Adicionado ${placeTranslation[add.getAttribute('place')!]}: ${
+					(add as any).innerText
+				}`;
 				add.appendChild(tooltip);
 				add.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
 			}
 
 			for (const del of Array.from($viewerElement.getElementsByTagName('TEI-DEL'))) {
 				const tooltip = document.createElement('span');
+				const rendTranslation = {
+					overstrike: 'riscado',
+					overtyped: 'sobreposto',
+					underlined: 'sublinhado'
+				} as any;
+
 				tooltip.classList.add('tooltip');
-				tooltip.innerText = `Cancelado ${del.getAttribute('rend')}: ${(del as any).innerText}`;
+				tooltip.innerText = `Cancelado ${rendTranslation[del.getAttribute('rend')!]}: ${
+					(del as any).innerText
+				}`;
+
 				del.appendChild(tooltip);
 				del.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
 			}
 
 			for (const unclear of Array.from($viewerElement.getElementsByTagName('TEI-UNCLEAR'))) {
 				const tooltip = document.createElement('span');
+				const reasonTranslation = {
+					faded: 'esbatido',
+					eccentric_ductus: 'ductos-irregular',
+					illegible: 'ilegivel'
+				} as any;
+
 				tooltip.classList.add('tooltip');
-				tooltip.innerText = `Leitura duvidosa`;
+				tooltip.innerText = `Leitura duvidosa ${
+					reasonTranslation[unclear.getAttribute('reason')!]
+				}`;
 				unclear.appendChild(tooltip);
 				unclear.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
 			}
 
 			for (const gap of Array.from($viewerElement.getElementsByTagName('TEI-GAP'))) {
 				const tooltip = document.createElement('span');
-				tooltip.classList.add('tooltip');
-				tooltip.innerText = `Lacuna do suporte ${gap.getAttribute('type')}`;
-				gap.appendChild(tooltip);
-				gap.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
-			}
+				const reasonTranslation = {
+					damage: 'acidente',
+					cancelled: 'cancelado',
+					deleted: 'raspado',
+					illegible: 'ilegivel'
+				} as any;
 
-			for (const gap of Array.from($viewerElement.getElementsByTagName('TEI-GAP'))) {
-				const tooltip = document.createElement('span');
 				tooltip.classList.add('tooltip');
-				tooltip.innerText = `Lacuna do suporte ${gap.getAttribute('type')}`;
+				tooltip.innerText = `Lacuna do suporte ${reasonTranslation[gap.getAttribute('reason')!]}`;
 				gap.appendChild(tooltip);
 				gap.classList.add('underline', 'underline-offset-4', 'font-bold', 'has-tooltip');
 			}
@@ -153,9 +190,9 @@
 			}
 
 			for (const note of Array.from($viewerElement.getElementsByTagName('TEI-NOTE'))) {
-				const targetId = note.getAttribute('target')?.replace('#', '');
+				const targetId = note.getAttribute('xml:id');
 				if (!targetId) continue;
-				const target = $viewerElement.querySelector('[xml\\:id="' + targetId + '"]');
+				const target = $viewerElement.querySelector('[target="#' + targetId + '"]');
 				if (!target) continue;
 				const tooltip = document.createElement('span');
 				tooltip.classList.add('tooltip');
@@ -184,7 +221,11 @@
 			rounded-t-md border border-stone-300 dark:border-stone-700 "
 	>
 		<div class="flex items-center justify-between gap-1 h-10">
-			<ViewerPagination {currentPage} {maxPages} />
+			<ViewerPagination
+				{currentPage}
+				{maxPages}
+				folio={$viewerElement?.getElementsByTagName('TEI-PB')[$currentPage - 1].getAttribute('n')}
+			/>
 			<ViewerSettingsMenu
 				{glossaryAddSideCover}
 				{currentPage}

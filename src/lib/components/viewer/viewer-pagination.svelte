@@ -5,6 +5,7 @@
 
 	export let currentPage: Writable<number>;
 	export let maxPages: number;
+	export let folio: string | undefined | null;
 </script>
 
 <div class="flex items-center">
@@ -15,7 +16,9 @@
 	{:else}
 		<div class="w-5" />
 	{/if}
-	<span class="text-sm text-stone-900 dark:text-white">Pagina {$currentPage} de {maxPages}</span>
+	<span class="text-sm text-stone-900 dark:text-white"
+		>Pagina {$currentPage} de {maxPages} - (Folio {folio})</span
+	>
 	{#if $currentPage !== maxPages}
 		<button on:click={() => ($currentPage += 1)}>
 			<Icon src={ChevronRight} class="w-5 text-stone-500 dark:text-stone-400" />

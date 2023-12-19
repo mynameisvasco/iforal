@@ -29,7 +29,7 @@
 
 <SideCover
 	title="Pesquisar"
-	description="Pesquise por determinados documentos, especificando o título e o interval de datas."
+	description="Pesquise pelo título do documento, intervalo de datas e/ou por palavra"
 	bind:this={sideCover}
 >
 	<div class="grid grid-cols-12 gap-3 pb-12">

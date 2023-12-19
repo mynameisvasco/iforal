@@ -1,16 +1,5 @@
 <script lang="ts">
-	import {
-		Code,
-		Eye,
-		Icon,
-		Minus,
-		Photograph,
-		Plus,
-		X,
-		Pencil,
-		Translate,
-		BookOpen
-	} from 'svelte-hero-icons';
+	import { Code, Eye, Icon, Minus, Plus, X, Translate, BookOpen } from 'svelte-hero-icons';
 	import { editorSettings } from '$stores/editor';
 	import { createEventDispatcher } from 'svelte';
 	import type { Writable } from 'svelte/store';
@@ -67,7 +56,7 @@
 	</button>
 	<select name="mode" class="input !py-1" on:change={handleModeChange}>
 		<option value="transcription">Ed. Paleográfica</option>
-		<option value="edited">Ed. Diplomática</option>
+		<option value="edited">Ed. Crítica</option>
 	</select>
 	<div class="h-6 border-r border-stone-300 dark:border-stone-700" />
 	<button type="button" on:click={handleFontSizeDecrease}>
