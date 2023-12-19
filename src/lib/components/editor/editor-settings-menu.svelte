@@ -60,32 +60,38 @@
 </script>
 
 <div class="flex items-center gap-2">
-	<button type="button" class="btn-editor" on:click={() => openSearchPanel($editor)}>
+	<button type="button" class="btn-editor has-tooltip" on:click={() => openSearchPanel($editor)}>
 		<Icon src={Search} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Pesquisar</span>
 	</button>
-	<button type="button" class="btn-editor" on:click={handleFormat}>
+	<button type="button" class="btn-editor has-tooltip" on:click={handleFormat}>
 		<Icon src={MenuAlt2} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Formatar</span>
 	</button>
-	<button type="button" class="btn-editor" on:click={handleVirtualKeyboard}>
+	<button type="button" class="btn-editor has-tooltip" on:click={handleVirtualKeyboard}>
 		<Icon src={AtSymbol} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Teclado Virtual</span>
 	</button>
-	<button type="button" class="btn-editor" on:click={handlePreviewMode}>
+	<button type="button" class="btn-editor has-tooltip" on:click={handlePreviewMode}>
 		<Icon
 			src={$editorSettings.isPreviewMode ? Code : Eye}
 			class="w-5 text-stone-500 dark:text-stone-400"
 			solid
 		/>
+		<span class="tooltip !w-28">Visualizar</span>
 	</button>
-	<button type="button" class="btn-editor" on:click={handleToggleFullWidth}>
+	<button type="button" class="btn-editor has-tooltip" on:click={handleToggleFullWidth}>
 		<Icon
 			src={$editorSettings.isFullWidth ? ArrowLeft : ArrowRight}
 			class="w-5 text-stone-500 dark:text-stone-400"
 			solid
 		/>
+		<span class="tooltip !w-28">{$editorSettings.isFullWidth ? 'Colapsar' : 'Aumentar'}</span>
 	</button>
 	<div class="h-6 border-r border-stone-300 dark:border-stone-700" />
-	<button type="button" on:click={handleFontSizeDecrease}>
+	<button type="button" on:click={handleFontSizeDecrease} class="has-tooltip">
 		<Icon src={Minus} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Diminuir fonte</span>
 	</button>
 	<input
 		min={8}
@@ -96,8 +102,9 @@
     focus:ring-orange-300 w-7 text-stone-900 dark:text-white"
 		bind:value={$editorSettings.fontSize}
 	/>
-	<button type="button" on:click={handleFontSizeIncrease}>
+	<button type="button" on:click={handleFontSizeIncrease} class="has-tooltip">
 		<Icon src={Plus} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Aumentar fonte</span>
 	</button>
 </div>
 

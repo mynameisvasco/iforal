@@ -41,26 +41,30 @@
 </script>
 
 <div class="flex items-center gap-2">
-	<button type="button" class="btn-editor" on:click={handlePreviewMode}>
+	<button type="button" class="btn-editor has-tooltip" on:click={handlePreviewMode}>
 		<Icon
 			src={$editorSettings.isPreviewMode ? Code : Eye}
-			class="w-5 text-stone-500 dark:text-stone-400"
+			class="w-5 text-stone-500 dark:text-stone-400 relative"
 			solid
 		/>
+		<span class="tooltip !w-28">Código Fonte</span>
 	</button>
-	<button type="button" class="btn-editor" on:click={handleImagePopup}>
+	<button type="button" class="btn-editor has-tooltip" on:click={handleImagePopup}>
 		<Icon src={BookOpen} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Ver Imagens</span>
 	</button>
-	<button type="button" class="mr-3" on:click={() => glossaryAddSideCover.toggle()}>
+	<button type="button" class="mr-3 has-tooltip" on:click={() => glossaryAddSideCover.toggle()}>
 		<Icon src={Translate} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Adicionar ao glossário</span>
 	</button>
 	<select name="mode" class="input !py-1" on:change={handleModeChange}>
 		<option value="transcription">Ed. Paleográfica</option>
 		<option value="edited">Ed. Crítica</option>
 	</select>
 	<div class="h-6 border-r border-stone-300 dark:border-stone-700" />
-	<button type="button" on:click={handleFontSizeDecrease}>
+	<button type="button" on:click={handleFontSizeDecrease} class="has-tooltip">
 		<Icon src={Minus} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Diminuir fonte</span>
 	</button>
 	<input
 		min={8}
@@ -71,8 +75,9 @@
     focus:ring-orange-300 w-7 text-stone-900 dark:text-white"
 		bind:value={$viewerSettings.fontSize}
 	/>
-	<button type="button" on:click={handleFontSizeIncrease}>
+	<button type="button" on:click={handleFontSizeIncrease} class="has-tooltip">
 		<Icon src={Plus} class="w-5 text-stone-500 dark:text-stone-400" solid />
+		<span class="tooltip !w-28">Aumentar fonte</span>
 	</button>
 	<div class="h-6 border-r border-stone-300 dark:border-stone-700" />
 	<button type="button" on:click={handleCloseViewer}>
