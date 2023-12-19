@@ -312,6 +312,7 @@
 							<select class="input" bind:value={addingAltIdentifier.type}>
 								<option value="" disabled>Selecionar tipo</option>
 								<option value="BITAGAP">BITAGAP</option>
+								<option value="COTA">Cota Descritiva</option>
 							</select>
 							<input
 								type="text"

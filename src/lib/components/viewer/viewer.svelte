@@ -71,7 +71,8 @@
 					shouldHideNode &&
 					(element.tagName === 'SPAN' ||
 						element.tagName === 'TEI-CHOICE' ||
-						element.tagName === 'TEI-LB')
+						element.tagName === 'TEI-LB' ||
+						element.tagName === 'TEI-CB')
 				) {
 					element.classList?.add('hidden');
 				}
